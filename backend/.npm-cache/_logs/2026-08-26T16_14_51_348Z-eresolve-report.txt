@@ -1,0 +1,24 @@
+'Log files:
+C:\Users\vedan\Downloads\AVRGREEN-Nursery-Management-System-main\AVRGREEN-Nursery-Management-System-main\backend\.npm-cache\_logs\2026-08-26T16_14_51_348Z-debug-0.log
+
+# npm resolution error report
+
+While resolving: bullmq@5.81.3
+Found: redis@4.7.1
+node_modules/redis
+  redis@"^4.6.13" from the root project
+
+Could not resolve dependency:
+peerOptional redis@">=5.0.0" from bullmq@5.81.3
+node_modules/bullmq
+  bullmq@"^5.1.0" from the root project
+
+Conflicting peer dependency: redis@6.2.1
+node_modules/redis
+  peerOptional redis@">=5.0.0" from bullmq@5.81.3
+  node_modules/bullmq
+    bullmq@"^5.1.0" from the root project
+
+Fix the upstream dependency conflict, or retry
+this command with --force or --legacy-peer-deps
+to accept an incorrect (and potentially broken) dependency resolution.

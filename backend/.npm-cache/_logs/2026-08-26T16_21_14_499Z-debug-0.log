@@ -1,0 +1,105 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.6.2
+2 info using node@v25.2.1
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\vedan\Downloads\AVRGREEN-Nursery-Management-System-main\AVRGREEN-Nursery-Management-System-main\backend\.npmrc
+5 silly config load:file:C:\Users\vedan\.npmrc
+6 silly config load:file:C:\Users\vedan\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm install @socket.io/redis-adapter@8.3.0 uuid@9.0.1
+8 verbose argv "install" "--cache" ".npm-cache" "--strict-ssl" "false" "--legacy-peer-deps" "--no-audit" "--no-fund" "@socket.io/redis-adapter@8.3.0" "uuid@9.0.1"
+9 verbose logfile logs-max:10 dir:C:\Users\vedan\Downloads\AVRGREEN-Nursery-Management-System-main\AVRGREEN-Nursery-Management-System-main\backend\.npm-cache\_logs\2026-08-26T16_21_14_499Z-
+10 verbose logfile C:\Users\vedan\Downloads\AVRGREEN-Nursery-Management-System-main\AVRGREEN-Nursery-Management-System-main\backend\.npm-cache\_logs\2026-08-26T16_21_14_499Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 silly idealTree buildDeps
+14 silly fetch manifest @socket.io/redis-adapter@8.3.0
+15 silly packumentCache full:https://registry.npmjs.org/@socket.io%2fredis-adapter cache-miss
+16 http fetch GET 200 https://registry.npmjs.org/@socket.io%2fredis-adapter 1678ms (cache miss)
+17 silly packumentCache full:https://registry.npmjs.org/@socket.io%2fredis-adapter set size:undefined disposed:false
+18 silly fetch manifest uuid@9.0.1
+19 silly packumentCache full:https://registry.npmjs.org/uuid cache-miss
+20 http fetch GET 200 https://registry.npmjs.org/uuid 78ms (cache miss)
+21 silly packumentCache full:https://registry.npmjs.org/uuid set size:undefined disposed:false
+22 silly placeDep ROOT @socket.io/redis-adapter@8.3.0 OK for: avrgreen-backend@1.0.0 want: 8.3.0
+23 silly placeDep ROOT uuid@9.0.1 OK for: avrgreen-backend@1.0.0 want: 9.0.1
+24 silly fetch manifest debug@~4.3.1
+25 silly packumentCache full:https://registry.npmjs.org/debug cache-miss
+26 silly fetch manifest notepack.io@~3.0.1
+27 silly packumentCache full:https://registry.npmjs.org/notepack.io cache-miss
+28 silly fetch manifest uid2@1.0.0
+29 silly packumentCache full:https://registry.npmjs.org/uid2 cache-miss
+30 http fetch GET 200 https://registry.npmjs.org/debug 313ms (cache revalidated)
+31 silly packumentCache full:https://registry.npmjs.org/debug set size:195840 disposed:false
+32 http fetch GET 200 https://registry.npmjs.org/uid2 581ms (cache miss)
+33 silly packumentCache full:https://registry.npmjs.org/uid2 set size:undefined disposed:false
+34 http fetch GET 200 https://registry.npmjs.org/notepack.io 630ms (cache miss)
+35 silly packumentCache full:https://registry.npmjs.org/notepack.io set size:undefined disposed:false
+36 silly placeDep node_modules/@socket.io/redis-adapter debug@4.3.7 OK for: @socket.io/redis-adapter@8.3.0 want: ~4.3.1
+37 silly placeDep ROOT notepack.io@3.0.1 OK for: @socket.io/redis-adapter@8.3.0 want: ~3.0.1
+38 silly placeDep ROOT uid2@1.0.0 OK for: @socket.io/redis-adapter@8.3.0 want: 1.0.0
+39 silly fetch manifest ms@^2.1.3
+40 silly packumentCache full:https://registry.npmjs.org/ms cache-miss
+41 http fetch GET 200 https://registry.npmjs.org/ms 119ms (cache revalidated)
+42 silly packumentCache full:https://registry.npmjs.org/ms set size:92208 disposed:false
+43 silly placeDep node_modules/@socket.io/redis-adapter ms@2.1.3 OK for: debug@4.3.7 want: ^2.1.3
+44 silly reify mark retired [
+44 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\@types\\node'
+44 silly reify ]
+45 silly reify mark retired [
+45 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\typescript',
+45 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsc',
+45 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsc.cmd',
+45 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsc.ps1',
+45 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsserver',
+45 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsserver.cmd',
+45 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsserver.ps1'
+45 silly reify ]
+46 silly reify mark retired [
+46 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\undici-types'
+46 silly reify ]
+47 silly reify moves {
+47 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\@types\\node': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\@types\\.node-5atrMlUu',
+47 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\typescript': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.typescript-XrwBGtMZ',
+47 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsc': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.tsc-g0HSNejD',
+47 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsc.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.tsc.cmd-IK1m5o5d',
+47 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsc.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.tsc.ps1-8w38cpP1',
+47 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsserver': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.tsserver-Y4eLilYs',
+47 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsserver.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.tsserver.cmd-0F6hQZ1L',
+47 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsserver.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.tsserver.ps1-VNoWxP1C',
+47 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\undici-types': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.undici-types-bOXT9TI5'
+47 silly reify }
+48 http cache @socket.io/redis-adapter@https://registry.npmjs.org/@socket.io/redis-adapter/-/redis-adapter-8.3.0.tgz 0ms (cache hit)
+49 http cache uid2@https://registry.npmjs.org/uid2/-/uid2-1.0.0.tgz 0ms (cache hit)
+50 http cache notepack.io@https://registry.npmjs.org/notepack.io/-/notepack.io-3.0.1.tgz 0ms (cache hit)
+51 http cache uuid@https://registry.npmjs.org/uuid/-/uuid-9.0.1.tgz 0ms (cache hit)
+52 http cache @types/node@https://registry.npmjs.org/@types/node/-/node-20.19.43.tgz 0ms (cache hit)
+53 http cache typescript@https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz 0ms (cache hit)
+54 silly tarball no local data for @socket.io/redis-adapter@https://registry.npmjs.org/@socket.io/redis-adapter/-/redis-adapter-8.3.0.tgz. Extracting by manifest.
+55 http cache debug@https://registry.npmjs.org/debug/-/debug-4.3.7.tgz 0ms (cache hit)
+56 silly tarball no local data for uid2@https://registry.npmjs.org/uid2/-/uid2-1.0.0.tgz. Extracting by manifest.
+57 http cache undici-types@https://registry.npmjs.org/undici-types/-/undici-types-6.21.0.tgz 0ms (cache hit)
+58 silly tarball no local data for notepack.io@https://registry.npmjs.org/notepack.io/-/notepack.io-3.0.1.tgz. Extracting by manifest.
+59 silly tarball no local data for uuid@https://registry.npmjs.org/uuid/-/uuid-9.0.1.tgz. Extracting by manifest.
+60 http cache ms@https://registry.npmjs.org/ms/-/ms-2.1.3.tgz 0ms (cache hit)
+61 silly tarball no local data for debug@https://registry.npmjs.org/debug/-/debug-4.3.7.tgz. Extracting by manifest.
+62 http fetch GET 200 https://registry.npmjs.org/uid2/-/uid2-1.0.0.tgz 106ms (cache miss)
+63 http fetch GET 200 https://registry.npmjs.org/notepack.io/-/notepack.io-3.0.1.tgz 129ms (cache miss)
+64 http fetch GET 200 https://registry.npmjs.org/debug/-/debug-4.3.7.tgz 263ms (cache miss)
+65 http fetch GET 200 https://registry.npmjs.org/uuid/-/uuid-9.0.1.tgz 393ms (cache miss)
+66 warn deprecated uuid@9.0.1: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+67 http fetch GET 200 https://registry.npmjs.org/@socket.io/redis-adapter/-/redis-adapter-8.3.0.tgz 837ms (cache miss)
+68 silly ADD node_modules/uid2
+69 silly ADD node_modules/notepack.io
+70 silly ADD node_modules/uuid
+71 silly ADD node_modules/@socket.io/redis-adapter
+72 silly ADD node_modules/@socket.io/redis-adapter/node_modules/ms
+73 silly ADD node_modules/@socket.io/redis-adapter/node_modules/debug
+74 silly CHANGE node_modules/undici-types
+75 silly CHANGE node_modules/typescript
+76 silly CHANGE node_modules/@types/node
+77 verbose cwd C:\Users\vedan\Downloads\AVRGREEN-Nursery-Management-System-main\AVRGREEN-Nursery-Management-System-main\backend
+78 verbose os Windows_NT 10.0.26220
+79 verbose node v25.2.1
+80 verbose npm  v11.6.2
+81 verbose exit 0
+82 info ok

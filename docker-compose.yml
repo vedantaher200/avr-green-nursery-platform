@@ -1,0 +1,124 @@
+version: "3.9"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# AVRGREEN — Local Development Docker Compose Stack
+# Services: API, PostgreSQL, Redis, MinIO (R2 mock)
+# ─────────────────────────────────────────────────────────────────────────────
+
+networks:
+  avrgreen-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+
+services:
+  # ── PostgreSQL Database ─────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: avrgreen-postgres
+    restart: unless-stopped
+    networks:
+      - avrgreen-net
+    environment:
+      POSTGRES_USER: avrgreen_user
+      POSTGRES_PASSWORD: avrgreen_local_pass
+      POSTGRES_DB: avrgreen_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/src/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./backend/src/db/seeds.sql:/docker-entrypoint-initdb.d/02-seeds.sql
+    ports:
+      # 5432 is commonly occupied by a local PostgreSQL installation.
+      # The API container still uses PostgreSQL's internal port 5432.
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U avrgreen_user -d avrgreen_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Redis Cache & BullMQ Queue ───────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: avrgreen-redis
+    restart: unless-stopped
+    networks:
+      - avrgreen-net
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # ── MinIO — Local Cloudflare R2 Emulation ───────────────────────────────────
+  minio:
+    image: minio/minio:latest
+    container_name: avrgreen-minio
+    restart: unless-stopped
+    networks:
+      - avrgreen-net
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin123
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  # ── Express.js API Server ───────────────────────────────────────────────────
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: builder    # Use builder stage for dev (ts-node-dev for hot reload)
+    container_name: avrgreen-api
+    restart: unless-stopped
+    networks:
+      - avrgreen-net
+    command: npm run dev
+    environment:
+      NODE_ENV: development
+      PORT: 5000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: avrgreen_user
+      DB_PASSWORD: avrgreen_local_pass
+      DB_NAME: avrgreen_db
+      REDIS_URL: redis://redis:6379
+      JWT_ACCESS_SECRET: dev_access_secret_avrgreen_123
+      JWT_REFRESH_SECRET: dev_refresh_secret_avrgreen_456
+      JWT_ACCESS_EXPIRES_IN: 15m
+      JWT_REFRESH_EXPIRES_IN: 30d
+      R2_PUBLIC_URL: http://localhost:9000/avrgreen-assets
+      CORS_ORIGINS: "http://localhost:3000,http://localhost:8080"
+    volumes:
+      - ./backend/src:/app/src       # Hot reload source
+      - ./backend/logs:/app/logs
+    ports:
+      - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:5000/health || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 30s

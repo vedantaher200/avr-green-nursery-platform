@@ -1,0 +1,294 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.6.2
+2 info using node@v25.2.1
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\vedan\Downloads\AVRGREEN-Nursery-Management-System-main\AVRGREEN-Nursery-Management-System-main\backend\.npmrc
+5 silly config load:file:C:\Users\vedan\.npmrc
+6 silly config load:file:C:\Users\vedan\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm install
+8 verbose argv "install" "--cache" ".npm-cache" "--strict-ssl" "false" "--legacy-peer-deps" "--no-audit" "--no-fund"
+9 verbose logfile logs-max:10 dir:C:\Users\vedan\Downloads\AVRGREEN-Nursery-Management-System-main\AVRGREEN-Nursery-Management-System-main\backend\.npm-cache\_logs\2026-08-26T16_16_26_787Z-
+10 verbose logfile C:\Users\vedan\Downloads\AVRGREEN-Nursery-Management-System-main\AVRGREEN-Nursery-Management-System-main\backend\.npm-cache\_logs\2026-08-26T16_16_26_787Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 silly idealTree buildDeps
+14 silly fetch manifest typescript@^5.3.3
+15 silly packumentCache full:https://registry.npmjs.org/typescript cache-miss
+16 http cache https://registry.npmjs.org/typescript 48ms (cache hit)
+17 silly packumentCache full:https://registry.npmjs.org/typescript set size:15597675 disposed:false
+18 silly placeDep ROOT typescript@5.9.3 REPLACE for: avrgreen-backend@1.0.0 want: ^5.3.3
+19 silly fetch manifest fsevents@~2.3.2
+20 silly packumentCache full:https://registry.npmjs.org/fsevents cache-miss
+21 http cache https://registry.npmjs.org/fsevents 12ms (cache hit)
+22 silly packumentCache full:https://registry.npmjs.org/fsevents set size:182472 disposed:false
+23 silly placeDep ROOT fsevents@2.3.3 OK for: chokidar@3.6.0 want: ~2.3.2
+24 silly fetch manifest luxon@^3.2.1
+25 silly packumentCache full:https://registry.npmjs.org/luxon cache-miss
+26 http cache https://registry.npmjs.org/luxon 8ms (cache hit)
+27 silly packumentCache full:https://registry.npmjs.org/luxon set size:511002 disposed:false
+28 silly placeDep node_modules/cron-parser luxon@3.7.2 OK for: cron-parser@4.9.0 want: ^3.2.1
+29 silly fetch manifest @msgpackr-extract/msgpackr-extract-darwin-arm64@3.0.4
+30 silly packumentCache full:https://registry.npmjs.org/@msgpackr-extract%2fmsgpackr-extract-darwin-arm64 cache-miss
+31 http cache https://registry.npmjs.org/@msgpackr-extract%2fmsgpackr-extract-darwin-arm64 7ms (cache hit)
+32 silly packumentCache full:https://registry.npmjs.org/@msgpackr-extract%2fmsgpackr-extract-darwin-arm64 set size:26146 disposed:false
+33 silly fetch manifest @msgpackr-extract/msgpackr-extract-darwin-x64@3.0.4
+34 silly packumentCache full:https://registry.npmjs.org/@msgpackr-extract%2fmsgpackr-extract-darwin-x64 cache-miss
+35 http cache https://registry.npmjs.org/@msgpackr-extract%2fmsgpackr-extract-darwin-x64 6ms (cache hit)
+36 silly packumentCache full:https://registry.npmjs.org/@msgpackr-extract%2fmsgpackr-extract-darwin-x64 set size:25980 disposed:false
+37 silly fetch manifest @msgpackr-extract/msgpackr-extract-linux-arm@3.0.4
+38 silly packumentCache full:https://registry.npmjs.org/@msgpackr-extract%2fmsgpackr-extract-linux-arm cache-miss
+39 http cache https://registry.npmjs.org/@msgpackr-extract%2fmsgpackr-extract-linux-arm 6ms (cache hit)
+40 silly packumentCache full:https://registry.npmjs.org/@msgpackr-extract%2fmsgpackr-extract-linux-arm set size:25890 disposed:false
+41 silly fetch manifest @msgpackr-extract/msgpackr-extract-linux-arm64@3.0.4
+42 silly packumentCache full:https://registry.npmjs.org/@msgpackr-extract%2fmsgpackr-extract-linux-arm64 cache-miss
+43 http cache https://registry.npmjs.org/@msgpackr-extract%2fmsgpackr-extract-linux-arm64 6ms (cache hit)
+44 silly packumentCache full:https://registry.npmjs.org/@msgpackr-extract%2fmsgpackr-extract-linux-arm64 set size:26049 disposed:false
+45 silly fetch manifest @msgpackr-extract/msgpackr-extract-linux-x64@3.0.4
+46 silly packumentCache full:https://registry.npmjs.org/@msgpackr-extract%2fmsgpackr-extract-linux-x64 cache-miss
+47 http cache https://registry.npmjs.org/@msgpackr-extract%2fmsgpackr-extract-linux-x64 6ms (cache hit)
+48 silly packumentCache full:https://registry.npmjs.org/@msgpackr-extract%2fmsgpackr-extract-linux-x64 set size:25891 disposed:false
+49 silly placeDep ROOT @msgpackr-extract/msgpackr-extract-darwin-arm64@3.0.4 OK for: msgpackr-extract@3.0.4 want: 3.0.4
+50 silly placeDep ROOT @msgpackr-extract/msgpackr-extract-darwin-x64@3.0.4 OK for: msgpackr-extract@3.0.4 want: 3.0.4
+51 silly placeDep ROOT @msgpackr-extract/msgpackr-extract-linux-arm@3.0.4 OK for: msgpackr-extract@3.0.4 want: 3.0.4
+52 silly placeDep ROOT @msgpackr-extract/msgpackr-extract-linux-arm64@3.0.4 OK for: msgpackr-extract@3.0.4 want: 3.0.4
+53 silly placeDep ROOT @msgpackr-extract/msgpackr-extract-linux-x64@3.0.4 OK for: msgpackr-extract@3.0.4 want: 3.0.4
+54 silly reify mark retired [
+54 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\luxon'
+54 silly reify ]
+55 silly reify mark retired [
+55 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\typescript'
+55 silly reify ]
+56 silly reify mark retired [
+56 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\acorn',
+56 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\acorn',
+56 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\acorn.cmd',
+56 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\acorn.ps1'
+56 silly reify ]
+57 silly reify mark retired [
+57 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\mime',
+57 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\mime',
+57 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\mime.cmd',
+57 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\mime.ps1'
+57 silly reify ]
+58 silly reify mark retired [
+58 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\mkdirp',
+58 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\mkdirp',
+58 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\mkdirp.cmd',
+58 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\mkdirp.ps1'
+58 silly reify ]
+59 silly reify mark retired [
+59 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\msgpackr-extract',
+59 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\download-msgpackr-prebuilds',
+59 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\download-msgpackr-prebuilds.cmd',
+59 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\download-msgpackr-prebuilds.ps1'
+59 silly reify ]
+60 silly reify mark retired [
+60 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\node-gyp-build-optional-packages',
+60 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages',
+60 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages.cmd',
+60 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages.ps1',
+60 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages-optional',
+60 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages-optional.cmd',
+60 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages-optional.ps1',
+60 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages-test',
+60 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages-test.cmd',
+60 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages-test.ps1'
+60 silly reify ]
+61 silly reify mark retired [
+61 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\semver',
+61 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\semver',
+61 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\semver.cmd',
+61 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\semver.ps1'
+61 silly reify ]
+62 silly reify mark retired [
+62 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\rimraf',
+62 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\rimraf',
+62 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\rimraf.cmd',
+62 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\rimraf.ps1'
+62 silly reify ]
+63 silly reify mark retired [
+63 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\resolve',
+63 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\resolve',
+63 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\resolve.cmd',
+63 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\resolve.ps1'
+63 silly reify ]
+64 silly reify mark retired [
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\ts-node',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node.cmd',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node.ps1',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-cwd',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-cwd.cmd',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-cwd.ps1',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-esm',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-esm.cmd',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-esm.ps1',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-script',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-script.cmd',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-script.ps1',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-transpile-only',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-transpile-only.cmd',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-transpile-only.ps1',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-script',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-script.cmd',
+64 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-script.ps1'
+64 silly reify ]
+65 silly reify mark retired [
+65 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\ts-node-dev',
+65 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-dev',
+65 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-dev.cmd',
+65 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-dev.ps1',
+65 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsnd',
+65 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsnd.cmd',
+65 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsnd.ps1'
+65 silly reify ]
+66 silly reify mark retired [
+66 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\tree-kill',
+66 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tree-kill',
+66 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tree-kill.cmd',
+66 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tree-kill.ps1'
+66 silly reify ]
+67 silly reify moves {
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\luxon': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.luxon-kov0BwD0',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\typescript': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.typescript-XrwBGtMZ',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\acorn': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.acorn-mN091nRA',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\acorn': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.acorn-VY8XfDcS',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\acorn.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.acorn.cmd-MUHhxMut',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\acorn.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.acorn.ps1-xRwESJ4o',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\mime': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.mime-AcCjeKw1',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\mime': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.mime-iXiw1V5p',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\mime.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.mime.cmd-orDr12gw',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\mime.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.mime.ps1-pQG0BrzK',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\mkdirp': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.mkdirp-7S7Up1oY',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\mkdirp': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.mkdirp-cofuDGSM',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\mkdirp.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.mkdirp.cmd-Wirmvef8',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\mkdirp.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.mkdirp.ps1-mLvvLapg',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\msgpackr-extract': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.msgpackr-extract-Ueu2Dv4I',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\download-msgpackr-prebuilds': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.download-msgpackr-prebuilds-tyATgGsq',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\download-msgpackr-prebuilds.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.download-msgpackr-prebuilds.cmd-v7Ze6J9M',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\download-msgpackr-prebuilds.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.download-msgpackr-prebuilds.ps1-DILYYQax',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\node-gyp-build-optional-packages': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.node-gyp-build-optional-packages-S433To3G',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.node-gyp-build-optional-packages-ieINUTCk',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.node-gyp-build-optional-packages.cmd-SNYjpSBi',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.node-gyp-build-optional-packages.ps1-nfFwFbdQ',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages-optional': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.node-gyp-build-optional-packages-optional-MsKgmvcx',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages-optional.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.node-gyp-build-optional-packages-optional.cmd-5vUTsDu1',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages-optional.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.node-gyp-build-optional-packages-optional.ps1-cimAAxeh',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages-test': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.node-gyp-build-optional-packages-test-AunyMW40',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages-test.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.node-gyp-build-optional-packages-test.cmd-Q6Z0ectS',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\node-gyp-build-optional-packages-test.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.node-gyp-build-optional-packages-test.ps1-FTGcfrI5',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\semver': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.semver-NCOZRrA7',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\semver': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.semver-dlnLiDuH',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\semver.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.semver.cmd-slbZjKfF',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\semver.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.semver.ps1-IlCj9RO0',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\rimraf': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.rimraf-2XgukKDa',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\rimraf': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.rimraf-mdlqd5Se',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\rimraf.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.rimraf.cmd-su51sKAX',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\rimraf.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.rimraf.ps1-MPuN5XeU',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\resolve': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.resolve-DZ2VUyeG',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\resolve': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.resolve-I7MMieCA',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\resolve.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.resolve.cmd-pRpVEmcX',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\resolve.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.resolve.ps1-PNIUF62S',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\ts-node': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.ts-node-cO8ma06W',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node-BAW3jg2P',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node.cmd-qJJ2UKra',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node.ps1-SPtQryhS',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-cwd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node-cwd-T4eqcF6j',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-cwd.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node-cwd.cmd-Zr4YRwZK',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-cwd.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node-cwd.ps1-eGZxYBnq',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-esm': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node-esm-FbCayMmm',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-esm.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node-esm.cmd-0WLoTdVf',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-esm.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node-esm.ps1-x7WvoJCm',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-script': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node-script-vPR2Ube2',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-script.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node-script.cmd-IH27ScPR',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-script.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node-script.ps1-EXMk0L8s',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-transpile-only': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node-transpile-only-zY0bTeIg',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-transpile-only.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node-transpile-only.cmd-NQYUJO7C',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-transpile-only.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node-transpile-only.ps1-hhaQgU1T',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-script': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-script-SbZM6gDZ',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-script.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-script.cmd-fQ1kSen7',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-script.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-script.ps1-mg2tzsEc',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\ts-node-dev': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.ts-node-dev-4Zh0Ppaf',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-dev': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node-dev-I7sZA3Jc',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-dev.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node-dev.cmd-XX8hBoWd',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\ts-node-dev.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.ts-node-dev.ps1-Nxs0u3r4',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsnd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.tsnd-1Xb7K4K3',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsnd.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.tsnd.cmd-xNLI6oSB',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tsnd.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.tsnd.ps1-iAR5bf1w',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\tree-kill': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.tree-kill-YywLljgG',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tree-kill': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.tree-kill-G0UHXskM',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tree-kill.cmd': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.tree-kill.cmd-wCVLujXh',
+67 silly reify   'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\tree-kill.ps1': 'C:\\Users\\vedan\\Downloads\\AVRGREEN-Nursery-Management-System-main\\AVRGREEN-Nursery-Management-System-main\\backend\\node_modules\\.bin\\.tree-kill.ps1-Ggwq0X93'
+67 silly reify }
+68 silly packumentCache corgi:https://registry.npmjs.org/resolve cache-miss
+69 silly packumentCache corgi:https://registry.npmjs.org/ts-node cache-miss
+70 silly packumentCache corgi:https://registry.npmjs.org/tree-kill cache-miss
+71 silly packumentCache corgi:https://registry.npmjs.org/ts-node-dev cache-miss
+72 silly packumentCache corgi:https://registry.npmjs.org/node-gyp-build-optional-packages cache-miss
+73 silly packumentCache corgi:https://registry.npmjs.org/mkdirp cache-miss
+74 silly packumentCache corgi:https://registry.npmjs.org/semver cache-miss
+75 silly packumentCache corgi:https://registry.npmjs.org/mime cache-miss
+76 silly packumentCache corgi:https://registry.npmjs.org/rimraf cache-miss
+77 http cache typescript@https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz 0ms (cache hit)
+78 silly packumentCache corgi:https://registry.npmjs.org/msgpackr-extract cache-miss
+79 silly packumentCache corgi:https://registry.npmjs.org/acorn cache-miss
+80 silly tarball no local data for typescript@https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz. Extracting by manifest.
+81 http cache luxon@https://registry.npmjs.org/luxon/-/luxon-3.7.2.tgz 0ms (cache hit)
+82 silly tarball no local data for luxon@https://registry.npmjs.org/luxon/-/luxon-3.7.2.tgz. Extracting by manifest.
+83 http fetch GET 200 https://registry.npmjs.org/node-gyp-build-optional-packages 10856ms (cache miss)
+84 silly packumentCache corgi:https://registry.npmjs.org/node-gyp-build-optional-packages set size:undefined disposed:false
+85 http cache https://registry.npmjs.org/node-gyp-build-optional-packages/-/node-gyp-build-optional-packages-5.2.2.tgz 9ms (cache hit)
+86 http fetch GET 200 https://registry.npmjs.org/rimraf 14353ms (cache miss)
+87 silly packumentCache corgi:https://registry.npmjs.org/rimraf set size:undefined disposed:false
+88 http cache https://registry.npmjs.org/rimraf/-/rimraf-2.7.1.tgz 7ms (cache hit)
+89 http fetch GET 200 https://registry.npmjs.org/mime 16738ms (cache miss)
+90 silly packumentCache corgi:https://registry.npmjs.org/mime set size:undefined disposed:false
+91 http cache https://registry.npmjs.org/mime/-/mime-1.6.0.tgz 7ms (cache hit)
+92 http fetch GET 200 https://registry.npmjs.org/tree-kill 16936ms (cache miss)
+93 silly packumentCache corgi:https://registry.npmjs.org/tree-kill set size:undefined disposed:false
+94 http cache https://registry.npmjs.org/tree-kill/-/tree-kill-1.2.2.tgz 7ms (cache hit)
+95 http fetch GET 200 https://registry.npmjs.org/msgpackr-extract 17233ms (cache miss)
+96 silly packumentCache corgi:https://registry.npmjs.org/msgpackr-extract set size:undefined disposed:false
+97 http cache https://registry.npmjs.org/msgpackr-extract/-/msgpackr-extract-3.0.4.tgz 7ms (cache hit)
+98 http fetch GET 200 https://registry.npmjs.org/resolve 23142ms (cache miss)
+99 silly packumentCache corgi:https://registry.npmjs.org/resolve set size:undefined disposed:false
+100 http cache https://registry.npmjs.org/resolve/-/resolve-1.22.12.tgz 9ms (cache hit)
+101 http fetch GET 200 https://registry.npmjs.org/ts-node-dev 24862ms (cache miss)
+102 silly packumentCache corgi:https://registry.npmjs.org/ts-node-dev set size:undefined disposed:false
+103 http cache https://registry.npmjs.org/ts-node-dev/-/ts-node-dev-2.0.0.tgz 8ms (cache hit)
+104 http fetch GET 200 https://registry.npmjs.org/acorn 25134ms (cache miss)
+105 silly packumentCache corgi:https://registry.npmjs.org/acorn set size:undefined disposed:false
+106 http cache https://registry.npmjs.org/acorn/-/acorn-8.18.0.tgz 9ms (cache hit)
+107 http fetch GET 200 https://registry.npmjs.org/semver 29754ms (cache miss)
+108 silly packumentCache corgi:https://registry.npmjs.org/semver set size:undefined disposed:false
+109 http cache https://registry.npmjs.org/semver/-/semver-7.8.5.tgz 9ms (cache hit)
+110 http fetch GET 200 https://registry.npmjs.org/mkdirp 34805ms (cache miss)
+111 silly packumentCache corgi:https://registry.npmjs.org/mkdirp set size:undefined disposed:false
+112 http cache https://registry.npmjs.org/mkdirp/-/mkdirp-1.0.4.tgz 8ms (cache hit)
+113 http fetch GET 200 https://registry.npmjs.org/ts-node 39185ms (cache miss)
+114 silly packumentCache corgi:https://registry.npmjs.org/ts-node set size:undefined disposed:false
+115 http cache https://registry.npmjs.org/ts-node/-/ts-node-10.9.2.tgz 11ms (cache hit)
+116 http fetch GET 200 https://registry.npmjs.org/luxon/-/luxon-3.7.2.tgz 97289ms (cache miss)
+117 http fetch GET 200 https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz 126052ms (cache miss)
+118 info run msgpackr-extract@3.0.4 install node_modules/msgpackr-extract node-gyp-build-optional-packages
+119 info run msgpackr-extract@3.0.4 install { code: 0, signal: null }
+120 silly CHANGE node_modules/tree-kill
+121 silly CHANGE node_modules/ts-node-dev
+122 silly CHANGE node_modules/ts-node
+123 silly CHANGE node_modules/resolve
+124 silly CHANGE node_modules/rimraf
+125 silly CHANGE node_modules/semver
+126 silly CHANGE node_modules/node-gyp-build-optional-packages
+127 silly CHANGE node_modules/msgpackr-extract
+128 silly CHANGE node_modules/mkdirp
+129 silly CHANGE node_modules/mime
+130 silly ADD node_modules/cron-parser/node_modules/luxon
+131 silly CHANGE node_modules/acorn
+132 silly CHANGE node_modules/typescript
+133 silly REMOVE node_modules/luxon
+134 verbose cwd C:\Users\vedan\Downloads\AVRGREEN-Nursery-Management-System-main\AVRGREEN-Nursery-Management-System-main\backend
+135 verbose os Windows_NT 10.0.26220
+136 verbose node v25.2.1
+137 verbose npm  v11.6.2
+138 verbose exit 0
+139 info ok

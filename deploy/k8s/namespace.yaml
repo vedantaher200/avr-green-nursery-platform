@@ -1,0 +1,9 @@
+---
+# AVRGREEN Kubernetes Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: avrgreen
+  labels:
+    app.kubernetes.io/name: avrgreen
+    app.kubernetes.io/part-of: avrgreen-platform
