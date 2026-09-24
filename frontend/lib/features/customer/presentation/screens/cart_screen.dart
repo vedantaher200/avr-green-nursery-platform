@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/widgets/app_product_image.dart';
 import '../../data/providers/cart_provider.dart';
 
 class CartScreen extends ConsumerWidget {
@@ -190,22 +191,11 @@ class CartScreen extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             // Botanical Seedling Photograph
-                            ClipRRect(
+                            AppProductImage.thumbnail(
+                              imageUrl: item.product.primaryImageAsset,
+                              cropName: item.product.crop,
+                              size: 72,
                               borderRadius: BorderRadius.circular(12),
-                              child: Container(
-                                width: 72,
-                                height: 72,
-                                color: AVRColors.forestGreenSurface,
-                                child: Image.asset(
-                                  item.product.primaryImageAsset,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (_, __, ___) => const Icon(
-                                    Icons.spa,
-                                    color: AVRColors.forestGreen,
-                                    size: 32,
-                                  ),
-                                ),
-                              ),
                             ),
                             const SizedBox(width: 12),
 

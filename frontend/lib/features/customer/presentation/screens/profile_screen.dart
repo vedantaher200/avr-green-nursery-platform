@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/localization/app_strings.dart';
 import '../../../auth/data/providers/auth_provider.dart';
+import '../../../inventory/data/providers/owner_inventory_provider.dart';
 import '../../data/providers/marketplace_provider.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -206,6 +207,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   ),
                   const Divider(height: 1),
                   ListTile(
+                    leading: const Icon(Icons.event_note_rounded, color: Color(0xFFE65100)),
+                    title: const Text('My Advance Pre-Bookings', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                    subtitle: const Text('Track reserved polyhouse batches & dispatch dates', style: TextStyle(fontSize: 11.5)),
+                    trailing: const Icon(Icons.chevron_right, size: 20),
+                    onTap: () => _showMyPreBookingsModal(context, _phoneController.text),
+                  ),
+                  const Divider(height: 1),
+                  ListTile(
                     leading: const Icon(Icons.translate_rounded, color: AVRColors.forestGreen),
                     title: const Text('Language / भाषा / भाषा निवडा', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
                     subtitle: Text(
@@ -311,4 +320,143 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ),
     );
   }
+
+  // ── Farmer Advance Pre-Bookings Tracking Modal ──────────────────────────────
+  void _showMyPreBookingsModal(BuildContext context, String phone) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Consumer(
+        builder: (context, ref, _) {
+          final bookingsAsync = ref.watch(farmerPreBookingsProvider(phone));
+
+          return Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.75),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 44,
+                    height: 4,
+                    decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(2)),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Row(
+                      children: [
+                        Icon(Icons.event_available_rounded, color: Color(0xFFE65100), size: 20),
+                        SizedBox(width: 8),
+                        Text('My Advance Pre-Bookings', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
+                      ],
+                    ),
+                    IconButton(icon: const Icon(Icons.close), onPressed: () => Navigator.pop(ctx)),
+                  ],
+                ),
+                const Divider(),
+                Expanded(
+                  child: bookingsAsync.when(
+                    data: (bookings) {
+                      if (bookings.isEmpty) {
+                        return Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.event_busy_rounded, size: 48, color: Colors.grey.shade400),
+                              const SizedBox(height: 10),
+                              const Text('No active pre-bookings found for this number', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                              const SizedBox(height: 4),
+                              Text('Reserve upcoming polyhouse batches from the marketplace.', style: TextStyle(fontSize: 11.5, color: Colors.grey.shade600)),
+                            ],
+                          ),
+                        );
+                      }
+
+                      return ListView.separated(
+                        itemCount: bookings.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 10),
+                        itemBuilder: (ctx, idx) {
+                          final b = bookings[idx];
+                          return Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF9FBF8),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.grey.shade300),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      b.bookingNumber,
+                                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AVRColors.forestGreenDark),
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                                      decoration: BoxDecoration(
+                                        color: b.status == 'ready'
+                                            ? const Color(0xFFE8F5E9)
+                                            : b.status == 'confirmed'
+                                                ? const Color(0xFFE0F2FE)
+                                                : const Color(0xFFFFF3E0),
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: Text(
+                                        b.status.toUpperCase(),
+                                        style: TextStyle(
+                                          fontSize: 9.5,
+                                          fontWeight: FontWeight.w800,
+                                          color: b.status == 'ready'
+                                              ? AVRColors.success
+                                              : b.status == 'confirmed'
+                                                  ? const Color(0xFF0369A1)
+                                                  : const Color(0xFFE65100),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  'Quantity: ${b.quantity} (${b.unit.toUpperCase()}) = ${b.totalPlants} Plants',
+                                  style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 3),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('📅 Expected: ${b.expectedReadyDate}', style: TextStyle(fontSize: 11.5, color: Colors.grey.shade700)),
+                                    Text('Advance: ₹${b.advanceAmount.toStringAsFixed(0)}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AVRColors.forestGreenDark)),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    loading: () => const Center(child: CircularProgressIndicator()),
+                    error: (_, __) => const Center(child: Text('Unable to load pre-bookings')),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
 }
+

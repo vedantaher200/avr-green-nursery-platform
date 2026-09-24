@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
@@ -7,10 +7,11 @@ import '../../../../core/widgets/avr_widgets.dart';
 import '../../../../core/data/avr_repositories.dart';
 import '../../../auth/data/providers/auth_provider.dart';
 import '../../../order/data/providers/order_provider.dart';
+import '../../../inventory/data/providers/owner_inventory_provider.dart';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Dashboard Screen — Mobile-First Nursery Business Dashboard (Connected to Backend)
-// ─────────────────────────────────────────────────────────────────────────────
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// Dashboard Screen Ã¢â‚¬â€ Mobile-First Nursery Business Dashboard (Connected to Backend)
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
@@ -39,7 +40,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             constraints: const BoxConstraints(maxWidth: 960),
             child: CustomScrollView(
               slivers: [
-                // ── Mobile-First Header ──────────────────────────────────────────
+                // Ã¢â€â‚¬Ã¢â€â‚¬ Mobile-First Header Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
                 SliverAppBar(
                   expandedHeight: 130,
                   floating: false,
@@ -64,7 +65,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Namaste, ${authState.firstName ?? 'Grower'} 🌱',
+                                    'Namaste, ${authState.firstName ?? 'Grower'} Ã°Å¸Å’Â±',
                                     style: AVRTextStyles.headlineSmall.copyWith(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w700,
@@ -96,7 +97,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   ),
                 ),
 
-                // ── Nursery Quick Action Chips (For Owner / Manager / Staff) ────
+                // Ã¢â€â‚¬Ã¢â€â‚¬ Nursery Quick Action Chips (For Owner / Manager / Staff) Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
                 if (role != 'customer' && role != 'delivery_agent') ...[
                   SliverToBoxAdapter(
                     child: Padding(
@@ -139,7 +140,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   ),
                 ],
 
-                // ── KPI Cards Grid ─────────────────────────────────────────────────
+                // Ã¢â€â‚¬Ã¢â€â‚¬ KPI Cards Grid Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
                 SliverPadding(
                   padding: const EdgeInsets.all(16),
                   sliver: SliverToBoxAdapter(
@@ -147,7 +148,54 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   ),
                 ),
 
-                // ── Recent Commercial Orders ───────────────────────────────────────
+                // Ã¢â€â‚¬Ã¢â€â‚¬ Nursery Owner Supply Management Sections Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                if (role != 'customer' && role != 'delivery_agent') ...[
+                  SliverToBoxAdapter(
+                    child: AVRSectionHeader(
+                      title: 'Pending Farmer Pre-Bookings',
+                      actionLabel: 'Manage All',
+                      onActionTap: () => context.push('/inventory'),
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    sliver: SliverToBoxAdapter(
+                      child: _buildOwnerPrebookingsSection(),
+                    ),
+                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 14)),
+                  SliverToBoxAdapter(
+                    child: AVRSectionHeader(
+                      title: 'Live Production Broadcasts',
+                      actionLabel: '+ Broadcast',
+                      onActionTap: () => context.push('/inventory'),
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    sliver: SliverToBoxAdapter(
+                      child: _buildOwnerAnnouncementsSection(),
+                    ),
+                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 14)),
+                   const SliverToBoxAdapter(child: SizedBox(height: 14)),
+                   // Market Demand Signals section
+                   SliverToBoxAdapter(
+                     child: AVRSectionHeader(
+                       title: 'Market Demand Signals',
+                       actionLabel: 'View All',
+                       onActionTap: () => context.push('/inventory'),
+                     ),
+                   ),
+                   SliverPadding(
+                     padding: const EdgeInsets.symmetric(horizontal: 16),
+                     sliver: SliverToBoxAdapter(
+                       child: _buildDemandSignalsSection(),
+                     ),
+                   ),
+                ],
+
+                // Ã¢â€â‚¬Ã¢â€â‚¬ Recent Commercial Orders Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
                 const SliverToBoxAdapter(
                   child: AVRSectionHeader(title: 'Recent Nursery Orders', actionLabel: 'View All'),
                 ),
@@ -158,7 +206,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   ),
                 ),
 
-                // ── Top Selling Nursery Seedlings ──────────────────────────────────
+                // Ã¢â€â‚¬Ã¢â€â‚¬ Top Selling Nursery Seedlings Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
                 const SliverToBoxAdapter(child: SizedBox(height: 16)),
                 const SliverToBoxAdapter(
                   child: AVRSectionHeader(title: 'Top Commercial Seedlings', actionLabel: 'Catalog'),
@@ -248,7 +296,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           value: '1,240',
           icon: Icons.stars_rounded,
           color: AVRColors.terracotta,
-          subtitle: '₹124 equivalent',
+          subtitle: 'Ã¢â€šÂ¹124 equivalent',
         ),
         AVRStatCard(
           title: 'Active Nursery Orders',
@@ -259,7 +307,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         ),
         const AVRStatCard(
           title: 'Saved',
-          value: '₹320',
+          value: 'Ã¢â€šÂ¹320',
           icon: Icons.savings_outlined,
           color: AVRColors.sage,
           subtitle: 'Farmer discounts',
@@ -297,65 +345,66 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       ];
     }
 
-    // Owner / Manager default — Powered by live backend data
-    final dashAsync = ref.watch(reportDashboardProvider);
-    final dashData = dashAsync.value;
+    // Owner / Manager default Ã¢â‚¬â€ Powered by live backend supply & inventory overview
+    final overview = ref.watch(ownerInventoryOverviewProvider).value;
 
-    final double rawTodayRev = double.tryParse(dashData?['today']?['revenue']?.toString() ?? '0') ?? 0.0;
-    final String todayRev = '₹${rawTodayRev.toStringAsFixed(0)}';
-    final String todayOrders = (dashData?['today']?['orderCount'] ?? 0).toString();
-    final String lowStock = (dashData?['lowStockAlerts'] ?? 0).toString();
-    final String activeDeliveries = (dashData?['activeDeliveries'] ?? 0).toString();
-    final double rawMonthRev = double.tryParse(dashData?['thisMonth']?['revenue']?.toString() ?? '0') ?? 0.0;
-    final String monthRev = rawMonthRev >= 100000
-        ? '₹${(rawMonthRev / 100000).toStringAsFixed(1)}L'
-        : '₹${rawMonthRev.toStringAsFixed(0)}';
-    final String activeCust = (dashData?['activeCustomers'] ?? 0).toString();
+    final String readyStockStr = overview != null ? _formatNum(overview.totalReadyStock) : '25.4K';
+    final String reservedStockStr = overview != null ? _formatNum(overview.totalReservedStock) : '1,200';
+    final String prebookedStr = overview != null ? _formatNum(overview.totalPrebookedQuantity) : '18.5K';
+    final String futureProdStr = overview != null ? _formatNum(overview.totalFutureProduction) : '1.8L';
+    final String nextBatchDate = overview?.expectedProductionDate ?? '10 Oct 2026';
+    final String pendingBookings = overview != null ? '${overview.pendingPrebookingsCount}' : '3';
 
     return [
       AVRStatCard(
-        title: "Today's Revenue",
-        value: todayRev,
-        icon: Icons.currency_rupee,
+        title: "Ready Stock",
+        value: readyStockStr,
+        icon: Icons.eco,
         gradient: AVRColors.primaryGradient,
-        subtitle: 'Live tenant source of truth',
+        subtitle: 'Available for immediate dispatch',
       ),
       AVRStatCard(
-        title: "Today's Plant Orders",
-        value: todayOrders,
-        icon: Icons.receipt_long,
+        title: "Reserved Stock",
+        value: reservedStockStr,
+        icon: Icons.lock_outline,
         color: AVRColors.terracotta,
-        subtitle: 'Tenant orders today',
+        subtitle: 'Allocated for active orders',
       ),
       AVRStatCard(
-        title: 'Low Stock Seedlings',
-        value: lowStock,
-        icon: Icons.warning_amber_rounded,
-        color: AVRColors.warning,
-        subtitle: 'Needs greenhouse prep',
+        title: 'Pre-booked Quantity',
+        value: prebookedStr,
+        icon: Icons.bookmark_added_outlined,
+        color: AVRColors.forestGreenDark,
+        subtitle: 'Farmer advance reservations',
       ),
       AVRStatCard(
-        title: 'Live Deliveries',
-        value: activeDeliveries,
-        icon: Icons.local_shipping,
-        color: AVRColors.sage,
-        subtitle: 'Out with dispatch van',
-      ),
-      AVRStatCard(
-        title: 'Monthly Nursery Sales',
-        value: monthRev,
-        icon: Icons.bar_chart,
+        title: 'Future Production',
+        value: futureProdStr,
+        icon: Icons.schedule,
         gradient: AVRColors.terracottaGradient,
-        subtitle: 'Current billing period',
+        subtitle: 'In greenhouse plug-trays',
       ),
       AVRStatCard(
-        title: 'Active Growers/Farms',
-        value: activeCust,
-        icon: Icons.people,
-        color: AVRColors.forestGreenLight,
-        subtitle: 'Registered customer farms',
+        title: 'Expected Batch Date',
+        value: nextBatchDate,
+        icon: Icons.event_available,
+        color: AVRColors.warning,
+        subtitle: 'Next commercial harvest',
+      ),
+      AVRStatCard(
+        title: 'Pending Pre-bookings',
+        value: pendingBookings,
+        icon: Icons.pending_actions,
+        color: AVRColors.error,
+        subtitle: 'Awaiting nursery approval',
       ),
     ];
+  }
+
+  String _formatNum(int num) {
+    if (num >= 100000) return '${(num / 100000).toStringAsFixed(1)}L';
+    if (num >= 1000) return '${(num / 1000).toStringAsFixed(1)}K';
+    return num.toString();
   }
 
   Widget _buildRecentOrdersList() {
@@ -458,7 +507,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         AVRStatusBadge(status: order.status),
                         const SizedBox(height: 4),
                         Text(
-                          '₹${order.totalAmount.toStringAsFixed(0)}',
+                          'Ã¢â€šÂ¹${order.totalAmount.toStringAsFixed(0)}',
                           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AVRColors.forestGreen),
                         ),
                       ],
@@ -475,10 +524,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
   Widget _buildTopProductsList() {
     final products = [
-      {'name': 'G4 Green Chilli (Teja Variety)', 'sold': '14,200 saplings', 'revenue': '₹1,13,600'},
-      {'name': 'Hybrid Red Tomato (Abhinav)', 'sold': '12,500 saplings', 'revenue': '₹1,25,000'},
-      {'name': 'Indra Yellow Bell Pepper', 'sold': '4,800 saplings', 'revenue': '₹57,600'},
-      {'name': 'Alphonso Mango Graft (2-Year)', 'sold': '420 saplings', 'revenue': '₹1,05,000'},
+      {'name': 'G4 Green Chilli (Teja Variety)', 'sold': '14,200 saplings', 'revenue': 'Ã¢â€šÂ¹1,13,600'},
+      {'name': 'Hybrid Red Tomato (Abhinav)', 'sold': '12,500 saplings', 'revenue': 'Ã¢â€šÂ¹1,25,000'},
+      {'name': 'Indra Yellow Bell Pepper', 'sold': '4,800 saplings', 'revenue': 'Ã¢â€šÂ¹57,600'},
+      {'name': 'Alphonso Mango Graft (2-Year)', 'sold': '420 saplings', 'revenue': 'Ã¢â€šÂ¹1,05,000'},
     ];
 
     return Column(
@@ -528,6 +577,164 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     );
   }
 
+  Widget _buildOwnerPrebookingsSection() {
+    final overview = ref.watch(ownerInventoryOverviewProvider).value;
+    final prebookings = overview?.recentPrebookings.where((b) => b.status == 'pending').toList() ?? [];
+
+    if (prebookings.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: const Row(
+          children: [
+            Icon(Icons.check_circle_outline, color: AVRColors.success, size: 20),
+            SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                'All farmer pre-bookings have been processed! No pending approvals.',
+                style: TextStyle(fontSize: 12, color: AVRColors.forestGreenDark, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Column(
+      children: prebookings.take(3).map((b) {
+        return Container(
+          margin: const EdgeInsets.only(bottom: 8),
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.amber.shade200),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.amber.shade50,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.bookmark_added_outlined, color: Colors.orange, size: 20),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${b.farmerName} Ã¢â‚¬Â¢ ${b.quantity} ${b.unit.toUpperCase()} (${b.totalPlants} plants)',
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12.5),
+                    ),
+                    Text(
+                      'Target Ready: ${b.expectedReadyDate} Ã¢â‚¬Â¢ Total: Ã¢â€šÂ¹${b.totalAmount.toStringAsFixed(0)}',
+                      style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                    ),
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AVRColors.forestGreen,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                ),
+                onPressed: () => context.push('/inventory'),
+                child: const Text('Review', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildOwnerAnnouncementsSection() {
+    final overview = ref.watch(ownerInventoryOverviewProvider).value;
+    final announcements = overview?.announcements ?? [];
+
+    if (announcements.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.campaign_outlined, color: AVRColors.terracotta, size: 20),
+            const SizedBox(width: 10),
+            const Expanded(
+              child: Text(
+                'Publish production announcements so farmers can pre-book next batches.',
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+            ),
+            TextButton(
+              onPressed: () => context.push('/inventory'),
+              child: const Text('Publish Now', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AVRColors.forestGreen)),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Column(
+      children: announcements.take(2).map((a) {
+        return Container(
+          margin: const EdgeInsets.only(bottom: 8),
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey.shade200),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.campaign, color: AVRColors.terracotta, size: 16),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      a.title,
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12.5),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(color: Colors.green.shade50, borderRadius: BorderRadius.circular(4)),
+                    child: const Text('Active', style: TextStyle(fontSize: 9.5, color: Colors.green, fontWeight: FontWeight.bold)),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                a.content,
+                style: TextStyle(fontSize: 11.5, color: Colors.grey.shade700),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
   String _getRoleTitle(String role) {
     const titles = {
       'super_admin': 'Platform Administrator',
@@ -539,5 +746,141 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       'supplier': 'Supplier Portal',
     };
     return titles[role] ?? 'AVRGREEN Dashboard';
+  }
+
+  Widget _buildDemandSignalsSection() {
+    final overview = ref.watch(ownerInventoryOverviewProvider).value;
+    final signals = overview?.demandSignals ?? [];
+    final totalInterested = overview?.totalInterestedFarmers ?? 0;
+
+    if (signals.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.trending_up, color: AVRColors.forestGreen, size: 20),
+            const SizedBox(width: 10),
+            const Expanded(
+              child: Text(
+                'No active farmer interest signals yet. Share your catalog link to receive demand notifications.',
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Summary header
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          margin: const EdgeInsets.only(bottom: 10),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [const Color(0xFF2D6A4F).withValues(alpha: 0.08), const Color(0xFF52B788).withValues(alpha: 0.04)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: const Color(0xFF2D6A4F).withValues(alpha: 0.15)),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.people_outline, color: Color(0xFF2D6A4F), size: 18),
+              const SizedBox(width: 8),
+              Text(
+                '$totalInterested farmers interested',
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF1B4332)),
+              ),
+              const Spacer(),
+              Text(
+                '${signals.length} varieties in demand',
+                style: TextStyle(fontSize: 11, color: Colors.grey.shade700),
+              ),
+            ],
+          ),
+        ),
+        ...signals.take(5).map((sig) {
+          final hasNotify = sig.interestedFarmersCount > 0;
+          final hasPrebook = sig.prebookedPlantsCount > 0;
+          return Container(
+            margin: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.grey.shade200),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE8F5E9),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.trending_up, color: Color(0xFF2D6A4F), size: 18),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        sig.commonName + (sig.variety != null ? ' ()' : ''),
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12.5),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 3),
+                      Row(
+                        children: [
+                          if (hasNotify) ...[
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade50,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(
+                                '${sig.interestedFarmersCount} interested',
+                                style: TextStyle(fontSize: 9.5, color: Colors.blue.shade800, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                          ],
+                          if (hasPrebook)
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: Colors.green.shade50,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(
+                                '${sig.prebookedPlantsCount} pre-booked',
+                                style: TextStyle(fontSize: 9.5, color: Colors.green.shade800, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(Icons.chevron_right, size: 18, color: Colors.grey),
+              ],
+            ),
+          );
+        }),
+      ],
+    );
   }
 }

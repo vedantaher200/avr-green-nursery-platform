@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/widgets/network_retry_dialog.dart';
 import '../../data/providers/cart_provider.dart';
 import '../../../order/data/providers/order_provider.dart';
 
@@ -45,17 +46,21 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     setState(() => _isProcessing = true);
 
     try {
-      final order = await PlaceOrderService.checkoutAndPlaceOrder(
-        ref: ref,
-        cart: cart,
-        street: _streetController.text.trim(),
-        city: _cityController.text.trim(),
-        state: _stateController.text.trim(),
-        pincode: _pincodeController.text.trim(),
-        paymentMethod: _selectedPaymentMethod,
+      final order = await runWithNetworkRetry<OrderRecord>(
+        context: context,
+        pendingProcessName: 'Placing Order (${cart.items.length} items from ${cart.currentNurseryName})',
+        action: () => PlaceOrderService.checkoutAndPlaceOrder(
+          ref: ref,
+          cart: cart,
+          street: _streetController.text.trim(),
+          city: _cityController.text.trim(),
+          state: _stateController.text.trim(),
+          pincode: _pincodeController.text.trim(),
+          paymentMethod: _selectedPaymentMethod,
+        ),
       );
 
-      if (!mounted) return;
+      if (order == null || !mounted) return;
 
       // Show Order Confirmation Dialog
       showDialog(

@@ -136,6 +136,36 @@ class AppStrings {
       AppLanguage.hi: 'स्टॉक समाप्त',
       AppLanguage.mr: 'साठा संपला',
     },
+    'network_issue_title': {
+      AppLanguage.en: 'Network Connection Issue',
+      AppLanguage.hi: 'नेटवर्क कनेक्शन समस्या',
+      AppLanguage.mr: 'नेटवर्क कनेक्शन समस्या',
+    },
+    'network_issue_msg': {
+      AppLanguage.en: 'Unable to connect to nursery network. Please check your mobile data / Wi-Fi and try again.',
+      AppLanguage.hi: 'सर्वर से कनेक्ट करने में असमर्थ। कृपया अपना इंटरनेट जांचें और पुनः प्रयास करें।',
+      AppLanguage.mr: 'नर्सरी नेटवर्कशी संपर्क होऊ शकला नाही. कृपया इंटरनेट तपासा आणि पुन्हा प्रयत्न करा.',
+    },
+    'try_again': {
+      AppLanguage.en: 'Try Again',
+      AppLanguage.hi: 'पुनः प्रयास करें',
+      AppLanguage.mr: 'पुन्हा प्रयत्न करा',
+    },
+    'pending_process': {
+      AppLanguage.en: 'Pending Process',
+      AppLanguage.hi: 'लंबित प्रक्रिया',
+      AppLanguage.mr: 'प्रलंबित प्रक्रिया',
+    },
+    'retrying': {
+      AppLanguage.en: 'Connecting & resuming...',
+      AppLanguage.hi: 'पुनः प्रयास हो रहा है...',
+      AppLanguage.mr: 'पुन्हा कनेक्ट करत आहे...',
+    },
+    'cancel': {
+      AppLanguage.en: 'Cancel',
+      AppLanguage.hi: 'रद्द करें',
+      AppLanguage.mr: 'रद्द करा',
+    },
   };
 
   static String get(String key, AppLanguage lang) {

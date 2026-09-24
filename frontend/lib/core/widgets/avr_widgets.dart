@@ -339,9 +339,10 @@ class AVRSectionHeader extends StatelessWidget {
   final String title;
   final String? actionLabel;
   final VoidCallback? onAction;
+  final VoidCallback? onActionTap; // Alias for onAction
 
   const AVRSectionHeader(
-      {super.key, required this.title, this.actionLabel, this.onAction});
+      {super.key, required this.title, this.actionLabel, this.onAction, this.onActionTap});
 
   @override
   Widget build(BuildContext context) {
@@ -353,7 +354,7 @@ class AVRSectionHeader extends StatelessWidget {
           Text(title, style: AVRTextStyles.titleMedium),
           if (actionLabel != null)
             TextButton(
-              onPressed: onAction,
+              onPressed: onAction ?? onActionTap,
               child: Text(actionLabel!,
                   style: AVRTextStyles.labelLarge
                       .copyWith(color: AVRColors.forestGreen)),
