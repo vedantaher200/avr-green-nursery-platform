@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/widgets/invoice_download_helper.dart';
 import '../../data/providers/order_provider.dart';
 import '../../../auth/data/providers/auth_provider.dart';
 
@@ -122,7 +123,7 @@ class OrdersScreen extends ConsumerWidget {
                 separatorBuilder: (_, __) => const SizedBox(height: 14),
                 itemBuilder: (context, index) {
                   final order = orders[index];
-                  return _buildOrderCard(context, order);
+                  return _buildOrderCard(context, ref, order);
                 },
               );
             },
@@ -132,7 +133,7 @@ class OrdersScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildOrderCard(BuildContext context, OrderRecord order) {
+  Widget _buildOrderCard(BuildContext context, WidgetRef ref, OrderRecord order) {
     Color statusColor;
     Color statusBg;
     switch (order.status.toLowerCase()) {
@@ -265,11 +266,11 @@ class OrdersScreen extends ConsumerWidget {
                 ),
                 TextButton.icon(
                   onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Tax Invoice downloaded for #${order.orderNumber} (GST Included) 📄'),
-                        backgroundColor: AVRColors.forestGreen,
-                      ),
+                    InvoiceDownloadHelper.downloadAndOpenInvoice(
+                      context,
+                      apiClient: ref.read(apiClientProvider),
+                      orderId: order.id,
+                      orderNumber: order.orderNumber,
                     );
                   },
                   icon: const Icon(Icons.download_outlined, size: 16, color: AVRColors.terracotta),

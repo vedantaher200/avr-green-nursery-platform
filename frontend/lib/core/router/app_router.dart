@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../theme/app_theme.dart';
+import '../widgets/realtime_calendar_widget.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/screens/otp_verification_screen.dart';
@@ -17,6 +20,8 @@ import '../../features/customer/presentation/screens/checkout_screen.dart';
 import '../../features/customer/presentation/screens/profile_screen.dart';
 import '../../features/report/presentation/screens/reports_screen.dart';
 import '../../features/superadmin/presentation/screens/superadmin_screen.dart';
+import '../../features/customer/presentation/screens/farmer_offers_screen.dart';
+import '../../features/dashboard/presentation/screens/owner_offers_screen.dart';
 import '../../features/auth/data/providers/auth_provider.dart';
 import '../shell/main_shell.dart';
 
@@ -61,6 +66,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (authState.isCustomer &&
           !(path.startsWith('/storefront') ||
               path.startsWith('/catalog') ||
+              path.startsWith('/offers') ||
+              path.startsWith('/calendar') ||
               path.startsWith('/cart') ||
               path.startsWith('/checkout') ||
               path.startsWith('/orders') ||
@@ -121,6 +128,34 @@ final routerProvider = Provider<GoRouter>((ref) {
               path: '/storefront',
               builder: (_, __) => const StorefrontScreen()),
           GoRoute(path: '/cart', builder: (_, __) => const CartScreen()),
+          GoRoute(path: '/offers', builder: (_, __) => const FarmerOffersScreen()),
+          GoRoute(path: '/owner/offers', builder: (_, __) => const OwnerOffersScreen()),
+          GoRoute(
+            path: '/calendar',
+            builder: (context, _) {
+              return Scaffold(
+                backgroundColor: const Color(0xFFF6F8F5),
+                appBar: AppBar(
+                  title: const Text('Agricultural & Production Calendar', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  backgroundColor: Colors.white,
+                  foregroundColor: AVRColors.textPrimary,
+                  elevation: 0,
+                ),
+                body: Consumer(
+                  builder: (context, ref, _) {
+                    final role = ref.watch(authStateProvider).role ?? 'customer';
+                    final isOwner = role == 'owner' || role == 'manager';
+                    return SingleChildScrollView(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
+                      child: RealtimeCalendarWidget(
+                        mode: isOwner ? CalendarViewMode.owner : CalendarViewMode.farmer,
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
           GoRoute(
               path: '/checkout', builder: (_, __) => const CheckoutScreen()),
           GoRoute(path: '/profile', builder: (_, __) => const ProfileScreen()),

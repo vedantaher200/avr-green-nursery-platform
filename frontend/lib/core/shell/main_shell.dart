@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../theme/app_theme.dart';
+import '../localization/app_strings.dart';
 import '../../features/auth/data/providers/auth_provider.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -41,7 +42,8 @@ class _MobileShell extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final role = ref.watch(authStateProvider).role ?? 'customer';
-    final navItems = _getNavItemsForRole(role);
+    final language = ref.watch(appLanguageProvider);
+    final navItems = _getNavItemsForRole(role, language);
     final location = GoRouterState.of(context).matchedLocation;
     final currentIndex = _getCurrentIndex(location, navItems);
 
@@ -128,7 +130,8 @@ class _DesktopShell extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final role = ref.watch(authStateProvider).role ?? 'customer';
-    final navItems = _getNavItemsForRole(role);
+    final language = ref.watch(appLanguageProvider);
+    final navItems = _getNavItemsForRole(role, language);
     final location = GoRouterState.of(context).matchedLocation;
     final currentIndex = _getCurrentIndex(location, navItems);
     final size = MediaQuery.of(context).size;
@@ -292,7 +295,7 @@ class _NavItem {
   });
 }
 
-List<_NavItem> _getNavItemsForRole(String role) {
+List<_NavItem> _getNavItemsForRole(String role, AppLanguage lang) {
   switch (role) {
     case 'super_admin':
       return [
@@ -325,6 +328,11 @@ List<_NavItem> _getNavItemsForRole(String role) {
             icon: Icons.eco_outlined,
             activeIcon: Icons.eco_rounded,
             route: '/catalog'),
+        const _NavItem(
+            label: 'Offers',
+            icon: Icons.campaign_outlined,
+            activeIcon: Icons.campaign_rounded,
+            route: '/owner/offers'),
         const _NavItem(
             label: 'Stock',
             icon: Icons.inventory_2_outlined,
@@ -375,28 +383,28 @@ List<_NavItem> _getNavItemsForRole(String role) {
     case 'customer':
     default:
       return [
-        const _NavItem(
-            label: 'Home',
+        _NavItem(
+            label: AppStrings.get('nav_home', lang),
             icon: Icons.home_outlined,
             activeIcon: Icons.home_rounded,
             route: '/storefront'),
-        const _NavItem(
-            label: 'Categories',
+        _NavItem(
+            label: AppStrings.get('nav_categories', lang),
             icon: Icons.grid_view_outlined,
             activeIcon: Icons.grid_view_rounded,
             route: '/catalog'),
-        const _NavItem(
-            label: 'Cart',
-            icon: Icons.shopping_bag_outlined,
-            activeIcon: Icons.shopping_bag_rounded,
-            route: '/cart'),
-        const _NavItem(
-            label: 'Orders',
+        _NavItem(
+            label: AppStrings.get('nav_offers', lang),
+            icon: Icons.local_offer_outlined,
+            activeIcon: Icons.local_offer_rounded,
+            route: '/offers'),
+        _NavItem(
+            label: AppStrings.get('nav_orders', lang),
             icon: Icons.receipt_long_outlined,
             activeIcon: Icons.receipt_long_rounded,
             route: '/orders'),
-        const _NavItem(
-            label: 'Profile',
+        _NavItem(
+            label: AppStrings.get('nav_profile', lang),
             icon: Icons.person_outline_rounded,
             activeIcon: Icons.person_rounded,
             route: '/profile'),

@@ -40,6 +40,15 @@ class AVRColors {
   static const Color error = Color(0xFFB84C3C);
   static const Color info = Color(0xFF2980B9);
 
+  // Golden Accent — Promotional & High-Trust Ratings
+  static const Color goldAccent = Color(0xFFE5B548);
+  static const Color goldDark = Color(0xFFB8860B);
+  static const Color goldSurface = Color(0xFFFDF8EB);
+
+  // Borders & Dividers
+  static const Color borderSubtle = Color(0xFFE2EBE5);
+  static const Color borderPromotional = Color(0xFFF2CA68);
+
   // Text
   static const Color textPrimary = Color(0xFF0F1F1A);
   static const Color textSecondary = Color(0xFF5B7168);

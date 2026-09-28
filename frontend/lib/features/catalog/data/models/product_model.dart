@@ -313,6 +313,9 @@ class Product {
   bool get isComingSoon => stockState == 'coming_soon';
   bool get isPrebookAvailable => stockState == 'prebook_available';
   bool get isSoldOut => stockState == 'sold_out';
+  bool get nurseryVerified => nurseryRating >= 4.0;
+  bool get isHot => (productRating ?? nurseryRating) >= 4.7 || reviewCount >= 100;
+  bool get isBestseller => reviewCount >= 80;
 
   String get stockBadgeLabel {
     switch (stockState) {

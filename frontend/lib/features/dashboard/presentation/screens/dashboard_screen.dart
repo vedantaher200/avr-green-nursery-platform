@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +8,8 @@ import '../../../../core/data/avr_repositories.dart';
 import '../../../auth/data/providers/auth_provider.dart';
 import '../../../order/data/providers/order_provider.dart';
 import '../../../inventory/data/providers/owner_inventory_provider.dart';
+import '../../../customer/data/providers/offers_provider.dart';
+import '../../../../core/widgets/realtime_calendar_widget.dart';
 
 // Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 // Dashboard Screen Ã¢â‚¬â€ Mobile-First Nursery Business Dashboard (Connected to Backend)
@@ -25,6 +27,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateProvider);
     final role = authState.role ?? 'customer';
+    final ownerOffersAsync = ref.watch(ownerOffersProvider);
 
     return Scaffold(
       backgroundColor: AVRColors.backgroundLight,
@@ -33,6 +36,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         onRefresh: () async {
           ref.invalidate(reportDashboardProvider);
           ref.invalidate(ordersListProvider);
+          ref.invalidate(ownerOffersProvider);
           await Future.delayed(const Duration(milliseconds: 400));
         },
         child: Center(
@@ -114,6 +118,13 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                             ),
                             const SizedBox(width: 8),
                             _buildQuickActionChip(
+                              icon: Icons.campaign_outlined,
+                              label: '+ Create Offer',
+                              color: AVRColors.warning,
+                              onTap: () => context.push('/owner/offers'),
+                            ),
+                            const SizedBox(width: 8),
+                            _buildQuickActionChip(
                               icon: Icons.inventory_2_outlined,
                               label: 'Stock Adjust',
                               color: AVRColors.terracotta,
@@ -121,14 +132,21 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                             ),
                             const SizedBox(width: 8),
                             _buildQuickActionChip(
+                              icon: Icons.receipt_long_outlined,
+                              label: 'All Orders',
+                              color: AVRColors.forestGreenDark,
+                              onTap: () => context.push('/orders'),
+                            ),
+                            const SizedBox(width: 8),
+                            _buildQuickActionChip(
                               icon: Icons.local_shipping_outlined,
                               label: 'Live Deliveries',
-                              color: AVRColors.forestGreenDark,
+                              color: AVRColors.forestGreen,
                               onTap: () => context.push('/deliveries'),
                             ),
                             const SizedBox(width: 8),
                             _buildQuickActionChip(
-                              icon: Icons.receipt_long_outlined,
+                              icon: Icons.bar_chart_rounded,
                               label: 'GST Reports',
                               color: AVRColors.warning,
                               onTap: () => context.push('/reports'),
@@ -150,6 +168,21 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
                 // Ã¢â€â‚¬Ã¢â€â‚¬ Nursery Owner Supply Management Sections Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
                 if (role != 'customer' && role != 'delivery_agent') ...[
+                  SliverToBoxAdapter(
+                    child: AVRSectionHeader(
+                      title: 'Offers & Campaigns',
+                      actionLabel: 'Manage All',
+                      onActionTap: () => context.push('/owner/offers'),
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    sliver: SliverToBoxAdapter(
+                      child: _buildOwnerOffersSummary(ownerOffersAsync),
+                    ),
+                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 14)),
+
                   SliverToBoxAdapter(
                     child: AVRSectionHeader(
                       title: 'Pending Farmer Pre-Bookings',
@@ -196,6 +229,16 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 ],
 
                 // Ã¢â€â‚¬Ã¢â€â‚¬ Recent Commercial Orders Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+                // ── Real-time Production & Dispatch Calendar (Sections 33, 34) ────────
+                const SliverToBoxAdapter(child: SizedBox(height: 14)),
+                const SliverPadding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  sliver: SliverToBoxAdapter(
+                    child: RealtimeCalendarWidget(mode: CalendarViewMode.owner),
+                  ),
+                ),
+                const SliverToBoxAdapter(child: SizedBox(height: 10)),
+
                 const SliverToBoxAdapter(
                   child: AVRSectionHeader(title: 'Recent Nursery Orders', actionLabel: 'View All'),
                 ),
@@ -261,18 +304,31 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     final kpis = _getKpisForRole(role);
     return LayoutBuilder(
       builder: (context, constraints) {
-        final crossAxisCount = constraints.maxWidth > 600 ? 4 : 2;
+        final width = constraints.maxWidth;
+        final crossAxisCount = width > 900 ? 4 : (width > 600 ? 3 : 2);
+        // Adaptive child aspect ratio guaranteeing zero overflow at all mobile & desktop viewports
+        final double childAspectRatio;
+        if (width > 900) {
+          childAspectRatio = 1.35;
+        } else if (width > 600) {
+          childAspectRatio = 1.22;
+        } else if (width < 360) {
+          childAspectRatio = 1.0;
+        } else {
+          childAspectRatio = 1.08;
+        }
+
         return GridView.count(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           crossAxisCount: crossAxisCount,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: 1.15,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: childAspectRatio,
           children: kpis
               .asMap()
               .entries
-              .map((e) => e.value.animate(delay: (e.key * 60).ms))
+              .map((e) => e.value.animate(delay: (e.key * 50).ms))
               .toList(),
         );
       },
@@ -347,6 +403,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
     // Owner / Manager default Ã¢â‚¬â€ Powered by live backend supply & inventory overview
     final overview = ref.watch(ownerInventoryOverviewProvider).value;
+    final ownerOffers = ref.watch(ownerOffersProvider).value ?? [];
+    final activeOffersCount = ownerOffers.where((o) => (o['dynamic_status'] ?? o['status'])?.toString().toUpperCase() == 'ACTIVE').length;
 
     final String readyStockStr = overview != null ? _formatNum(overview.totalReadyStock) : '25.4K';
     final String reservedStockStr = overview != null ? _formatNum(overview.totalReservedStock) : '1,200';
@@ -362,6 +420,15 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         icon: Icons.eco,
         gradient: AVRColors.primaryGradient,
         subtitle: 'Available for immediate dispatch',
+        onTap: () => context.push('/inventory'),
+      ),
+      AVRStatCard(
+        title: "Active Offers",
+        value: '$activeOffersCount Active',
+        icon: Icons.campaign_rounded,
+        color: AVRColors.warning,
+        subtitle: 'Farmer festival & bulk promos',
+        onTap: () => context.push('/owner/offers'),
       ),
       AVRStatCard(
         title: "Reserved Stock",
@@ -369,6 +436,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         icon: Icons.lock_outline,
         color: AVRColors.terracotta,
         subtitle: 'Allocated for active orders',
+        onTap: () => context.push('/orders'),
       ),
       AVRStatCard(
         title: 'Pre-booked Quantity',
@@ -376,6 +444,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         icon: Icons.bookmark_added_outlined,
         color: AVRColors.forestGreenDark,
         subtitle: 'Farmer advance reservations',
+        onTap: () => context.push('/inventory'),
       ),
       AVRStatCard(
         title: 'Future Production',
@@ -383,6 +452,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         icon: Icons.schedule,
         gradient: AVRColors.terracottaGradient,
         subtitle: 'In greenhouse plug-trays',
+        onTap: () => context.push('/inventory'),
       ),
       AVRStatCard(
         title: 'Expected Batch Date',
@@ -390,6 +460,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         icon: Icons.event_available,
         color: AVRColors.warning,
         subtitle: 'Next commercial harvest',
+        onTap: () => context.push('/inventory'),
       ),
       AVRStatCard(
         title: 'Pending Pre-bookings',
@@ -397,6 +468,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         icon: Icons.pending_actions,
         color: AVRColors.error,
         subtitle: 'Awaiting nursery approval',
+        onTap: () => context.push('/inventory'),
       ),
     ];
   }
@@ -881,6 +953,177 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           );
         }),
       ],
+    );
+  }
+
+  // ── Offers & Campaigns Summary Widget (Section 22, 24) ──────────────────────
+  // ── Offers & Campaigns Summary Widget (Section 22, 24) ──────────────────────
+  Widget _buildOwnerOffersSummary(AsyncValue<List<Map<String, dynamic>>> ownerOffersAsync) {
+    return ownerOffersAsync.when(
+      data: (offers) {
+        if (offers.isEmpty) {
+          return Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: Colors.grey.shade200),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: AVRColors.warning.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.campaign_outlined, color: AVRColors.warning, size: 22),
+                ),
+                const SizedBox(width: 12),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Boost Farmer Bookings with Offers',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.5),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        'Launch festival discounts or bulk tray pre-booking deals.',
+                        style: TextStyle(fontSize: 10.5, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AVRColors.forestGreen,
+                    foregroundColor: Colors.white,
+                    visualDensity: VisualDensity.compact,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  ),
+                  onPressed: () => context.push('/owner/offers'),
+                  child: const Text('Create', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                ),
+              ],
+            ),
+          );
+        }
+
+        final active = offers.where((o) => (o['dynamic_status'] ?? o['status'])?.toString().toUpperCase() == 'ACTIVE').toList();
+        return Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: AVRColors.forestGreen.withValues(alpha: 0.2)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.02),
+                blurRadius: 6,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: AVRColors.warning.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Icon(Icons.campaign_rounded, color: AVRColors.warning, size: 15),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        '${offers.length} Published Campaigns (${active.length} Active)',
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12.5, color: AVRColors.forestGreenDark),
+                      ),
+                    ],
+                  ),
+                  TextButton.icon(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    icon: const Icon(Icons.add, size: 13, color: AVRColors.forestGreen),
+                    label: const Text('New Offer', style: TextStyle(fontSize: 10.5, color: AVRColors.forestGreen, fontWeight: FontWeight.bold)),
+                    onPressed: () => context.push('/owner/offers'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              ...offers.take(2).map((offer) {
+                final status = (offer['dynamic_status'] ?? offer['status'] ?? 'ACTIVE').toString().toUpperCase();
+                final discountVal = offer['discount_value'] ?? 0;
+                final discountType = offer['discount_type'] ?? 'percentage';
+                final discountBadge = discountType == 'percentage' ? '$discountVal% OFF' : '₹$discountVal OFF';
+                final title = offer['title']?.toString() ?? 'Special Offer';
+                final redemptions = offer['current_redemptions'] ?? offer['currentRedemptions'] ?? 0;
+
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF9FAF8),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.grey.shade200),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: status == 'ACTIVE' ? const Color(0xFFE8F5E9) : Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          status,
+                          style: TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold,
+                            color: status == 'ACTIVE' ? AVRColors.forestGreen : Colors.grey.shade700,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11.5),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              '$discountBadge • $redemptions bookings',
+                              style: TextStyle(fontSize: 10, color: Colors.grey.shade600),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(Icons.chevron_right, size: 16, color: Colors.grey),
+                    ],
+                  ),
+                );
+              }),
+            ],
+          ),
+        );
+      },
+      loading: () => const Center(child: Padding(padding: EdgeInsets.all(12), child: CircularProgressIndicator(strokeWidth: 2, color: AVRColors.forestGreen))),
+      error: (_, __) => const SizedBox.shrink(),
     );
   }
 }

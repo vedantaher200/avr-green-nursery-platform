@@ -109,6 +109,183 @@ final categoryCropsProvider = Provider<List<Map<String, String>>>((ref) {
 // ─────────────────────────────────────────────────────────────────────────────
 const List<Product> defaultBotanicalCatalog = [
   // ── TOMATO VARIETIES (Category: Vegetables) ─────────────────────────────────
+  // ── Aryaman F1 Hybrid Tomato — Multi-Nursery Market Offerings (Sections 9, 11, 12) ──
+  Product(
+    id: '88888888-8888-8888-8888-888888888800',
+    tenantId: '33333333-3333-3333-3333-333333333336',
+    nurseryName: 'Chandwad Agro Nursery Hub',
+    sku: 'TOM-ARY-104-CHA',
+    commonName: 'Hybrid Tomato (Tamatar)',
+    scientificName: 'Solanum lycopersicum F1',
+    crop: 'Tomato',
+    variety: 'Aryaman F1 Hybrid Tomato',
+    sellingUnit: 'tray',
+    traySize: 104,
+    trayCapacity: 104,
+    price: 260.00,
+    plantPrice: 2.50,
+    trayPrice: 260.00,
+    bulkPrice: 2.10,
+    categoryId: 'vegetables',
+    categoryName: 'Vegetable Plants',
+    availableStock: 1200,
+    readyStock: 1200,
+    futureStock: 6500,
+    readyDate: 'Immediate Dispatch',
+    nurseryRating: 4.8,
+    productRating: 4.9,
+    reviewCount: 198,
+    care: CareInstructions(
+      sunlight: 'Full Direct Sun (7-8 hrs/day)',
+      watering: 'Drip irrigation 2.5 Litres/plant alternate days',
+      fertilizer: 'NPK 19:19:19 + Micronutrient flush at flowering',
+      temperature: '18°C - 34°C',
+    ),
+    agronomy: AgronomyInfo(
+      season: 'Kharif, Late Kharif & Rabi',
+      temperature: '20°C - 32°C optimal',
+      waterRequirement: 'Drip irrigation (2.5 L/day per plant)',
+      sunlight: 'Full direct sunlight (7-8 hours daily)',
+      soil: 'Deep well-drained loamy to black cotton soil (pH 6.2 - 7.5)',
+      transplanting: '21-25 days aged pro-tray seedling',
+      spacing: '4.0 ft row-to-row × 1.5 ft plant-to-plant (7,200 plants/acre)',
+      basicCare: 'Firm red fruits with high TLCV tolerance. Bamboo trellising recommended.',
+      expectedYield: '38 - 48 MT / acre',
+      harvestDays: '65 - 70 days from transplanting',
+    ),
+  ),
+  Product(
+    id: '88888888-8888-8888-8888-888888888821',
+    tenantId: '33333333-3333-3333-3333-333333333333',
+    nurseryName: 'AVR Green Yeola Central Facility',
+    sku: 'TOM-ARY-100-YEO',
+    commonName: 'Hybrid Tomato (Tamatar)',
+    scientificName: 'Solanum lycopersicum F1',
+    crop: 'Tomato',
+    variety: 'Aryaman F1 Hybrid Tomato',
+    sellingUnit: 'tray',
+    traySize: 100,
+    trayCapacity: 100,
+    price: 270.00,
+    plantPrice: 2.70,
+    trayPrice: 270.00,
+    bulkPrice: 2.30,
+    categoryId: 'vegetables',
+    categoryName: 'Vegetable Plants',
+    availableStock: 850,
+    readyStock: 850,
+    futureStock: 5000,
+    readyDate: 'Immediate Dispatch',
+    nurseryRating: 4.9,
+    productRating: 4.9,
+    reviewCount: 145,
+    care: CareInstructions(
+      sunlight: 'Full Direct Sun (7-8 hrs/day)',
+      watering: 'Drip irrigation 2.5 Litres/plant alternate days',
+      fertilizer: 'NPK 19:19:19 + Calcium Nitrate on fruit set',
+      temperature: '18°C - 34°C',
+    ),
+    agronomy: AgronomyInfo(
+      season: 'Kharif, Late Kharif & Rabi',
+      temperature: '20°C - 32°C optimal',
+      waterRequirement: 'Drip irrigation (2.5 L/day per plant)',
+      sunlight: 'Full direct sunlight (7-8 hours daily)',
+      soil: 'Deep well-drained loamy soil (pH 6.5 - 7.5)',
+      transplanting: '22-25 days aged pro-tray seedling',
+      spacing: '4.0 ft row-to-row × 1.5 ft plant-to-plant',
+      basicCare: 'Excellent firm red fruits, long shipping durability.',
+      expectedYield: '38 - 48 MT / acre',
+      harvestDays: '65 - 70 days from transplanting',
+    ),
+  ),
+  Product(
+    id: '88888888-8888-8888-8888-888888888822',
+    tenantId: '33333333-3333-3333-3333-333333333337',
+    nurseryName: 'Shree Samarth Agro Seedlings',
+    sku: 'TOM-ARY-100-SAM',
+    commonName: 'Hybrid Tomato (Tamatar)',
+    scientificName: 'Solanum lycopersicum F1',
+    crop: 'Tomato',
+    variety: 'Aryaman F1 Hybrid Tomato',
+    sellingUnit: 'tray',
+    traySize: 100,
+    trayCapacity: 100,
+    price: 240.00,
+    plantPrice: 2.40,
+    trayPrice: 240.00,
+    bulkPrice: 2.05,
+    categoryId: 'vegetables',
+    categoryName: 'Vegetable Plants',
+    availableStock: 600,
+    readyStock: 600,
+    futureStock: 4000,
+    readyDate: 'Immediate Dispatch',
+    nurseryRating: 4.6,
+    productRating: 4.7,
+    reviewCount: 82,
+    care: CareInstructions(
+      sunlight: 'Full Direct Sun (7-8 hrs/day)',
+      watering: 'Drip irrigation 2.5 Litres/plant',
+      fertilizer: 'NPK 12:61:00 + Boron',
+      temperature: '18°C - 34°C',
+    ),
+    agronomy: AgronomyInfo(
+      season: 'Kharif & Rabi',
+      temperature: '20°C - 32°C optimal',
+      waterRequirement: 'Drip irrigation',
+      sunlight: 'Full direct sunlight',
+      soil: 'Medium to deep black soil',
+      transplanting: '21-24 days pro-tray seedling',
+      spacing: '4.0 ft × 1.5 ft',
+      basicCare: 'Heavy bearing habit; staking recommended.',
+      expectedYield: '36 - 45 MT / acre',
+      harvestDays: '65 - 70 days from transplanting',
+    ),
+  ),
+  Product(
+    id: '88888888-8888-8888-8888-888888888823',
+    tenantId: '33333333-3333-3333-3333-333333333336',
+    nurseryName: 'Chandwad Agro Nursery Hub',
+    sku: 'TOM-ASR-104',
+    commonName: 'Hybrid Tomato (Tamatar)',
+    scientificName: 'Solanum lycopersicum F1',
+    crop: 'Tomato',
+    variety: 'Asra F1 Hybrid Tomato',
+    sellingUnit: 'tray',
+    traySize: 104,
+    trayCapacity: 104,
+    price: 270.00,
+    plantPrice: 2.60,
+    trayPrice: 270.00,
+    bulkPrice: 2.20,
+    categoryId: 'vegetables',
+    categoryName: 'Vegetable Plants',
+    availableStock: 900,
+    readyStock: 900,
+    futureStock: 4800,
+    readyDate: 'Immediate Dispatch',
+    nurseryRating: 4.8,
+    productRating: 4.8,
+    reviewCount: 112,
+    care: CareInstructions(
+      sunlight: 'Full Sun (6-8 hours)',
+      watering: 'Regular drip fertigation',
+      fertilizer: 'NPK 19:19:19 + bio-fertilizer consortium',
+      temperature: '18°C - 33°C',
+    ),
+    agronomy: AgronomyInfo(
+      season: 'Rabi & Summer (Oct-Feb)',
+      temperature: '18°C - 32°C',
+      waterRequirement: 'Drip 2.2 L/day',
+      sunlight: 'Full Direct Sun',
+      soil: 'Well drained rich sandy loam',
+      transplanting: '22-25 days old seedlings',
+      spacing: '3.5 ft × 1.5 ft (7,500 plants/acre)',
+      basicCare: 'Syngenta Asra segment. Uniform square-round deep red fruit with thick skin.',
+      expectedYield: '35 - 44 MT / acre',
+      harvestDays: '62 - 68 days',
+    ),
+  ),
   Product(
     id: '88888888-8888-8888-8888-888888888801',
     tenantId: '33333333-3333-3333-3333-333333333336',
@@ -778,7 +955,138 @@ const List<Product> defaultBotanicalCatalog = [
       spacing: '10 ft × 10 ft (400 trees/acre)',
       basicCare: 'Prune dry twigs after harvest; regular micronutrient foliar spray.',
       expectedYield: '800 - 1,200 lemons/tree annually',
-      harvestDays: 'Bahar flowering (Mrig & Ambe bahar)',
+    ),
+  ),
+  Product(
+    id: '88888888-8888-8888-8888-888888888824',
+    tenantId: '33333333-3333-3333-3333-333333333336',
+    nurseryName: 'Chandwad Agro Nursery Hub',
+    sku: 'FRUIT-COC-WCT',
+    commonName: 'Coconut Sapling (Naral)',
+    scientificName: 'Cocos nucifera',
+    crop: 'Coconut',
+    variety: 'West Coast Tall Hybrid Coconut',
+    sellingUnit: 'plant',
+    traySize: 1,
+    trayCapacity: 1,
+    price: 180.00,
+    plantPrice: 180.00,
+    trayPrice: null,
+    bulkPrice: 155.00,
+    categoryId: 'fruits',
+    categoryName: 'Fruit Plants',
+    availableStock: 350,
+    readyStock: 350,
+    futureStock: 1500,
+    readyDate: 'Immediate Dispatch',
+    nurseryRating: 4.8,
+    productRating: 4.8,
+    reviewCount: 78,
+    care: CareInstructions(
+      sunlight: 'Full Sun (8+ hours)',
+      watering: 'Deep basin watering every 3-4 days',
+      fertilizer: 'NPK 10:26:26 + Salt 1kg per palm annually',
+      temperature: '22°C - 42°C',
+    ),
+    agronomy: AgronomyInfo(
+      season: 'Monsoon planting',
+      temperature: '24°C - 38°C',
+      waterRequirement: 'Basin / drip 40-50 L/tree/day',
+      sunlight: 'Full direct sunlight',
+      soil: 'Deep coastal/red loam with high drainage',
+      transplanting: '9-12 month aged polybag seedling',
+      spacing: '25 ft × 25 ft (70 palms/acre)',
+      basicCare: 'Heavy yield variety producing 80-120 nuts per year.',
+      expectedYield: '80 - 120 nuts / palm / year',
+      harvestDays: 'Starts bearing from 5-6 years',
+    ),
+  ),
+  Product(
+    id: '88888888-8888-8888-8888-888888888825',
+    tenantId: '33333333-3333-3333-3333-333333333333',
+    nurseryName: 'AVR Green Yeola Central Facility',
+    sku: 'SUG-86032-104',
+    commonName: 'Sugarcane Seedling (Oos)',
+    scientificName: 'Saccharum officinarum',
+    crop: 'Sugarcane',
+    variety: 'Co 86032 Tissue Culture Sugarcane',
+    sellingUnit: 'tray',
+    traySize: 104,
+    trayCapacity: 104,
+    price: 210.00,
+    plantPrice: 2.00,
+    trayPrice: 210.00,
+    bulkPrice: 1.65,
+    categoryId: 'vegetables',
+    categoryName: 'Agricultural Crops',
+    availableStock: 2500,
+    readyStock: 2500,
+    futureStock: 15000,
+    readyDate: 'Immediate Dispatch',
+    nurseryRating: 4.9,
+    productRating: 4.9,
+    reviewCount: 220,
+    care: CareInstructions(
+      sunlight: 'Full Sun',
+      watering: 'Heavy drip irrigation',
+      fertilizer: 'High nitrogen fertigation at tillering',
+      temperature: '20°C - 40°C',
+    ),
+    agronomy: AgronomyInfo(
+      season: 'Suru (Jan-Feb), Adsali (July-Aug)',
+      temperature: '25°C - 38°C',
+      waterRequirement: 'Drip system',
+      sunlight: 'Full Sun',
+      soil: 'Medium to heavy black soil',
+      transplanting: '25-30 days aged single-bud seedling',
+      spacing: '5 ft × 2 ft (4,500 plants/acre)',
+      basicCare: 'Earthing up at 90 days; trash mulching recommended.',
+      expectedYield: '70 - 90 MT cane / acre',
+      harvestDays: '11 - 12 months',
+    ),
+  ),
+  Product(
+    id: '88888888-8888-8888-8888-888888888826',
+    tenantId: '33333333-3333-3333-3333-333333333337',
+    nurseryName: 'Shree Samarth Agro Seedlings',
+    sku: 'FLW-MAR-PUS-104',
+    commonName: 'Pusa Narangi Marigold (Zendu)',
+    scientificName: 'Tagetes erecta',
+    crop: 'Marigold',
+    variety: 'Pusa Narangi Giant Zendu',
+    sellingUnit: 'tray',
+    traySize: 104,
+    trayCapacity: 104,
+    price: 185.00,
+    plantPrice: 1.75,
+    trayPrice: 185.00,
+    bulkPrice: 1.45,
+    categoryId: 'flowers',
+    categoryName: 'Flower Plants',
+    availableStock: 1100,
+    readyStock: 1100,
+    futureStock: 6000,
+    readyDate: 'Immediate Dispatch',
+    nurseryRating: 4.6,
+    productRating: 4.8,
+    reviewCount: 96,
+    care: CareInstructions(
+      sunlight: 'Full Direct Sun (6+ hours)',
+      watering: 'Moderate regular watering',
+      fertilizer: 'Phosphorus rich organic fertilizer',
+      temperature: '18°C - 35°C',
+    ),
+    agronomy: AgronomyInfo(
+      season: 'Festival Kharif & Rabi',
+      temperature: '18°C - 32°C',
+      waterRequirement: 'Drip 1.5 L/day',
+      sunlight: 'Full Direct Sun',
+      soil: 'Well-drained fertile loam',
+      transplanting: '20-22 days seedlings',
+      spacing: '2.0 ft × 1.5 ft (14,000 plants/acre)',
+      basicCare: 'Pinch at 25 days; deep orange compact ball blooms.',
+      expectedYield: '7 - 10 MT flowers / acre',
+      harvestDays: '50 - 55 days',
     ),
   ),
 
@@ -1313,16 +1621,25 @@ final filteredCatalogProvider = Provider<List<Product>>((ref) {
   final list = catalogAsync.value ?? defaultBotanicalCatalog;
 
   return list.where((p) {
-    // 1. Crop Filter
+    final matchesSearch = searchQuery.isEmpty ||
+        p.commonName.toLowerCase().contains(searchQuery) ||
+        (p.scientificName?.toLowerCase().contains(searchQuery) ?? false) ||
+        p.crop.toLowerCase().contains(searchQuery) ||
+        p.variety.toLowerCase().contains(searchQuery) ||
+        p.sku.toLowerCase().contains(searchQuery) ||
+        p.nurseryName.toLowerCase().contains(searchQuery);
+
+    // 1. Authoritative Crop Filter (Issue #11 & Sections 8, 9, 10)
+    // When a specific crop is selected, only that crop's varieties must appear
     if (selectedCrop != 'all') {
-      final pCrop = p.crop.toLowerCase();
-      final selCrop = selectedCrop.toLowerCase();
-      if (!pCrop.contains(selCrop) && !p.variety.toLowerCase().contains(selCrop)) {
-        return false;
-      }
+      final pCrop = p.crop.toLowerCase().trim();
+      final selCrop = selectedCrop.toLowerCase().trim();
+      final matchesCrop = pCrop == selCrop || pCrop.contains(selCrop) || p.variety.toLowerCase().contains(selCrop);
+      if (!matchesCrop) return false;
+      return matchesSearch;
     }
 
-    // 2. Category Filter
+    // 2. Category Filter (Applied when no specific crop is chosen)
     bool matchesCategory = selectedCategory == 'all';
     if (!matchesCategory) {
       final pCat = p.categoryId.toLowerCase();
@@ -1330,11 +1647,11 @@ final filteredCatalogProvider = Provider<List<Product>>((ref) {
       final sel = selectedCategory.toLowerCase();
 
       if (sel == 'vegetables') {
-        matchesCategory = pCat.contains('veg') || pName.contains('veg') || p.sku.startsWith('VEG') || p.sku.contains('TOM') || p.sku.contains('CHIL') || p.sku.contains('CAP') || p.sku.contains('BRIN') || p.sku.contains('CAB') || p.sku.contains('CAUL');
+        matchesCategory = pCat.contains('veg') || pName.contains('veg') || p.sku.startsWith('VEG') || p.sku.contains('TOM') || p.sku.contains('CHIL') || p.sku.contains('CAP') || p.sku.contains('BRIN') || p.sku.contains('CAB') || p.sku.contains('CAUL') || p.sku.contains('SUG');
       } else if (sel == 'flowers') {
         matchesCategory = pCat.contains('flower') || pName.contains('flower') || p.sku.startsWith('FLW') || p.sku.contains('MAR') || p.sku.contains('ROS') || p.sku.contains('JAS');
       } else if (sel == 'fruits') {
-        matchesCategory = pCat.contains('fruit') || pName.contains('fruit') || p.sku.startsWith('FRUIT') || p.sku.contains('MAN') || p.sku.contains('LEM') || p.sku.contains('GUA');
+        matchesCategory = pCat.contains('fruit') || pName.contains('fruit') || p.sku.startsWith('FRUIT') || p.sku.contains('MAN') || p.sku.contains('LEM') || p.sku.contains('GUA') || p.sku.contains('COC');
       } else if (sel == 'medicinal') {
         matchesCategory = pCat.contains('med') || pName.contains('med') || p.sku.startsWith('MED') || p.sku.contains('TUL') || p.sku.contains('ALO');
       } else if (sel == 'indoor') {
@@ -1345,15 +1662,6 @@ final filteredCatalogProvider = Provider<List<Product>>((ref) {
         matchesCategory = pCat == sel || pName.contains(sel);
       }
     }
-
-    // 3. Search Query
-    final matchesSearch = searchQuery.isEmpty ||
-        p.commonName.toLowerCase().contains(searchQuery) ||
-        (p.scientificName?.toLowerCase().contains(searchQuery) ?? false) ||
-        p.crop.toLowerCase().contains(searchQuery) ||
-        p.variety.toLowerCase().contains(searchQuery) ||
-        p.sku.toLowerCase().contains(searchQuery) ||
-        p.nurseryName.toLowerCase().contains(searchQuery);
 
     return matchesCategory && matchesSearch;
   }).toList();

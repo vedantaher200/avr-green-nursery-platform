@@ -243,19 +243,41 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
                       ],
                     ),
                   )
-                : GridView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.fromLTRB(10, 4, 10, 20),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.58, // High density card aspect ratio
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                    ),
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      final product = products[index];
-                      return CompactProductCard(product: product);
+                : LayoutBuilder(
+                    builder: (context, constraints) {
+                      final width = constraints.maxWidth;
+                      final int crossAxisCount;
+                      final double childAspectRatio;
+
+                      if (width >= 1200) {
+                        crossAxisCount = 5;
+                        childAspectRatio = 0.74;
+                      } else if (width >= 900) {
+                        crossAxisCount = 4;
+                        childAspectRatio = 0.73;
+                      } else if (width >= 600) {
+                        crossAxisCount = 3;
+                        childAspectRatio = 0.71;
+                      } else {
+                        crossAxisCount = 2;
+                        childAspectRatio = 0.67;
+                      }
+
+                      return GridView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        padding: const EdgeInsets.fromLTRB(12, 6, 12, 80),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          childAspectRatio: childAspectRatio,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                        ),
+                        itemCount: products.length,
+                        itemBuilder: (context, index) {
+                          final product = products[index];
+                          return CompactProductCard(product: product);
+                        },
+                      );
                     },
                   ),
           ),

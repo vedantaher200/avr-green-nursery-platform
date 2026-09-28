@@ -48,6 +48,9 @@ class CartState {
 
   bool get isEmpty => items.isEmpty;
 
+  bool hasDifferentNursery(String tenantId) =>
+      items.isNotEmpty && currentTenantId != null && currentTenantId != tenantId;
+
   CartState copyWith({
     List<CartItem>? items,
     String? currentTenantId,

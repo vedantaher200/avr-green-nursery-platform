@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/widgets/invoice_download_helper.dart';
+import '../../../auth/data/providers/auth_provider.dart';
 import '../../data/providers/order_provider.dart';
 
 class OrderDetailScreen extends ConsumerWidget {
@@ -41,12 +43,14 @@ class OrderDetailScreen extends ConsumerWidget {
             icon: const Icon(Icons.picture_as_pdf, color: AVRColors.terracotta),
             tooltip: 'Download Invoice',
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Downloading Tax Invoice PDF... 📄'),
-                  backgroundColor: AVRColors.forestGreen,
-                ),
-              );
+              if (order != null) {
+                InvoiceDownloadHelper.downloadAndOpenInvoice(
+                  context,
+                  apiClient: ref.read(apiClientProvider),
+                  orderId: order.id,
+                  orderNumber: order.orderNumber,
+                );
+              }
             },
           ),
         ],

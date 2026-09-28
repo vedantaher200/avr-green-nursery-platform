@@ -17,6 +17,7 @@ import reportRoutes from './modules/report/report.routes';
 import managementRoutes from './modules/management/management.routes';
 import invoiceRoutes from './modules/invoice/invoice.routes';
 import marketplaceRoutes from './modules/marketplace/marketplace.routes';
+import offersRoutes from './modules/offers/offers.routes';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Express Application Bootstrap
@@ -100,6 +101,7 @@ export function createApp(): Application {
   app.use(`${apiBase}/reports`,   reportRoutes);
   app.use(`${apiBase}/invoices`,  invoiceRoutes);
   app.use(`${apiBase}/marketplace`, marketplaceRoutes);
+  app.use(`${apiBase}`, offersRoutes);
   app.use(`${apiBase}`, managementRoutes);
 
   // ── 404 catch-all ──────────────────────────────────────────────────────────

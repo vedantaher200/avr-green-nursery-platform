@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/localization/app_strings.dart';
 import '../../../../core/widgets/app_product_image.dart';
+import '../../../../core/widgets/app_feedback.dart';
 import '../../../customer/data/providers/cart_provider.dart';
 import '../../../customer/presentation/widgets/farmer_prebooking_modal.dart';
 import '../../../customer/presentation/widgets/notify_me_modal.dart';
 import '../../data/models/product_model.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Amazon-Style Compact Farmer Marketplace Product Card
-// High information density, zero dead whitespace, 4-6 cards visible on screen.
+// Premium Compact Agricultural Marketplace Product Card
+// Content-driven, zero dead whitespace, responsive, high trust hierarchy.
 // ─────────────────────────────────────────────────────────────────────────────
 
 class CompactProductCard extends ConsumerWidget {
@@ -22,6 +24,22 @@ class CompactProductCard extends ConsumerWidget {
     required this.product,
     this.showHotBadge = false,
   });
+
+  String _getStockBadgeText(String state, AppLanguage lang) {
+    switch (state) {
+      case 'limited_stock':
+        return AppStrings.get('limited_stock', lang);
+      case 'coming_soon':
+        return AppStrings.get('coming_soon', lang);
+      case 'prebook_available':
+        return AppStrings.get('prebook_available', lang);
+      case 'sold_out':
+        return AppStrings.get('sold_out', lang);
+      case 'ready_now':
+      default:
+        return AppStrings.get('ready_now', lang);
+    }
+  }
 
   Color _getStockBadgeColor(String state) {
     switch (state) {
@@ -41,37 +59,39 @@ class CompactProductCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final language = ref.watch(appLanguageProvider);
     final isPrebookMode = product.isPrebookAvailable || product.isComingSoon || (product.readyStock == 0 && product.isPrebookable);
     final isSoldOut = product.isSoldOut || (product.readyStock == 0 && !product.isPrebookable);
 
-    return GestureDetector(
+    return InkWell(
       onTap: () => context.push('/catalog/${product.id}'),
+      borderRadius: BorderRadius.circular(12),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.grey.shade200),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AVRColors.borderSubtle),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 4,
-              offset: const Offset(0, 1),
+              color: Colors.black.withValues(alpha: 0.035),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Controlled Image Thumbnail (Aspect Ratio: 1.35) ─────────────
+            // ── 1. Controlled Image Thumbnail (Aspect Ratio: 1.45) ───────────
             AspectRatio(
-              aspectRatio: 1.35,
+              aspectRatio: 1.45,
               child: Stack(
                 fit: StackFit.expand,
                 children: [
                   AppProductImage.card(
                     imagePath: product.primaryImageAsset,
                     crop: product.crop,
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(9)),
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(11)),
                   ),
                   // Crop badge overlay
                   Positioned(
@@ -93,7 +113,7 @@ class CompactProductCard extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  // Availability Indicator (5 Official Stock States)
+                  // Availability Indicator (Official Stock State)
                   Positioned(
                     top: 5,
                     right: 5,
@@ -104,7 +124,7 @@ class CompactProductCard extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
-                        product.stockBadgeLabel,
+                        _getStockBadgeText(product.stockState, language),
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 8,
@@ -118,13 +138,12 @@ class CompactProductCard extends ConsumerWidget {
               ),
             ),
 
-            // ── Compact Card Body (Zero Dead Whitespace) ────────────────────
+            // ── 2. Compact Card Content (Tight, Content-Driven Spacing) ───────
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 6, 8, 6),
+                padding: const EdgeInsets.fromLTRB(8, 5, 8, 6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // Variety Name
                     Text(
@@ -138,8 +157,9 @@ class CompactProductCard extends ConsumerWidget {
                         height: 1.15,
                       ),
                     ),
+                    const SizedBox(height: 3),
 
-                    // Nursery Name
+                    // Nursery Name & Verified Badge
                     Row(
                       children: [
                         const Icon(Icons.storefront_rounded, size: 10.5, color: AVRColors.forestGreen),
@@ -156,8 +176,14 @@ class CompactProductCard extends ConsumerWidget {
                             ),
                           ),
                         ),
+                        if (product.nurseryVerified)
+                          const Padding(
+                            padding: EdgeInsets.only(left: 2),
+                            child: Icon(Icons.verified, size: 10, color: AVRColors.forestGreen),
+                          ),
                       ],
                     ),
+                    const SizedBox(height: 3),
 
                     // Rating & Stock Row
                     Row(
@@ -165,7 +191,7 @@ class CompactProductCard extends ConsumerWidget {
                         Text(
                           '⭐ ${product.nurseryRating.toStringAsFixed(1)}',
                           style: TextStyle(
-                            fontSize: 10,
+                            fontSize: 9.5,
                             fontWeight: FontWeight.bold,
                             color: Colors.amber.shade900,
                           ),
@@ -184,7 +210,7 @@ class CompactProductCard extends ConsumerWidget {
                           child: Text(
                             product.isReadyStock ? '• ${product.readyStock} ready' : '• Batch: ${product.futureStock}',
                             style: TextStyle(
-                              fontSize: 9,
+                              fontSize: 8.5,
                               fontWeight: FontWeight.w700,
                               color: product.isReadyStock ? AVRColors.forestGreen : const Color(0xFFEA580C),
                             ),
@@ -194,6 +220,7 @@ class CompactProductCard extends ConsumerWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 3),
 
                     // Pricing Information (Per Plant & Per Tray)
                     Column(
@@ -202,47 +229,52 @@ class CompactProductCard extends ConsumerWidget {
                         Text(
                           product.perPlantPriceText,
                           style: const TextStyle(
-                            fontSize: 13,
+                            fontSize: 12.5,
                             fontWeight: FontWeight.w900,
                             color: AVRColors.forestGreenDark,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         if (product.effectiveTrayPrice != null)
                           Text(
                             '₹${product.effectiveTrayPrice!.toStringAsFixed(0)} / tray (${product.trayCapacity} plants)',
                             style: TextStyle(
-                              fontSize: 9,
+                              fontSize: 8.5,
                               color: Colors.grey.shade700,
                               fontWeight: FontWeight.w500,
                             ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                       ],
                     ),
 
-                    // Stock & Price Freshness
-                    if (product.stockFreshnessText != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 2),
-                        child: Row(
-                          children: [
-                            Icon(Icons.update, size: 9, color: Colors.grey.shade500),
-                            const SizedBox(width: 3),
-                            Flexible(
-                              child: Text(
-                                product.stockFreshnessText!,
-                                style: TextStyle(fontSize: 8.5, color: Colors.grey.shade500),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                    // Stock Freshness
+                    if (product.stockFreshnessText != null) ...[
+                      const SizedBox(height: 2),
+                      Row(
+                        children: [
+                          Icon(Icons.update, size: 8.5, color: Colors.grey.shade500),
+                          const SizedBox(width: 3),
+                          Expanded(
+                            child: Text(
+                              product.stockFreshnessText!,
+                              style: TextStyle(fontSize: 8, color: Colors.grey.shade500),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
+                    ],
 
-                    // Dynamic Action Button: [+ Add Cart] or [PRE-BOOK NOW] or [Sold Out]
+                    const Spacer(),
+
+                    // ── Dynamic Action Button ─────────────────────────────────
                     SizedBox(
                       width: double.infinity,
-                      height: 28,
+                      height: 27,
                       child: isSoldOut
                           ? ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -254,12 +286,12 @@ class CompactProductCard extends ConsumerWidget {
                                 visualDensity: VisualDensity.compact,
                               ),
                               onPressed: () => NotifyMeModal.show(context, product),
-                              child: const Row(
+                              child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.notifications_outlined, size: 11),
-                                  SizedBox(width: 3),
-                                  Text('Notify Me', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800)),
+                                  const Icon(Icons.notifications_outlined, size: 11),
+                                  const SizedBox(width: 3),
+                                  Text(AppStrings.get('notify_me', language), style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800)),
                                 ],
                               ),
                             )
@@ -274,14 +306,14 @@ class CompactProductCard extends ConsumerWidget {
                                     visualDensity: VisualDensity.compact,
                                   ),
                                   onPressed: () => FarmerPreBookingModal.show(context, product),
-                                  child: const Row(
+                                  child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(Icons.event_available_rounded, size: 12),
-                                      SizedBox(width: 3),
+                                      const Icon(Icons.event_available_rounded, size: 12),
+                                      const SizedBox(width: 3),
                                       Text(
-                                        'PRE-BOOK NOW',
-                                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, letterSpacing: 0.3),
+                                        AppStrings.get('prebook_now', language),
+                                        style: const TextStyle(fontSize: 9.5, fontWeight: FontWeight.w900, letterSpacing: 0.3),
                                       ),
                                     ],
                                   ),
@@ -295,15 +327,17 @@ class CompactProductCard extends ConsumerWidget {
                                     elevation: 0,
                                     visualDensity: VisualDensity.compact,
                                   ),
-                                  onPressed: () => _handleAddToCart(context, ref, product),
-                                  child: const Row(
+                                  onPressed: () => _handleAddToCart(context, ref),
+                                  child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(Icons.add_shopping_cart_rounded, size: 12),
-                                      SizedBox(width: 3),
+                                      const Icon(Icons.add_shopping_cart, size: 12),
+                                      const SizedBox(width: 3),
                                       Text(
-                                        '+ Add Cart',
-                                        style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w800),
+                                        language == AppLanguage.mr
+                                            ? '+ कार्टमध्ये जोडा'
+                                            : (language == AppLanguage.hi ? '+ कार्ट में जोड़ें' : '+ Add Cart'),
+                                        style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
                                       ),
                                     ],
                                   ),
@@ -319,25 +353,19 @@ class CompactProductCard extends ConsumerWidget {
     );
   }
 
-  void _handleAddToCart(BuildContext context, WidgetRef ref, Product product) {
-    final result = ref.read(cartProvider.notifier).addItem(product);
+  void _handleAddToCart(BuildContext context, WidgetRef ref) {
+    final cart = ref.read(cartProvider);
 
-    if (result == CartAddResult.nurseryConflict) {
-      final cart = ref.read(cartProvider);
+    if (cart.hasDifferentNursery(product.tenantId)) {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: const Row(
-            children: [
-              Icon(Icons.warning_amber_rounded, color: AVRColors.warning),
-              SizedBox(width: 8),
-              Text('Switch Nursery Cart?', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-            ],
-          ),
+          title: const Text('Different Nursery', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
           content: Text(
-            'Your cart currently contains plants from "${cart.currentNurseryName}".\n\nTo order from "${product.nurseryName}", would you like to clear your current cart and start an order with this nursery?',
-            style: const TextStyle(fontSize: 12.5),
+            'Your cart contains items from "${cart.currentNurseryName}". '
+            'Each order is fulfilled directly by a single regional nursery.\n\n'
+            'Clear cart and start an order from "${product.nurseryName}"?',
+            style: const TextStyle(fontSize: 13),
           ),
           actions: [
             TextButton(
@@ -349,11 +377,10 @@ class CompactProductCard extends ConsumerWidget {
               onPressed: () {
                 Navigator.pop(ctx);
                 ref.read(cartProvider.notifier).clearAndAdd(product);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: AVRColors.forestGreen,
-                    content: Text('Switched to ${product.nurseryName} and added ${product.variety}'),
-                  ),
+                AppFeedback.showCartSuccess(
+                  context,
+                  message: 'Switched to ${product.nurseryName} and added ${product.variety}',
+                  onGoToCart: () => context.push('/cart'),
                 );
               },
               child: const Text('Clear & Switch', style: TextStyle(color: Colors.white)),
@@ -362,28 +389,11 @@ class CompactProductCard extends ConsumerWidget {
         ),
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 2),
-          content: Row(
-            children: [
-              const Icon(Icons.check_circle, color: Colors.white, size: 16),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Text(
-                  'Added ${product.variety} (${product.perPlantPriceText}) to cart',
-                  style: const TextStyle(fontSize: 11.5),
-                ),
-              ),
-            ],
-          ),
-          backgroundColor: AVRColors.forestGreenDark,
-          action: SnackBarAction(
-            label: 'CART',
-            textColor: AVRColors.sageLight,
-            onPressed: () => context.push('/cart'),
-          ),
-        ),
+      ref.read(cartProvider.notifier).addItem(product);
+      AppFeedback.showCartSuccess(
+        context,
+        message: 'Added ${product.variety} (${product.perPlantPriceText}) to cart',
+        onGoToCart: () => context.push('/cart'),
       );
     }
   }

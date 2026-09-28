@@ -43,75 +43,120 @@ class AVRStatCard extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
           gradient: cardGradient,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
-              color: cardColor.withValues(alpha: 0.25),
-              blurRadius: 16,
-              offset: const Offset(0, 6),
+              color: cardColor.withValues(alpha: 0.22),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
             ),
           ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white.withValues(alpha: 0.22),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Icon(icon, color: Colors.white, size: 22),
+                  child: Icon(icon, color: Colors.white, size: 18),
                 ),
                 if (trend != null)
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          trendUp ? Icons.trending_up : Icons.trending_down,
-                          color: Colors.white,
-                          size: 14,
-                        ),
-                        const SizedBox(width: 2),
-                        Text(trend!,
-                            style: AVRTextStyles.labelSmall
-                                .copyWith(color: Colors.white)),
-                      ],
+                  Flexible(
+                    child: Container(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.22),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            trendUp ? Icons.trending_up : Icons.trending_down,
+                            color: Colors.white,
+                            size: 11,
+                          ),
+                          const SizedBox(width: 2),
+                          Flexible(
+                            child: Text(
+                              trend!,
+                              style: AVRTextStyles.labelSmall
+                                  .copyWith(color: Colors.white, fontSize: 9),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
               ],
             ),
-            const Spacer(),
-            Text(value,
-                style: AVRTextStyles.kpiValue.copyWith(color: Colors.white)),
-            const SizedBox(height: 2),
-            Text(title,
-                style: AVRTextStyles.bodySmall.copyWith(color: Colors.white70)),
-            if (subtitle != null) ...[
-              const SizedBox(height: 4),
-              Text(subtitle!,
-                  style:
-                      AVRTextStyles.labelSmall.copyWith(color: Colors.white54)),
-            ],
+            const SizedBox(height: 6),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      value,
+                      style: AVRTextStyles.kpiValue.copyWith(
+                        color: Colors.white,
+                        fontSize: 19,
+                        fontWeight: FontWeight.w800,
+                        height: 1.1,
+                      ),
+                      maxLines: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    title,
+                    style: AVRTextStyles.bodySmall.copyWith(
+                      color: Colors.white.withValues(alpha: 0.95),
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      height: 1.15,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (subtitle != null) ...[
+                    const SizedBox(height: 1),
+                    Text(
+                      subtitle!,
+                      style: AVRTextStyles.labelSmall.copyWith(
+                        color: Colors.white70,
+                        fontSize: 9,
+                        height: 1.1,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ],
+              ),
+            ),
           ],
         ),
       ),
-    ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1, end: 0);
+    ).animate().fadeIn(duration: 350.ms).slideY(begin: 0.08, end: 0);
   }
 }
 
@@ -125,24 +170,22 @@ class AVRStatusBadge extends StatelessWidget {
     final config = _statusConfig[status.toLowerCase()] ??
         const _StatusConfig(AVRColors.sage, 'Unknown', Icons.help_outline);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
         color: config.color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: config.color.withValues(alpha: 0.25)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            width: 6,
-            height: 6,
-            decoration:
-                BoxDecoration(color: config.color, shape: BoxShape.circle),
+          Icon(config.icon, size: 11, color: config.color),
+          const SizedBox(width: 4),
+          Text(
+            config.label,
+            style: AVRTextStyles.labelSmall
+                .copyWith(color: config.color, fontWeight: FontWeight.bold, fontSize: 10),
           ),
-          const SizedBox(width: 6),
-          Text(config.label,
-              style: AVRTextStyles.labelSmall
-                  .copyWith(color: config.color, fontWeight: FontWeight.w600)),
         ],
       ),
     );
@@ -150,20 +193,32 @@ class AVRStatusBadge extends StatelessWidget {
 
   static final Map<String, _StatusConfig> _statusConfig = {
     'active':
-        const _StatusConfig(AVRColors.success, 'Active', Icons.check_circle),
+        const _StatusConfig(AVRColors.success, 'Active', Icons.check_circle_outline),
+    'pending':
+        const _StatusConfig(AVRColors.warning, 'Pending', Icons.schedule),
     'pending_payment': const _StatusConfig(
-        AVRColors.warning, 'Pending Payment', Icons.pending),
-    'confirmed': const _StatusConfig(AVRColors.info, 'Confirmed', Icons.check),
-    'packed': const _StatusConfig(AVRColors.info, 'Packed', Icons.inventory),
+        AVRColors.warning, 'Pending Payment', Icons.pending_outlined),
+    'confirmed': const _StatusConfig(AVRColors.info, 'Confirmed', Icons.check_circle),
+    'packed': const _StatusConfig(AVRColors.info, 'Packed', Icons.inventory_2_outlined),
     'dispatched': const _StatusConfig(
-        AVRColors.terracotta, 'Dispatched', Icons.local_shipping),
+        AVRColors.terracotta, 'Dispatched', Icons.local_shipping_outlined),
     'in_transit': const _StatusConfig(
-        AVRColors.terracotta, 'In Transit', Icons.directions_car),
+        AVRColors.terracotta, 'In Transit', Icons.directions_car_outlined),
     'delivered':
-        const _StatusConfig(AVRColors.success, 'Delivered', Icons.done_all),
+        const _StatusConfig(AVRColors.success, 'Delivered', Icons.done_all_rounded),
     'cancelled':
-        const _StatusConfig(AVRColors.error, 'Cancelled', Icons.cancel),
-    'failed': const _StatusConfig(AVRColors.error, 'Failed', Icons.error),
+        const _StatusConfig(AVRColors.error, 'Cancelled', Icons.cancel_outlined),
+    'failed': const _StatusConfig(AVRColors.error, 'Failed', Icons.error_outline),
+    'ready_now':
+        const _StatusConfig(AVRColors.success, 'Ready Stock', Icons.eco_rounded),
+    'limited_stock':
+        const _StatusConfig(Color(0xFFD97706), 'Limited Stock', Icons.warning_amber_rounded),
+    'prebook_available':
+        const _StatusConfig(Color(0xFFEA580C), 'Pre-Book Open', Icons.bookmark_added_rounded),
+    'coming_soon':
+        const _StatusConfig(Color(0xFF0284C7), 'Coming Soon', Icons.schedule_rounded),
+    'sold_out':
+        const _StatusConfig(Color(0xFF64748B), 'Sold Out', Icons.block_rounded),
     'low_stock':
         const _StatusConfig(AVRColors.warning, 'Low Stock', Icons.warning),
     'assigned':

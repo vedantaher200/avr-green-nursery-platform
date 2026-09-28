@@ -8,6 +8,7 @@ import { pool } from '../../config/database';
 import { z } from 'zod';
 import { v4 as uuidv4 } from 'uuid';
 import { InvoiceService } from '../invoice/invoice.service';
+import { OffersService } from '../offers/offers.service';
 import { notificationService } from '../../shared/providers/notification.provider';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -28,6 +29,7 @@ const CreateOrderDto = z.object({
     productId: z.string().uuid(),
     quantity: z.number().int().positive(),
   })).min(1),
+  offerId: z.string().uuid().optional(),
   notes: z.string().optional(),
 });
 
@@ -105,21 +107,37 @@ router.post(
         enrichedItems.push({ productId: item.productId, quantity: item.quantity, unitPrice, totalPrice });
       }
 
-      const taxAmount = parseFloat((subtotal * 0.18).toFixed(2)); // 18% GST
-      const totalAmount = parseFloat((subtotal + taxAmount).toFixed(2));
+      let discountAmount = 0;
+      let appliedOfferId: string | null = null;
+
+      if (d.offerId) {
+        const discountCalc = await OffersService.calculateDiscount(req.tenantId!, d.offerId, d.items);
+        if (discountCalc.isValid && discountCalc.discountAmount > 0) {
+          discountAmount = discountCalc.discountAmount;
+          appliedOfferId = d.offerId;
+          await client.query(
+            `UPDATE nursery_offers SET current_redemptions = current_redemptions + 1, updated_at = NOW() WHERE id = $1`,
+            [d.offerId]
+          );
+        }
+      }
+
+      const taxableSubtotal = Math.max(0, subtotal - discountAmount);
+      const taxAmount = parseFloat((taxableSubtotal * 0.18).toFixed(2)); // 18% GST
+      const totalAmount = parseFloat((taxableSubtotal + taxAmount).toFixed(2));
       const orderNumber = `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
       // Create order
       const orderResult = await client.query(
         `INSERT INTO orders
            (tenant_id, order_number, customer_id, location_id, status,
-            subtotal, tax_amount, discount_amount, total_amount, shipping_address, notes)
-         VALUES ($1,$2,$3,$4,'pending_payment',$5,$6,0,$7,$8,$9)
+            subtotal, tax_amount, discount_amount, total_amount, shipping_address, notes, offer_id)
+         VALUES ($1,$2,$3,$4,'pending_payment',$5,$6,$7,$8,$9,$10,$11)
          RETURNING *`,
         [
           req.tenantId, orderNumber, customerId, d.locationId,
-          subtotal, taxAmount, totalAmount,
-          JSON.stringify(d.shippingAddress), d.notes ?? null,
+          subtotal, taxAmount, discountAmount, totalAmount,
+          JSON.stringify(d.shippingAddress), d.notes ?? null, appliedOfferId,
         ]
       );
       const order = orderResult.rows[0];

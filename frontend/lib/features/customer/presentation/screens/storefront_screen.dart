@@ -13,8 +13,13 @@ import '../../../inventory/data/providers/owner_inventory_provider.dart';
 import '../widgets/farmer_prebooking_modal.dart';
 import '../widgets/nursery_trust_modal.dart';
 import '../../data/models/nursery_model.dart';
+import '../../data/models/offer_model.dart';
 import '../../data/providers/cart_provider.dart';
 import '../../data/providers/marketplace_provider.dart';
+import '../../data/providers/offers_provider.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+import '../../../../core/widgets/realtime_calendar_widget.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Commercial Multi-Nursery Farmer Marketplace Home & Discovery
@@ -35,27 +40,21 @@ class StorefrontScreen extends ConsumerWidget {
     final cart = ref.watch(cartProvider);
     final currentSort = ref.watch(nurserySortByProvider);
     final announcementsAsync = ref.watch(marketplaceAnnouncementsProvider);
+    final offersAsync = ref.watch(marketplaceOffersProvider);
 
     // Derived product collections for Farmer Home sections
     final readyStockProducts = allProducts.where((p) => p.isReadyStock).toList();
     final prebookingProducts = allProducts.where((p) => p.isPrebooking).toList();
-    final bestSellers = allProducts.take(6).toList();
-    final featuredVarieties = allProducts.take(8).toList();
+    final searchQuery = ref.watch(searchQueryProvider);
+    final featuredVarieties = selectedCrop != 'all'
+        ? allProducts
+        : (selectedCat != 'all' ? allProducts : allProducts.take(8).toList());
+    final bestSellers = allProducts.where((p) => p.isHot || p.isBestseller).isNotEmpty
+        ? allProducts.where((p) => p.isHot || p.isBestseller).toList()
+        : allProducts.take(6).toList();
 
     final categories = marketplaceCategories;
-
-    final popularCrops = [
-      {'crop': 'all', 'label': 'All Crops', 'local': 'सर्व पिके', 'emoji': '🌱'},
-      {'crop': 'Chilli', 'label': 'Chilli', 'local': 'मिरची / Mirchi', 'emoji': '🌶'},
-      {'crop': 'Tomato', 'label': 'Tomato', 'local': 'टोमॅटो / Tamatar', 'emoji': '🍅'},
-      {'crop': 'Capsicum', 'label': 'Capsicum', 'local': 'शिमला / Shimla', 'emoji': '🫑'},
-      {'crop': 'Brinjal', 'label': 'Brinjal', 'local': 'वांगी / Baingan', 'emoji': '🍆'},
-      {'crop': 'Cabbage', 'label': 'Cabbage', 'local': 'कोबी / Gobhi', 'emoji': '🥬'},
-      {'crop': 'Cauliflower', 'label': 'Cauliflower', 'local': 'फ्लॉवर / Phool', 'emoji': '🥦'},
-      {'crop': 'Marigold', 'label': 'Marigold', 'local': 'झेंडू / Genda', 'emoji': '🌼'},
-      {'crop': 'Sugarcane', 'label': 'Sugarcane', 'local': 'ऊस / Ganna', 'emoji': '🎋'},
-      {'crop': 'Lemon', 'label': 'Lemon', 'local': 'लिंबू / Nimbu', 'emoji': '🍋'},
-    ];
+    final popularCrops = ref.watch(categoryCropsProvider);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF6F8F5),
@@ -204,6 +203,13 @@ class StorefrontScreen extends ConsumerWidget {
                 ),
               ),
             ),
+
+            // ── Section 2.1: Categorized Multi-Type Search Breakdown (Section 13)
+            if (searchQuery.trim().isNotEmpty)
+              _buildCategorizedSearchResults(context, ref, language, searchQuery, allProducts, nearbyNurseriesAsync),
+
+            // ── Section 2.2: Farmer Special Offers & Campaigns (Section 7) ─────
+            _buildFarmerSpecialOffersSection(context, offersAsync),
 
             // ── Section 2.5: Live Nursery Production Broadcasts & Announcements ─
             _buildLiveAnnouncementsBanner(context, ref, announcementsAsync, allProducts),
@@ -422,6 +428,7 @@ class StorefrontScreen extends ConsumerWidget {
                       ),
                       onSelected: (_) {
                         ref.read(selectedCategoryProvider.notifier).state = cat.id;
+                        ref.read(selectedCropProvider.notifier).state = 'all';
                       },
                     );
                   },
@@ -434,7 +441,9 @@ class StorefrontScreen extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 12, 16, 6),
                 child: Text(
-                  'Popular Agricultural Crops (Nashik Region)',
+                  selectedCat != 'all'
+                      ? 'Crops for ${categories.firstWhere((c) => c.id == selectedCat, orElse: () => categories.first).label}'
+                      : 'Popular Agricultural Crops (Nashik Region)',
                   style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AVRColors.forestGreenDark),
                 ),
               ),
@@ -452,7 +461,11 @@ class StorefrontScreen extends ConsumerWidget {
                     final isSelected = selectedCrop == c['crop'];
                     return InkWell(
                       onTap: () {
-                        ref.read(selectedCropProvider.notifier).state = c['crop']!;
+                        final chosenCrop = c['crop']!;
+                        ref.read(selectedCropProvider.notifier).state = chosenCrop;
+                        if (chosenCrop != 'all') {
+                          ref.read(searchQueryProvider.notifier).state = '';
+                        }
                       },
                       borderRadius: BorderRadius.circular(12),
                       child: Container(
@@ -465,27 +478,28 @@ class StorefrontScreen extends ConsumerWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(c['emoji']!, style: const TextStyle(fontSize: 14)),
+                            Text(c['emoji'] ?? '🌱', style: const TextStyle(fontSize: 14)),
                             const SizedBox(width: 6),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  c['label']!,
+                                  c['label'] ?? c['crop'] ?? 'Crop',
                                   style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,
                                     color: isSelected ? Colors.white : AVRColors.textPrimary,
                                   ),
                                 ),
-                                Text(
-                                  c['local']!,
-                                  style: TextStyle(
-                                    fontSize: 9,
-                                    color: isSelected ? Colors.white70 : Colors.grey.shade600,
+                                if (c['local'] != null && c['local']!.isNotEmpty)
+                                  Text(
+                                    c['local']!,
+                                    style: TextStyle(
+                                      fontSize: 9,
+                                      color: isSelected ? Colors.white70 : Colors.grey.shade600,
+                                    ),
                                   ),
-                                ),
                               ],
                             ),
                           ],
@@ -504,9 +518,45 @@ class StorefrontScreen extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Featured Varieties',
-                      style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w800, color: AVRColors.forestGreenDark),
+                    Row(
+                      children: [
+                        Text(
+                          selectedCrop != 'all'
+                              ? '$selectedCrop Varieties'
+                              : (selectedCat != 'all'
+                                  ? categories.firstWhere((c) => c.id == selectedCat, orElse: () => categories.first).label
+                                  : AppStrings.get('featured_varieties', language)),
+                          style: const TextStyle(fontSize: 14.5, fontWeight: FontWeight.w800, color: AVRColors.forestGreenDark),
+                        ),
+                        if (selectedCrop != 'all' || selectedCat != 'all') ...[
+                          const SizedBox(width: 8),
+                          InkWell(
+                            onTap: () {
+                              ref.read(selectedCropProvider.notifier).state = 'all';
+                              ref.read(selectedCategoryProvider.notifier).state = 'all';
+                            },
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                              decoration: BoxDecoration(
+                                color: AVRColors.terracotta.withValues(alpha: 0.12),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    AppStrings.get('clear_filter', language),
+                                    style: const TextStyle(fontSize: 10, color: AVRColors.terracotta, fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(width: 2),
+                                  const Icon(Icons.close_rounded, size: 12, color: AVRColors.terracotta),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
                     Text(
                       '${featuredVarieties.length} available',
@@ -517,30 +567,47 @@ class StorefrontScreen extends ConsumerWidget {
               ),
             ),
 
-            // High-density 2-column Compact Marketplace Grid (Sections 6 & 21)
+            // Responsive Compact Marketplace Grid (Sections 14, 15, 16, 17)
             featuredVarieties.isEmpty
-                ? const SliverToBoxAdapter(
+                ? SliverToBoxAdapter(
                     child: Padding(
-                      padding: EdgeInsets.all(24),
-                      child: Center(child: Text('No varieties found matching criteria')),
+                      padding: const EdgeInsets.all(24),
+                      child: Center(child: Text(AppStrings.get('no_varieties_found', language))),
                     ),
                   )
                 : SliverPadding(
-                    padding: const EdgeInsets.fromLTRB(12, 4, 12, 16),
-                    sliver: SliverGrid(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.58,
-                        crossAxisSpacing: 8,
-                        mainAxisSpacing: 8,
-                      ),
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final product = featuredVarieties[index];
-                          return CompactProductCard(product: product);
-                        },
-                        childCount: featuredVarieties.length,
-                      ),
+                    padding: const EdgeInsets.fromLTRB(14, 4, 14, 16),
+                    sliver: SliverLayoutBuilder(
+                      builder: (context, constraints) {
+                        final width = constraints.crossAxisExtent;
+                        final crossAxisCount = width >= 1200
+                            ? 5
+                            : width >= 900
+                                ? 4
+                                : width >= 600
+                                    ? 3
+                                    : 2;
+                        final childAspectRatio = crossAxisCount >= 4
+                            ? 0.73
+                            : crossAxisCount == 3
+                                ? 0.71
+                                : 0.67;
+                        return SliverGrid(
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: crossAxisCount,
+                            childAspectRatio: childAspectRatio,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                          ),
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              final product = featuredVarieties[index];
+                              return CompactProductCard(product: product);
+                            },
+                            childCount: featuredVarieties.length,
+                          ),
+                        );
+                      },
                     ),
                   ),
 
@@ -570,12 +637,12 @@ class StorefrontScreen extends ConsumerWidget {
               ),
               SliverToBoxAdapter(
                 child: SizedBox(
-                  height: 255,
+                  height: 275,
                   child: ListView.separated(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
                     scrollDirection: Axis.horizontal,
                     itemCount: readyStockProducts.take(8).length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 8),
+                    separatorBuilder: (_, __) => const SizedBox(width: 10),
                     itemBuilder: (context, index) {
                       final p = readyStockProducts[index];
                       return SizedBox(
@@ -680,12 +747,12 @@ class StorefrontScreen extends ConsumerWidget {
             ),
             SliverToBoxAdapter(
               child: SizedBox(
-                height: 255,
+                height: 275,
                 child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
                   scrollDirection: Axis.horizontal,
                   itemCount: bestSellers.length,
-                  separatorBuilder: (_, __) => const SizedBox(width: 8),
+                  separatorBuilder: (_, __) => const SizedBox(width: 10),
                   itemBuilder: (context, index) {
                     final p = bestSellers[index];
                     return SizedBox(
@@ -745,6 +812,18 @@ class StorefrontScreen extends ConsumerWidget {
                 ),
               ),
             ),
+
+            // ── Section 11: Real-time Agricultural Calendar & Dispatch Schedule (Section 32)
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(14, 0, 14, 16),
+                child: RealtimeCalendarWidget(mode: CalendarViewMode.farmer),
+              ),
+            ),
+            // Comfortable bottom padding to ensure zero overlap with mobile navigation bar
+            const SliverToBoxAdapter(
+              child: SizedBox(height: 72),
+            ),
           ],
         ),
       ),
@@ -767,179 +846,371 @@ class StorefrontScreen extends ConsumerWidget {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Real Nursery Image Header with Badges
-          Stack(
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(14),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(14),
+          onTap: () {
+            ref.read(selectedNurseryProvider.notifier).state = n;
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppProductImage.nurseryCover(
-                imageUrl: n.imageUrl,
-                height: 75,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(13)),
-              ),
-              Positioned(
-                top: 6,
-                left: 6,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.65),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    n.rankingBadge,
-                    style: const TextStyle(color: Colors.white, fontSize: 9.5, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              if (n.isDemoData)
-                Positioned(
-                  top: 6,
-                  right: 6,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: AVRColors.warning,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: const Text(
-                      'DEMO DATA',
-                      style: TextStyle(color: Colors.white, fontSize: 8.5, fontWeight: FontWeight.w800),
-                    ),
-                  ),
-                ),
-            ],
-          ),
-
-          // Nursery Details Body
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 6, 10, 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // Real Nursery Image Header with Badges
+              Stack(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              n.name,
-                              style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 13, color: AVRColors.forestGreenDark),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          if (n.isVerified) ...[
-                            const SizedBox(width: 4),
-                            const Icon(Icons.verified, color: AVRColors.forestGreen, size: 13),
-                          ],
-                        ],
-                      ),
-                      const SizedBox(height: 2),
-                      // Tappable rating → opens Trust Modal
-                      GestureDetector(
-                        onTap: () => NurseryTrustModal.show(
-                          context, n,
-                          onBrowseCatalog: () => ref.read(selectedNurseryProvider.notifier).state = n,
-                        ),
-                        child: Row(
-                          children: [
-                            Text('⭐ ${n.rating}', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AVRColors.forestGreenDark)),
-                            Text(' (${n.reviewCount})', style: TextStyle(fontSize: 10.5, color: Colors.grey.shade600)),
-                            const SizedBox(width: 4),
-                            Icon(Icons.info_outline, size: 11, color: Colors.grey.shade500),
-                            const Spacer(),
-                            Text('${n.distanceKm} km', style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: AVRColors.terracotta)),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      // Activity freshness
-                      Row(
-                        children: [
-                          Container(width: 5, height: 5, decoration: const BoxDecoration(color: Color(0xFF40916C), shape: BoxShape.circle)),
-                          const SizedBox(width: 4),
-                          Text(n.activityText, style: TextStyle(fontSize: 9.5, color: Colors.grey.shade600)),
-                          const Spacer(),
-                          Text('${n.activeVarietiesCount}+ Varieties', style: TextStyle(fontSize: 9.5, color: Colors.grey.shade700)),
-                        ],
-                      ),
-                    ],
+                  AppProductImage.nurseryCover(
+                    imageUrl: n.imageUrl,
+                    height: 75,
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(13)),
                   ),
-                  Row(
+                  Positioned(
+                    top: 6,
+                    left: 6,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.65),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        n.rankingBadge,
+                        style: const TextStyle(color: Colors.white, fontSize: 9.5, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  if (n.isDemoData)
+                    Positioned(
+                      top: 6,
+                      right: 6,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: AVRColors.warning,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Text(
+                          'DEMO DATA',
+                          style: TextStyle(color: Colors.white, fontSize: 8.5, fontWeight: FontWeight.w800),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+
+              // Nursery Details Body
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 6, 10, 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              color: n.isOpen ? AVRColors.success : Colors.grey,
-                              shape: BoxShape.circle,
-                            ),
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  n.name,
+                                  style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 13, color: AVRColors.forestGreenDark),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              if (n.isVerified) ...[
+                                const SizedBox(width: 4),
+                                const Icon(Icons.verified, color: AVRColors.forestGreen, size: 13),
+                              ],
+                            ],
                           ),
-                          const SizedBox(width: 4),
-                          Text(
-                            n.isOpen ? 'Open Now' : 'Closed',
-                            style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: n.isOpen ? AVRColors.success : Colors.grey),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          // Trust info button
+                          const SizedBox(height: 2),
+                          // Tappable rating → opens Trust Modal
                           GestureDetector(
                             onTap: () => NurseryTrustModal.show(
                               context, n,
                               onBrowseCatalog: () => ref.read(selectedNurseryProvider.notifier).state = n,
                             ),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: const Color(0xFF2D6A4F).withValues(alpha: 0.4)),
-                                borderRadius: BorderRadius.circular(7),
-                              ),
-                              child: const Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(Icons.shield_outlined, size: 11, color: Color(0xFF2D6A4F)),
-                                  SizedBox(width: 3),
-                                  Text('Trust', style: TextStyle(fontSize: 9.5, color: Color(0xFF2D6A4F), fontWeight: FontWeight.bold)),
-                                ],
-                              ),
+                            child: Row(
+                              children: [
+                                Text('⭐ ${n.rating}', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AVRColors.forestGreenDark)),
+                                Text(' (${n.reviewCount})', style: TextStyle(fontSize: 10.5, color: Colors.grey.shade600)),
+                                const SizedBox(width: 4),
+                                Icon(Icons.info_outline, size: 11, color: Colors.grey.shade500),
+                                const Spacer(),
+                                Text('${n.distanceKm} km', style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: AVRColors.terracotta)),
+                              ],
                             ),
                           ),
-                          const SizedBox(width: 6),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AVRColors.forestGreen,
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                              visualDensity: VisualDensity.compact,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                              elevation: 0,
-                            ),
-                            onPressed: () {
-                              ref.read(selectedNurseryProvider.notifier).state = n;
-                            },
-                            child: const Text(
-                              'Browse',
-                              style: TextStyle(fontSize: 10.5, color: Colors.white, fontWeight: FontWeight.bold),
-                            ),
+                          const SizedBox(height: 2),
+                          // Activity freshness
+                          Row(
+                            children: [
+                              Container(width: 5, height: 5, decoration: const BoxDecoration(color: Color(0xFF40916C), shape: BoxShape.circle)),
+                              const SizedBox(width: 4),
+                              Text(n.activityText, style: TextStyle(fontSize: 9.5, color: Colors.grey.shade600)),
+                              const Spacer(),
+                              Text('${n.activeVarietiesCount}+ Varieties', style: TextStyle(fontSize: 9.5, color: Colors.grey.shade700)),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                width: 6,
+                                height: 6,
+                                decoration: BoxDecoration(
+                                  color: n.isOpen ? AVRColors.success : Colors.grey,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                n.isOpen ? 'Open Now' : 'Closed',
+                                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: n.isOpen ? AVRColors.success : Colors.grey),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              // Trust info button
+                              GestureDetector(
+                                onTap: () => NurseryTrustModal.show(
+                                  context, n,
+                                  onBrowseCatalog: () => ref.read(selectedNurseryProvider.notifier).state = n,
+                                ),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: const Color(0xFF2D6A4F).withValues(alpha: 0.4)),
+                                    borderRadius: BorderRadius.circular(7),
+                                  ),
+                                  child: const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.shield_outlined, size: 11, color: Color(0xFF2D6A4F)),
+                                      SizedBox(width: 3),
+                                      Text('Trust', style: TextStyle(fontSize: 9.5, color: Color(0xFF2D6A4F), fontWeight: FontWeight.bold)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AVRColors.forestGreen,
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                  visualDensity: VisualDensity.compact,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                  elevation: 0,
+                                ),
+                                onPressed: () {
+                                  ref.read(selectedNurseryProvider.notifier).state = n;
+                                },
+                                child: const Text(
+                                  'Browse',
+                                  style: TextStyle(fontSize: 10.5, color: Colors.white, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
+      ),
+    );
+  }
+
+  // ── Section 2.1: Categorized Multi-Type Search Breakdown (Section 13) ────────
+  Widget _buildCategorizedSearchResults(
+    BuildContext context,
+    WidgetRef ref,
+    AppLanguage language,
+    String query,
+    List<Product> products,
+    AsyncValue<List<NurseryModel>> nurseriesAsync,
+  ) {
+    final cleanQ = query.trim().toLowerCase();
+
+    // Find matching crops
+    const cropsList = [
+      'Tomato', 'Chilli', 'Capsicum', 'Brinjal', 'Cabbage',
+      'Cauliflower', 'Marigold', 'Sugarcane', 'Mango', 'Coconut', 'Lemon', 'Tulsi'
+    ];
+    final matchingCrops = cropsList.where((c) => c.toLowerCase().contains(cleanQ)).toList();
+
+    // Find matching nurseries
+    final allNurseries = nurseriesAsync.value ?? [];
+    final matchingNurseries = allNurseries.where((n) =>
+      n.name.toLowerCase().contains(cleanQ) || n.city.toLowerCase().contains(cleanQ)
+    ).toList();
+
+    // Matching products / varieties (top 5)
+    final matchingVarieties = products.where((p) =>
+      p.variety.toLowerCase().contains(cleanQ) ||
+      p.commonName.toLowerCase().contains(cleanQ) ||
+      (p.scientificName?.toLowerCase().contains(cleanQ) ?? false)
+    ).take(5).toList();
+
+    return SliverToBoxAdapter(
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(14, 4, 14, 10),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: AVRColors.forestGreen.withValues(alpha: 0.3)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.manage_search_rounded, size: 18, color: AVRColors.forestGreen),
+                    const SizedBox(width: 6),
+                    Text(
+                      '${AppStrings.get("search_results_title", language)}: "$query"',
+                      style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 13, color: AVRColors.forestGreenDark),
+                    ),
+                  ],
+                ),
+                TextButton(
+                  onPressed: () {
+                    ref.read(searchQueryProvider.notifier).state = '';
+                    ref.read(nurserySearchQueryProvider.notifier).state = '';
+                  },
+                  child: const Text('Clear', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AVRColors.terracotta)),
+                ),
+              ],
+            ),
+            const Divider(height: 12),
+
+            // 1. CROPS Section
+            if (matchingCrops.isNotEmpty) ...[
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(color: const Color(0xFF2D6A4F).withValues(alpha: 0.15), borderRadius: BorderRadius.circular(4)),
+                      child: Text(AppStrings.get('search_type_crop', language), style: const TextStyle(fontSize: 9.5, fontWeight: FontWeight.bold, color: Color(0xFF2D6A4F))),
+                    ),
+                    const SizedBox(width: 6),
+                    Text('Matching Crops (${matchingCrops.length})', style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700)),
+                  ],
+                ),
+              ),
+              Wrap(
+                spacing: 8,
+                runSpacing: 6,
+                children: matchingCrops.map((cropName) {
+                  return ActionChip(
+                    avatar: const Icon(Icons.eco_rounded, size: 14, color: AVRColors.forestGreen),
+                    label: Text(cropName, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                    backgroundColor: const Color(0xFFF1F5F2),
+                    side: const BorderSide(color: AVRColors.forestGreen),
+                    onPressed: () {
+                      ref.read(selectedCropProvider.notifier).state = cropName;
+                      ref.read(searchQueryProvider.notifier).state = '';
+                      ref.read(nurserySearchQueryProvider.notifier).state = '';
+                    },
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 8),
+            ],
+
+            // 2. NURSERIES Section
+            if (matchingNurseries.isNotEmpty) ...[
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.circular(4)),
+                      child: Text(AppStrings.get('search_type_nursery', language), style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.bold, color: Colors.blue.shade800)),
+                    ),
+                    const SizedBox(width: 6),
+                    Text('Matching Nurseries (${matchingNurseries.length})', style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700)),
+                  ],
+                ),
+              ),
+              ...matchingNurseries.map((n) => ListTile(
+                dense: true,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 4),
+                leading: const Icon(Icons.storefront_rounded, color: AVRColors.forestGreen, size: 18),
+                title: Text(n.name, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                subtitle: Text('${n.city} • ${n.distanceKm} km • ⭐ ${n.rating}', style: TextStyle(fontSize: 10, color: Colors.grey.shade600)),
+                trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12),
+                onTap: () {
+                  ref.read(selectedNurseryProvider.notifier).state = n;
+                  ref.read(searchQueryProvider.notifier).state = '';
+                  ref.read(nurserySearchQueryProvider.notifier).state = '';
+                },
+              )),
+              const SizedBox(height: 8),
+            ],
+
+            // 3. VARIETIES Section
+            if (matchingVarieties.isNotEmpty) ...[
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(color: Colors.orange.shade50, borderRadius: BorderRadius.circular(4)),
+                      child: Text(AppStrings.get('search_type_variety', language), style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.bold, color: Colors.orange.shade900)),
+                    ),
+                    const SizedBox(width: 6),
+                    Text('Matching Varieties (${matchingVarieties.length})', style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700)),
+                  ],
+                ),
+              ),
+              ...matchingVarieties.map((p) => ListTile(
+                dense: true,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 4),
+                leading: const Icon(Icons.grass_rounded, color: AVRColors.terracotta, size: 18),
+                title: Text(p.variety, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                subtitle: Text('${p.nurseryName} • ${p.perPlantPriceText} • ${p.readyStock} ready', style: TextStyle(fontSize: 10, color: Colors.grey.shade600)),
+                trailing: const Icon(Icons.chevron_right_rounded, size: 16),
+                onTap: () => context.push('/catalog/${p.id}'),
+              )),
+            ],
+
+            if (matchingCrops.isEmpty && matchingNurseries.isEmpty && matchingVarieties.isEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Center(
+                  child: Text(AppStrings.get('no_varieties_found', language), style: TextStyle(fontSize: 11.5, color: Colors.grey.shade600)),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -1243,6 +1514,41 @@ class StorefrontScreen extends ConsumerWidget {
                 style: TextStyle(fontSize: 11.5, color: Colors.grey),
               ),
               const SizedBox(height: 12),
+
+              // ── GPS Device Location Button (Sections 29, 30, 31) ───────────
+              Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                decoration: BoxDecoration(
+                  color: AVRColors.forestGreenSurface,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AVRColors.forestGreen.withValues(alpha: 0.3)),
+                ),
+                child: ListTile(
+                  dense: true,
+                  leading: const CircleAvatar(
+                    backgroundColor: AVRColors.forestGreen,
+                    radius: 16,
+                    child: Icon(Icons.my_location_rounded, color: Colors.white, size: 16),
+                  ),
+                  title: const Text(
+                    'Use My Current Location (GPS)',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AVRColors.forestGreenDark),
+                  ),
+                  subtitle: const Text(
+                    'Reads real coordinates to compute accurate nursery transit distances',
+                    style: TextStyle(fontSize: 10.5, color: Colors.black87),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 13, color: AVRColors.forestGreen),
+                  onTap: () => _handleUseMyLocation(context, ctx, ref),
+                ),
+              ),
+
+              const Divider(height: 16),
+              Text(
+                'Or select nearest regional farming hub:',
+                style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey.shade700),
+              ),
+              const SizedBox(height: 4),
               ...supportedLocations.map((loc) {
                 final isSelected = loc.city == current.city;
                 return ListTile(
@@ -1274,6 +1580,166 @@ class StorefrontScreen extends ConsumerWidget {
         );
       },
     );
+  }
+
+  // ── Real-Time Device Location Detection (Sections 29, 30, 31) ──────────────
+  Future<void> _handleUseMyLocation(BuildContext context, BuildContext dialogContext, WidgetRef ref) async {
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              title: const Row(
+                children: [
+                  Icon(Icons.location_disabled_rounded, color: AVRColors.warning),
+                  SizedBox(width: 8),
+                  Text('GPS Service Disabled', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                ],
+              ),
+              content: const Text(
+                'Location services are turned off on your device. Please turn on GPS to discover nearest nurseries to your farm.',
+                style: TextStyle(fontSize: 12),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: const Text('OK', style: TextStyle(color: AVRColors.forestGreen, fontWeight: FontWeight.bold)),
+                ),
+              ],
+            ),
+          );
+        }
+        return;
+      }
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Location permission denied. Please pick a regional hub from the list.'),
+                backgroundColor: AVRColors.warning,
+                duration: Duration(seconds: 3),
+              ),
+            );
+          }
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              title: const Row(
+                children: [
+                  Icon(Icons.lock_outline_rounded, color: AVRColors.error),
+                  SizedBox(width: 8),
+                  Text('Location Access Blocked', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                ],
+              ),
+              content: const Text(
+                'Location permissions are permanently denied in browser/app settings. Please allow location permissions in settings, or select your nearest taluka hub manually.',
+                style: TextStyle(fontSize: 12),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: AVRColors.forestGreen),
+                  onPressed: () {
+                    Navigator.pop(ctx);
+                    Geolocator.openAppSettings();
+                  },
+                  child: const Text('Open Settings', style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            ),
+          );
+        }
+        return;
+      }
+
+      // Read real GPS position
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        timeLimit: const Duration(seconds: 8),
+      );
+
+      String cityName = 'Current GPS Location';
+      String districtName = 'Nashik Region';
+
+      try {
+        final placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+        if (placemarks.isNotEmpty) {
+          final p = placemarks.first;
+          if (p.locality != null && p.locality!.isNotEmpty) {
+            cityName = p.locality!;
+          } else if (p.subAdministrativeArea != null && p.subAdministrativeArea!.isNotEmpty) {
+            cityName = p.subAdministrativeArea!;
+          }
+          if (p.subAdministrativeArea != null && p.subAdministrativeArea!.isNotEmpty) {
+            districtName = p.subAdministrativeArea!;
+          } else if (p.administrativeArea != null) {
+            districtName = p.administrativeArea!;
+          }
+        }
+      } catch (_) {
+        cityName = 'GPS (${position.latitude.toStringAsFixed(2)}°N, ${position.longitude.toStringAsFixed(2)}°E)';
+      }
+
+      final realLoc = FarmerLocation(
+        city: cityName,
+        district: districtName,
+        state: 'Maharashtra',
+        lat: position.latitude,
+        lng: position.longitude,
+      );
+
+      ref.read(selectedLocationProvider.notifier).state = realLoc;
+      ref.read(selectedNurseryProvider.notifier).state = null;
+      ref.invalidate(nearbyNurseriesProvider);
+
+      if (dialogContext.mounted) {
+        Navigator.pop(dialogContext);
+      }
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.my_location, color: Colors.white, size: 16),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text('📍 Location updated: $cityName ($districtName)'),
+                ),
+              ],
+            ),
+            backgroundColor: AVRColors.forestGreen,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Could not obtain GPS location: $e. You can choose a regional hub below.'),
+            backgroundColor: AVRColors.warning,
+          ),
+        );
+      }
+    }
   }
 
   // ── Live Nursery Production Broadcasts & Announcements Banner ───────────────
@@ -1525,5 +1991,247 @@ class StorefrontScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  // ── Farmer Special Offers & Campaigns Section (Sections 4, 7, 8, 10) ────────
+  Widget _buildFarmerSpecialOffersSection(BuildContext context, AsyncValue<List<NurseryOffer>> offersAsync) {
+    return offersAsync.when(
+      data: (offers) {
+        if (offers.isEmpty) return const SliverToBoxAdapter(child: SizedBox.shrink());
+        return SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: AVRColors.warning.withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: const Icon(Icons.local_offer_rounded, color: AVRColors.warning, size: 16),
+                        ),
+                        const SizedBox(width: 8),
+                        const Text(
+                          'Farmer Special Offers',
+                          style: TextStyle(
+                            fontSize: 14.5,
+                            fontWeight: FontWeight.w800,
+                            color: AVRColors.forestGreenDark,
+                          ),
+                        ),
+                      ],
+                    ),
+                    InkWell(
+                      onTap: () => context.push('/offers'),
+                      borderRadius: BorderRadius.circular(6),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        child: Row(
+                          children: [
+                            Text(
+                              'View All (${offers.length})',
+                              style: const TextStyle(
+                                fontSize: 11.5,
+                                fontWeight: FontWeight.w700,
+                                color: AVRColors.forestGreen,
+                              ),
+                            ),
+                            const Icon(Icons.chevron_right_rounded, size: 16, color: AVRColors.forestGreen),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 155,
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+                  scrollDirection: Axis.horizontal,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: offers.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 12),
+                  itemBuilder: (context, index) {
+                    final offer = offers[index];
+                    return _buildStorefrontOfferCard(context, offer);
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+      loading: () => const SliverToBoxAdapter(
+        child: SizedBox(
+          height: 80,
+          child: Center(
+            child: SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(strokeWidth: 2, color: AVRColors.forestGreen),
+            ),
+          ),
+        ),
+      ),
+      error: (_, __) => const SliverToBoxAdapter(child: SizedBox.shrink()),
+    );
+  }
+
+  Widget _buildStorefrontOfferCard(BuildContext context, NurseryOffer offer) {
+    return Container(
+      width: 285,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: offer.discountType == 'PERCENTAGE'
+              ? AVRColors.warning.withValues(alpha: 0.6)
+              : AVRColors.forestGreen.withValues(alpha: 0.35),
+          width: 1.2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    const Icon(Icons.store_rounded, size: 14, color: AVRColors.forestGreen),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        offer.nurseryName,
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                          color: AVRColors.forestGreenDark,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFE89620), Color(0xFFD97706)],
+                  ),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  offer.discountBadgeText,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 11,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (offer.festivalEventLabel != null && offer.festivalEventLabel!.isNotEmpty)
+                Text(
+                  '🌿 ${offer.festivalEventLabel!.toUpperCase()}',
+                  style: const TextStyle(
+                    fontSize: 9.5,
+                    fontWeight: FontWeight.w800,
+                    color: AVRColors.terracotta,
+                    letterSpacing: 0.4,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              Text(
+                offer.title,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w800,
+                  color: AVRColors.textPrimary,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 2),
+              Text(
+                offer.applicableCrops.isNotEmpty
+                    ? 'For ${offer.applicableCrops.join(", ")} seedlings'
+                    : (offer.shortDescription ?? 'Exclusive farmer discount'),
+                style: TextStyle(
+                  fontSize: 10.5,
+                  color: Colors.grey.shade600,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.schedule, size: 12, color: Colors.grey.shade600),
+                  const SizedBox(width: 4),
+                  Text(
+                    'Ends ${offer.endDate.day} ${_monthName(offer.endDate.month)}',
+                    style: TextStyle(fontSize: 10, color: Colors.grey.shade700, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AVRColors.forestGreen,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  visualDensity: VisualDensity.compact,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                ),
+                onPressed: () {
+                  context.push('/offers');
+                },
+                child: Text(
+                  offer.isPrebooking ? 'Pre-Book' : 'Shop Offer',
+                  style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _monthName(int month) {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return (month >= 1 && month <= 12) ? months[month - 1] : '';
   }
 }

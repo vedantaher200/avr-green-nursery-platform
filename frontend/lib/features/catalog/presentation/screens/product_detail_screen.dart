@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/localization/app_strings.dart';
 import '../../../../core/widgets/app_product_image.dart';
+import '../../../../core/widgets/app_feedback.dart';
 import '../../../customer/data/providers/cart_provider.dart';
 import '../../../customer/presentation/widgets/farmer_prebooking_modal.dart';
 import '../../data/models/product_model.dart';
@@ -29,6 +31,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final language = ref.watch(appLanguageProvider);
     final catalog = ref.watch(catalogListProvider).value ?? defaultBotanicalCatalog;
     final product = catalog.firstWhere(
       (p) => p.id == widget.productId,
@@ -346,12 +349,16 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           ],
                         ),
                       ),
+                      const SizedBox(height: 14),
+
+                      // ── Section 12: Variety → Multiple Nurseries Comparison ───────
+                      _buildMultipleNurseryComparison(context, product, catalog, language),
                       const SizedBox(height: 16),
 
                       // ── 3. Transparent Price Breakdown (Per Plant / Tray / Bulk) ──
-                      const Text(
-                        'Commercial Pricing Tiers',
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AVRColors.forestGreenDark),
+                      Text(
+                        AppStrings.get('pricing_tiers', language),
+                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AVRColors.forestGreenDark),
                       ),
                       const SizedBox(height: 8),
                       Row(
@@ -617,9 +624,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       const SizedBox(height: 20),
 
                       // ── 6. Reliable Agricultural Growing Information ──────────────
-                      const Text(
-                        'Field Agronomy & Growing Information',
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AVRColors.forestGreenDark),
+                      Text(
+                        AppStrings.get('agronomy_title', language),
+                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AVRColors.forestGreenDark),
                       ),
                       const SizedBox(height: 8),
                       Container(
@@ -632,25 +639,25 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildAgronomyRow(Icons.wb_sunny_outlined, 'Season', product.agronomy.season),
+                            _buildAgronomyRow(Icons.wb_sunny_outlined, AppStrings.get('season', language), product.agronomy.season),
                             const Divider(height: 14),
-                            _buildAgronomyRow(Icons.thermostat_rounded, 'Temperature', product.agronomy.temperature),
+                            _buildAgronomyRow(Icons.thermostat_rounded, AppStrings.get('temperature', language), product.agronomy.temperature),
                             const Divider(height: 14),
-                            _buildAgronomyRow(Icons.water_drop_outlined, 'Water Requirement', product.agronomy.waterRequirement),
+                            _buildAgronomyRow(Icons.water_drop_outlined, AppStrings.get('watering', language), product.agronomy.waterRequirement),
                             const Divider(height: 14),
-                            _buildAgronomyRow(Icons.wb_sunny_rounded, 'Sunlight', product.agronomy.sunlight),
+                            _buildAgronomyRow(Icons.wb_sunny_rounded, AppStrings.get('sunlight', language), product.agronomy.sunlight),
                             const Divider(height: 14),
-                            _buildAgronomyRow(Icons.terrain_rounded, 'Soil Type', product.agronomy.soil),
+                            _buildAgronomyRow(Icons.terrain_rounded, AppStrings.get('soil', language), product.agronomy.soil),
                             const Divider(height: 14),
-                            _buildAgronomyRow(Icons.agriculture_rounded, 'Transplanting Age', product.agronomy.transplanting),
+                            _buildAgronomyRow(Icons.agriculture_rounded, AppStrings.get('transplanting', language), product.agronomy.transplanting),
                             const Divider(height: 14),
-                            _buildAgronomyRow(Icons.straighten_rounded, 'Field Spacing', product.agronomy.spacing),
+                            _buildAgronomyRow(Icons.straighten_rounded, AppStrings.get('spacing', language), product.agronomy.spacing),
                             const Divider(height: 14),
-                            _buildAgronomyRow(Icons.eco_rounded, 'Expected Yield', product.agronomy.expectedYield),
+                            _buildAgronomyRow(Icons.eco_rounded, AppStrings.get('expected_yield', language), product.agronomy.expectedYield),
                             const Divider(height: 14),
-                            _buildAgronomyRow(Icons.schedule_rounded, 'Days to Harvest', product.agronomy.harvestDays),
+                            _buildAgronomyRow(Icons.schedule_rounded, AppStrings.get('harvest_days', language), product.agronomy.harvestDays),
                             const Divider(height: 14),
-                            _buildAgronomyRow(Icons.shield_outlined, 'Basic Field Care', product.agronomy.basicCare),
+                            _buildAgronomyRow(Icons.shield_outlined, AppStrings.get('basic_care', language), product.agronomy.basicCare),
                           ],
                         ),
                       ),
@@ -696,31 +703,39 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       flex: 4,
                       child: OutlinedButton.icon(
                         style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          padding: const EdgeInsets.symmetric(vertical: 11),
                           side: const BorderSide(color: AVRColors.forestGreen, width: 1.5),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         ),
                         icon: const Icon(Icons.add_shopping_cart, color: AVRColors.forestGreen, size: 16),
-                        label: const Text('Add to Cart', style: TextStyle(color: AVRColors.forestGreen, fontWeight: FontWeight.bold, fontSize: 12)),
+                        label: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(AppStrings.get('add_to_cart', language), style: const TextStyle(color: AVRColors.forestGreen, fontWeight: FontWeight.bold, fontSize: 12)),
+                        ),
                         onPressed: () => _handleAddToCart(product, false),
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      flex: 5,
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFE65100),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          elevation: 0,
+                    if (product.isPrebookable || product.futureStock > 0) ...[
+                      const SizedBox(width: 8),
+                      Expanded(
+                        flex: 5,
+                        child: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFE65100),
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 11),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            elevation: 0,
+                          ),
+                          icon: const Icon(Icons.event_available_rounded, size: 16),
+                          label: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(AppStrings.get('prebook_now', language), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                          ),
+                          onPressed: () => FarmerPreBookingModal.show(context, product),
                         ),
-                        icon: const Icon(Icons.event_available_rounded, size: 16),
-                        label: const Text('Pre-Book Now', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                        onPressed: () => FarmerPreBookingModal.show(context, product),
                       ),
-                    ),
+                    ],
                     const SizedBox(width: 8),
                     Expanded(
                       flex: 4,
@@ -728,12 +743,15 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AVRColors.forestGreen,
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          padding: const EdgeInsets.symmetric(vertical: 11),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           elevation: 0,
                         ),
                         icon: const Icon(Icons.flash_on_rounded, size: 16),
-                        label: const Text('Buy Now', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                        label: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(AppStrings.get('buy_now', language), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                        ),
                         onPressed: () => _handleAddToCart(product, true),
                       ),
                     ),
@@ -846,11 +864,10 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 if (buyNow) {
                   context.push('/checkout');
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: AVRColors.forestGreen,
-                      content: Text('Switched to ${product.nurseryName} and added ${product.variety}'),
-                    ),
+                  AppFeedback.showCartSuccess(
+                    context,
+                    message: 'Switched to ${product.nurseryName} and added ${product.variety}',
+                    onGoToCart: () => context.push('/cart'),
                   );
                 }
               },
@@ -863,27 +880,176 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       if (buyNow) {
         context.push('/checkout');
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            duration: const Duration(seconds: 2),
-            content: Row(
-              children: [
-                const Icon(Icons.check_circle, color: Colors.white, size: 16),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text('Added ${product.variety} to cart', style: const TextStyle(fontSize: 12)),
-                ),
-              ],
-            ),
-            backgroundColor: AVRColors.forestGreenDark,
-            action: SnackBarAction(
-              label: 'VIEW CART',
-              textColor: AVRColors.sageLight,
-              onPressed: () => context.push('/cart'),
-            ),
-          ),
+        ref.read(cartProvider.notifier).addItem(product);
+        AppFeedback.showCartSuccess(
+          context,
+          message: 'Added ${product.variety} (${product.perPlantPriceText}) to cart',
+          onGoToCart: () => context.push('/cart'),
         );
       }
     }
+  }
+
+  Widget _buildMultipleNurseryComparison(
+    BuildContext context,
+    Product currentProduct,
+    List<Product> catalog,
+    AppLanguage language,
+  ) {
+    // Look for other nurseries selling this variety or crop (Section 12)
+    final exactVarietyMatches = catalog.where((p) =>
+      p.id != currentProduct.id &&
+      p.variety.toLowerCase().trim() == currentProduct.variety.toLowerCase().trim()
+    ).toList();
+
+    final alternativeOffers = exactVarietyMatches.isNotEmpty
+        ? exactVarietyMatches
+        : catalog.where((p) =>
+            p.id != currentProduct.id &&
+            p.crop.toLowerCase().trim() == currentProduct.crop.toLowerCase().trim() &&
+            p.nurseryName != currentProduct.nurseryName
+          ).take(3).toList();
+
+    if (alternativeOffers.isEmpty) return const SizedBox.shrink();
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AVRColors.forestGreen.withValues(alpha: 0.25)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.compare_arrows_rounded, color: AVRColors.forestGreen, size: 18),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  AppStrings.get('compare_nurseries', language),
+                  style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 13, color: AVRColors.forestGreenDark),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: AVRColors.forestGreenSurface,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  '${alternativeOffers.length} Nurseries',
+                  style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AVRColors.forestGreen),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Compare price, nursery rating, and dispatch readiness for this crop across verified regional nurseries:',
+            style: TextStyle(fontSize: 10.5, color: Colors.grey.shade600),
+          ),
+          const Divider(height: 14),
+          ...alternativeOffers.map((alt) {
+            final isLowerPrice = alt.effectivePlantPrice < currentProduct.effectivePlantPrice;
+            return Container(
+              margin: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF9FBF8),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade200),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                alt.nurseryName,
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: AVRColors.forestGreenDark),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            if (alt.nurseryVerified) ...[
+                              const SizedBox(width: 3),
+                              const Icon(Icons.verified, size: 12, color: AVRColors.forestGreen),
+                            ],
+                          ],
+                        ),
+                        const SizedBox(height: 2),
+                        Wrap(
+                          spacing: 4,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Text('⭐ ${alt.nurseryRating.toStringAsFixed(1)}', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.amber.shade900)),
+                            Text('• ${alt.readyStock} ready', style: const TextStyle(fontSize: 10, color: AVRColors.forestGreen, fontWeight: FontWeight.w600)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            alt.perPlantPriceText,
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w900,
+                              color: isLowerPrice ? AVRColors.forestGreenDark : AVRColors.textPrimary,
+                            ),
+                          ),
+                          if (isLowerPrice) ...[
+                            const SizedBox(width: 3),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                              decoration: BoxDecoration(
+                                color: AVRColors.success.withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: const Text('Lower', style: TextStyle(fontSize: 8.5, color: AVRColors.success, fontWeight: FontWeight.bold)),
+                            ),
+                          ],
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      SizedBox(
+                        height: 24,
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                            side: const BorderSide(color: AVRColors.forestGreen, width: 1),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                          ),
+                          onPressed: () => context.push('/catalog/${alt.id}'),
+                          child: const Text('View Offer', style: TextStyle(fontSize: 10, color: AVRColors.forestGreen, fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }),
+        ],
+      ),
+    );
   }
 }
