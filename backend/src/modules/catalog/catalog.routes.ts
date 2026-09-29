@@ -37,11 +37,14 @@ router.get(
   '/',
   validate({ query: paginationQuery }),
   asyncHandler(async (req, res) => {
-    const { page, limit, search, sortBy, sortOrder, crop, variety, tenantId: queryTenantId } = req.query as any;
-    const tenantId = req.tenantId || (req.headers['x-tenant-id'] as string) || (queryTenantId as string) || '33333333-3333-3333-3333-333333333333';
+    const { page, limit, search, sortBy, sortOrder, crop, variety, category, categoryId, tenantId: queryTenantId } = req.query as any;
+    const isOwnerOrStaff = req.user && req.user.roleName !== 'customer' && req.user.tenantId;
+    const tenantId = isOwnerOrStaff
+      ? req.user.tenantId
+      : ((queryTenantId as string) || (req.headers['x-tenant-id'] as string) || req.tenantId || '33333333-3333-3333-3333-333333333333');
     const offset = (page - 1) * limit;
 
-    const params: unknown[] = [tenantId, limit, offset];
+    const params: unknown[] = [tenantId];
     let extraFilters = '';
 
     if (search) {
@@ -49,14 +52,22 @@ router.get(
       extraFilters += ` AND (p.common_name ILIKE $${params.length} OR p.scientific_name ILIKE $${params.length} OR p.sku ILIKE $${params.length} OR p.crop ILIKE $${params.length} OR p.variety ILIKE $${params.length})`;
     }
 
-    if (crop) {
+    if (crop && crop !== 'all') {
       params.push(crop);
       extraFilters += ` AND p.crop = $${params.length}`;
     }
 
-    if (variety) {
+    if (variety && variety !== 'all') {
       params.push(variety);
       extraFilters += ` AND p.variety = $${params.length}`;
+    }
+
+    if (categoryId) {
+      params.push(categoryId);
+      extraFilters += ` AND p.category_id = $${params.length}`;
+    } else if (category && category !== 'all') {
+      params.push(category);
+      extraFilters += ` AND (c.slug = $${params.length} OR c.name ILIKE $${params.length})`;
     }
 
     const validSortCols: Record<string, string> = {
@@ -68,9 +79,24 @@ router.get(
     const orderCol = validSortCols[sortBy] ?? 'p.created_at';
     const orderDir = sortOrder === 'asc' ? 'ASC' : 'DESC';
 
+    const countParams = [...params];
+    const countQuery = `
+      SELECT COUNT(DISTINCT p.id) FROM products p
+      LEFT JOIN categories c ON c.id = p.category_id
+      WHERE p.tenant_id = $1 AND p.deleted_at IS NULL
+      ${extraFilters}
+    `;
+
+    params.push(limit);
+    const limitIdx = params.length;
+    params.push(offset);
+    const offsetIdx = params.length;
+
     const query = `
       SELECT p.*, c.name AS category_name, s.name AS supplier_name,
              n.name AS nursery_name,
+             COALESCE(n.rating, 4.8) AS nursery_rating,
+             COALESCE(n.review_count, 128) AS review_count,
              COALESCE(SUM(i.quantity_available), 0) AS total_stock
       FROM products p
       LEFT JOIN categories c ON c.id = p.category_id
@@ -79,20 +105,14 @@ router.get(
       LEFT JOIN inventory i ON i.product_id = p.id
       WHERE p.tenant_id = $1 AND p.deleted_at IS NULL
       ${extraFilters}
-      GROUP BY p.id, c.name, s.name, n.name
+      GROUP BY p.id, c.name, s.name, n.name, n.rating, n.review_count
       ORDER BY ${orderCol} ${orderDir}
-      LIMIT $2 OFFSET $3
-    `;
-
-    const countQuery = `
-      SELECT COUNT(*) FROM products p
-      WHERE p.tenant_id = $1 AND p.deleted_at IS NULL
-      ${search ? `AND (p.common_name ILIKE $2 OR p.sku ILIKE $2 OR p.crop ILIKE $2)` : ''}
+      LIMIT $${limitIdx} OFFSET $${offsetIdx}
     `;
 
     const [rows, countResult] = await Promise.all([
       pool.query(query, params),
-      pool.query(countQuery, search ? [tenantId, `%${search}%`] : [tenantId]),
+      pool.query(countQuery, countParams),
     ]);
 
     const total = parseInt(countResult.rows[0].count, 10);

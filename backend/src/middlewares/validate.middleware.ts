@@ -52,6 +52,6 @@ export const paginationQuery = z.object({
   search: z.string().optional(),
   sortBy: z.string().optional(),
   sortOrder: z.enum(['asc', 'desc']).default('desc'),
-});
+}).passthrough();
 
 export type PaginationQuery = z.infer<typeof paginationQuery>;

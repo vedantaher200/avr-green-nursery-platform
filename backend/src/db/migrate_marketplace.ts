@@ -54,7 +54,12 @@ async function migrateMarketplace() {
     ('55555555-5555-5555-5555-555555555503', '33333333-3333-3333-3333-333333333335', '44444444-4444-4444-4444-444444444446', 'branch', 'Panchavati Hi-Tech Nursery', '{"street": "Dindori Road, Panchavati", "city": "Nashik", "state": "Maharashtra", "pincode": "422003"}', 20.011000, 73.790000, '+91 9900000031'),
     ('55555555-5555-5555-5555-555555555504', '33333333-3333-3333-3333-333333333336', '44444444-4444-4444-4444-444444444447', 'branch', 'Chandwad Kisan Center', '{"street": "Lasalgaon Road, Chandwad", "city": "Chandwad", "state": "Maharashtra", "pincode": "423101"}', 20.327500, 74.241900, '+91 9900000041'),
     ('55555555-5555-5555-5555-555555555505', '33333333-3333-3333-3333-333333333337', '44444444-4444-4444-4444-444444444448', 'branch', 'Samarth Seedling Facility', '{"street": "Lasalgaon-Chandwad Link Highway", "city": "Chandwad", "state": "Maharashtra", "pincode": "423101"}', 20.312000, 74.251000, '+91 9900000051')
-    ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name, address = EXCLUDED.address, nursery_id = EXCLUDED.nursery_id;
+    ON CONFLICT (id) DO UPDATE SET
+      name = EXCLUDED.name,
+      address = EXCLUDED.address,
+      nursery_id = EXCLUDED.nursery_id,
+      geo_lat = EXCLUDED.geo_lat,
+      geo_lng = EXCLUDED.geo_lng;
   `);
 
   console.log('Regional nurseries and locations initialized.');
