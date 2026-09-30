@@ -79,7 +79,7 @@ class NurseryTrustModal extends StatelessWidget {
                           Icon(Icons.location_on, size: 14, color: Colors.grey.shade600),
                           const SizedBox(width: 4),
                           Text(
-                            '${nursery.city}, ${nursery.state} • ${nursery.distanceKm.toStringAsFixed(1)} km away',
+                            '${nursery.city}, ${nursery.state}${nursery.distanceKm == null ? '' : ' • ${nursery.distanceKm!.toStringAsFixed(1)} km away'}',
                             style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey.shade700),
                           ),
                         ],

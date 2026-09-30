@@ -1544,17 +1544,15 @@ final catalogListProvider = FutureProvider<List<Product>>((ref) async {
   final apiClient = ref.watch(apiClientProvider);
   final selectedNursery = ref.watch(selectedNurseryProvider);
 
-  try {
-    final Map<String, dynamic> params = {'limit': 50};
-    if (selectedNursery != null) {
-      params['tenantId'] = selectedNursery.tenantId;
-    }
+  final Map<String, dynamic> params = {'limit': 100};
+  if (selectedNursery != null) {
+    params['tenantId'] = selectedNursery.tenantId;
+  }
 
-    final response = await apiClient.dio.get('/products', queryParameters: params);
-    if (response.statusCode == 200 && response.data != null) {
-      final raw = response.data['data'];
-      if (raw is List && raw.isNotEmpty) {
-        return raw.map((json) {
+  final response = await apiClient.dio.get('/products', queryParameters: params);
+  final raw = response.data?['data'];
+  if (response.statusCode == 200 && raw is List) {
+    return raw.map((json) {
           final p = Product.fromJson(json as Map<String, dynamic>);
           if (selectedNursery != null) {
             return Product(
@@ -1592,21 +1590,8 @@ final catalogListProvider = FutureProvider<List<Product>>((ref) async {
           }
           return p;
         }).toList();
-      }
-    }
-  } catch (_) {
-    // Graceful offline fallback
   }
-
-  // Filter default catalog by selected nursery if set
-  if (selectedNursery != null) {
-    final matched = defaultBotanicalCatalog
-        .where((p) => p.tenantId == selectedNursery.tenantId || p.nurseryName.toLowerCase() == selectedNursery.name.toLowerCase())
-        .toList();
-    if (matched.isNotEmpty) return matched;
-  }
-
-  return defaultBotanicalCatalog;
+  throw StateError('The product service returned an unexpected response.');
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1618,7 +1603,7 @@ final filteredCatalogProvider = Provider<List<Product>>((ref) {
   final selectedCrop = ref.watch(selectedCropProvider);
   final searchQuery = ref.watch(searchQueryProvider).toLowerCase().trim();
 
-  final list = catalogAsync.value ?? defaultBotanicalCatalog;
+  final list = catalogAsync.valueOrNull ?? const <Product>[];
 
   return list.where((p) {
     final matchesSearch = searchQuery.isEmpty ||

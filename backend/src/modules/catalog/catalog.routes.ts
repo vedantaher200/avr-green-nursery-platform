@@ -40,7 +40,7 @@ router.get(
     const { page, limit, search, sortBy, sortOrder, crop, variety, category, categoryId, tenantId: queryTenantId } = req.query as any;
     const isOwnerOrStaff = req.user && req.user.roleName !== 'customer' && req.user.tenantId;
     const tenantId = isOwnerOrStaff
-      ? req.user.tenantId
+      ? req.user?.tenantId
       : ((queryTenantId as string) || (req.headers['x-tenant-id'] as string) || req.tenantId || '33333333-3333-3333-3333-333333333333');
     const offset = (page - 1) * limit;
 

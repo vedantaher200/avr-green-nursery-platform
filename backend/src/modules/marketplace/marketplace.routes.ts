@@ -84,30 +84,12 @@ router.get(
 
     // Compute authentic distance and transparent ranking factors
     let nurseries = result.rows.map((row) => {
-      let distanceKm = 4.2; // default
+      let distanceKm: number | null = null;
       const rowLat = row.geo_lat != null ? parseFloat(row.geo_lat) : null;
       const rowLng = row.geo_lng != null ? parseFloat(row.geo_lng) : null;
 
       if (userLat != null && userLng != null && rowLat != null && rowLng != null) {
         distanceKm = calculateDistanceKm(userLat, userLng, rowLat, rowLng);
-      } else if (city) {
-        const c = city.toLowerCase();
-        const nurseryCity = (row.address?.city ?? '').toLowerCase();
-        if (nurseryCity === c) {
-          distanceKm = 1.2;
-        } else if (c.includes('chandwad') && nurseryCity.includes('chandwad')) {
-          distanceKm = 1.5;
-        } else if (c.includes('chandwad') && nurseryCity.includes('yeola')) {
-          distanceKm = 31.5;
-        } else if (c.includes('chandwad') && nurseryCity.includes('nashik')) {
-          distanceKm = 64.0;
-        } else if (c.includes('yeola') && nurseryCity.includes('angangaon')) {
-          distanceKm = 3.8;
-        } else if (c.includes('yeola') && nurseryCity.includes('yeola')) {
-          distanceKm = 1.8;
-        } else if (c.includes('nashik') && nurseryCity.includes('nashik')) {
-          distanceKm = 2.4;
-        }
       }
 
       const ratingVal = parseFloat(row.rating ?? 4.8);
@@ -122,7 +104,7 @@ router.get(
 
       // ── Explainable 6-Factor Multi-Factor Ranking Score (0 - 100): ─────────────
       // 1. Proximity / Distance (up to 30 pts)
-      const proximityScore = Math.max(0, Math.round(30 - Math.min(distanceKm, 50) * 0.6));
+      const proximityScore = distanceKm == null ? 0 : Math.max(0, Math.round(30 - Math.min(distanceKm, 50) * 0.6));
       // 2. Verified Facility Status (20 pts)
       const verificationScore = isVerifiedVal ? 20 : 0;
       // 3. Farmer Rating (up to 15 pts)
@@ -138,7 +120,7 @@ router.get(
 
       // Determine transparent ranking badge & reason
       let rankingBadge = 'Verified Regional Grower';
-      if (distanceKm <= 3.0) {
+      if (distanceKm != null && distanceKm <= 3.0) {
         rankingBadge = `Nearest Hub (${distanceKm} km)`;
       } else if (ratingVal >= 4.85) {
         rankingBadge = `Top Rated (⭐ ${ratingVal.toFixed(1)})`;
@@ -148,7 +130,8 @@ router.get(
         rankingBadge = `Widest Selection (${varietiesVal}+ Varieties)`;
       }
 
-      const rankingReason = `Ranked ${totalRankScore}/100 based on Proximity (${proximityScore}/30), Verified Status (${verificationScore}/20), Rating (${ratingScore}/15), Farmer Reviews (${reviewScore}/10), Successful Deliveries (${ordersScore}/15), and Recent Activity (${activityScore}/10).`;
+      const proximityReason = distanceKm == null ? 'Distance unavailable' : `Proximity (${proximityScore}/30)`;
+      const rankingReason = `Ranked ${totalRankScore}/100 based on ${proximityReason}, Verified Status (${verificationScore}/20), Rating (${ratingScore}/15), Farmer Reviews (${reviewScore}/10), Successful Deliveries (${ordersScore}/15), and Recent Activity (${activityScore}/10).`;
 
       const nurseryCity = row.address?.city ?? 'Yeola';
       const isExactCityMatch = city ? nurseryCity.toLowerCase().includes(city.toLowerCase()) : true;
@@ -196,8 +179,8 @@ router.get(
         state: row.address?.state ?? 'Maharashtra',
         pincode: row.address?.pincode ?? '423401',
         contactPhone: row.contact_phone ?? '+91 9900000002',
-        geoLat: rowLat ?? 20.0421,
-        geoLng: rowLng ?? 74.4892,
+        geoLat: rowLat,
+        geoLng: rowLng,
         distanceKm,
         activeVarietiesCount: varietiesVal,
         availableCrops: row.available_crops ?? ['Chilli', 'Tomato', 'Capsicum'],
@@ -228,13 +211,13 @@ router.get(
 
       // Sort both groups by ranking score
       exactMatches.sort((a, b) => b.rankingScore - a.rankingScore);
-      otherNearby.sort((a, b) => a.distanceKm - b.distanceKm);
+      otherNearby.sort((a, b) => (a.distanceKm ?? Infinity) - (b.distanceKm ?? Infinity));
 
       nurseries = [...exactMatches, ...otherNearby];
     } else {
       // Sort by requested sort parameter
       if (sortBy === 'distance') {
-        nurseries.sort((a, b) => a.distanceKm - b.distanceKm);
+        nurseries.sort((a, b) => (a.distanceKm ?? Infinity) - (b.distanceKm ?? Infinity));
       } else if (sortBy === 'rating') {
         nurseries.sort((a, b) => b.rating - a.rating);
       } else if (sortBy === 'varieties') {

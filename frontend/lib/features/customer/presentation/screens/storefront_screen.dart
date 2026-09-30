@@ -264,7 +264,7 @@ class StorefrontScreen extends ConsumerWidget {
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              '${selectedNursery.city} • ${selectedNursery.distanceKm} km away • ⭐ ${selectedNursery.rating} (${selectedNursery.reviewCount})',
+                              '${selectedNursery.city}${selectedNursery.distanceKm == null ? '' : ' • ${selectedNursery.distanceKm!.toStringAsFixed(1)} km away'} • ⭐ ${selectedNursery.rating} (${selectedNursery.reviewCount})',
                               style: TextStyle(color: Colors.grey.shade600, fontSize: 11),
                             ),
                           ],
@@ -940,7 +940,8 @@ class StorefrontScreen extends ConsumerWidget {
                                 const SizedBox(width: 4),
                                 Icon(Icons.info_outline, size: 11, color: Colors.grey.shade500),
                                 const Spacer(),
-                                Text('${n.distanceKm} km', style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: AVRColors.terracotta)),
+                                if (n.distanceKm != null)
+                                  Text('${n.distanceKm!.toStringAsFixed(1)} km', style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: AVRColors.terracotta)),
                               ],
                             ),
                           ),
@@ -1164,7 +1165,7 @@ class StorefrontScreen extends ConsumerWidget {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 4),
                 leading: const Icon(Icons.storefront_rounded, color: AVRColors.forestGreen, size: 18),
                 title: Text(n.name, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                subtitle: Text('${n.city} • ${n.distanceKm} km • ⭐ ${n.rating}', style: TextStyle(fontSize: 10, color: Colors.grey.shade600)),
+                subtitle: Text('${n.city}${n.distanceKm == null ? '' : ' • ${n.distanceKm!.toStringAsFixed(1)} km'} • ⭐ ${n.rating}', style: TextStyle(fontSize: 10, color: Colors.grey.shade600)),
                 trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12),
                 onTap: () {
                   ref.read(selectedNurseryProvider.notifier).state = n;

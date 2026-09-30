@@ -81,9 +81,9 @@ class NurseryModel {
   final String state;
   final String pincode;
   final String contactPhone;
-  final double geoLat;
-  final double geoLng;
-  final double distanceKm;
+  final double? geoLat;
+  final double? geoLng;
+  final double? distanceKm;
   final int activeVarietiesCount;
   final List<String> availableCrops;
   final int rankingScore;
@@ -140,7 +140,7 @@ class NurseryModel {
     final double rawRating = double.tryParse(json['rating']?.toString() ?? '4.8') ?? 4.8;
     final int rawReviews = json['reviewCount'] as int? ?? json['review_count'] as int? ?? 326;
     final int varieties = json['activeVarietiesCount'] as int? ?? json['active_varieties_count'] as int? ?? 12;
-    final double dist = double.tryParse(json['distanceKm']?.toString() ?? json['distance_km']?.toString() ?? '3.5') ?? 3.5;
+    final double? dist = double.tryParse(json['distanceKm']?.toString() ?? json['distance_km']?.toString() ?? '');
     final bool verified = json['isVerified'] as bool? ?? json['is_verified'] as bool? ?? true;
     final int successfulOrders = json['successfulOrdersCount'] as int? ?? json['successful_orders_count'] as int? ?? 185;
     final String activity = json['activityText'] as String? ?? 'Active recently';
@@ -154,12 +154,12 @@ class NurseryModel {
         : const RankingFactors();
 
     final int rank = json['rankingScore'] as int? ??
-        (Math.max(0, (30 - dist * 0.6).round()) + (verified ? 20 : 0) + (rawRating / 5.0 * 15).round() + Math.min(10, (rawReviews / 35).round()) + Math.min(15, (successfulOrders / 25).round()) + 10);
+        (Math.max(0, (30 - (dist ?? 50) * 0.6).round()) + (verified ? 20 : 0) + (rawRating / 5.0 * 15).round() + Math.min(10, (rawReviews / 35).round()) + Math.min(15, (successfulOrders / 25).round()) + 10);
 
     String badge = json['rankingBadge'] as String? ?? 'Verified Regional Grower';
     if (successfulOrders >= 300) {
       badge = 'Most Trusted ($successfulOrders+ Orders)';
-    } else if (dist <= 2.5) {
+    } else if (dist != null && dist <= 2.5) {
       badge = 'Nearest Hub (${dist.toStringAsFixed(1)} km)';
     } else if (rawRating >= 4.8) {
       badge = 'Top Rated (⭐ $rawRating)';
@@ -188,8 +188,8 @@ class NurseryModel {
       state: json['state'] as String? ?? (json['address'] is Map ? json['address']['state'] as String? : 'Maharashtra') ?? 'Maharashtra',
       pincode: json['pincode'] as String? ?? (json['address'] is Map ? json['address']['pincode'] as String? : '423401') ?? '423401',
       contactPhone: json['contactPhone'] as String? ?? json['contact_phone'] as String? ?? '+91 9900000002',
-      geoLat: double.tryParse(json['geoLat']?.toString() ?? json['geo_lat']?.toString() ?? '20.0421') ?? 20.0421,
-      geoLng: double.tryParse(json['geoLng']?.toString() ?? json['geo_lng']?.toString() ?? '74.4892') ?? 74.4892,
+      geoLat: double.tryParse(json['geoLat']?.toString() ?? json['geo_lat']?.toString() ?? ''),
+      geoLng: double.tryParse(json['geoLng']?.toString() ?? json['geo_lng']?.toString() ?? ''),
       distanceKm: dist,
       activeVarietiesCount: varieties,
       availableCrops: crops,
