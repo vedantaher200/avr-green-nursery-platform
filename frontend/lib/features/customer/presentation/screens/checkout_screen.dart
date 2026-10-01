@@ -15,10 +15,10 @@ class CheckoutScreen extends ConsumerStatefulWidget {
 
 class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _streetController = TextEditingController(text: '123 Farm House Road, Near Temple');
-  final _cityController = TextEditingController(text: 'Bengaluru');
-  final _stateController = TextEditingController(text: 'Karnataka');
-  final _pincodeController = TextEditingController(text: '560038');
+  final _streetController = TextEditingController();
+  final _cityController = TextEditingController();
+  final _stateController = TextEditingController();
+  final _pincodeController = TextEditingController();
 
   String _selectedPaymentMethod = 'upi';
   bool _isProcessing = false;
@@ -48,7 +48,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     try {
       final order = await runWithNetworkRetry<OrderRecord>(
         context: context,
-        pendingProcessName: 'Placing Order (${cart.items.length} items from ${cart.currentNurseryName})',
+        pendingProcessName:
+            'Placing Order (${cart.items.length} items from ${cart.currentNurseryName})',
         action: () => PlaceOrderService.checkoutAndPlaceOrder(
           ref: ref,
           cart: cart,
@@ -67,7 +68,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         context: context,
         barrierDismissible: false,
         builder: (ctx) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -77,17 +79,22 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   color: AVRColors.forestGreenSurface,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.check_circle, size: 64, color: AVRColors.success),
+                child: const Icon(Icons.check_circle,
+                    size: 64, color: AVRColors.success),
               ),
               const SizedBox(height: 16),
               const Text(
                 'Order Placed! 🌿',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AVRColors.forestGreen),
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AVRColors.forestGreen),
               ),
               const SizedBox(height: 8),
               Text(
                 'Order #${order.orderNumber}',
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
               const SizedBox(height: 4),
               Text(
@@ -96,8 +103,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               ),
               const SizedBox(height: 8),
               Text(
-                'Payment: ${_selectedPaymentMethod.toUpperCase()} (Confirmed)',
-                style: const TextStyle(fontSize: 12, color: AVRColors.success, fontWeight: FontWeight.w600),
+                'Payment method: ${_selectedPaymentMethod.toUpperCase()}',
+                style: const TextStyle(
+                    fontSize: 12,
+                    color: AVRColors.textSecondary,
+                    fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 16),
               Text(
@@ -112,13 +122,15 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AVRColors.forestGreen,
                     foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
                   ),
                   onPressed: () {
                     Navigator.pop(ctx);
                     context.go('/orders');
                   },
-                  child: const Text('View Order & Invoice', style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: const Text('View Order & Invoice',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ),
               TextButton(
@@ -126,7 +138,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   Navigator.pop(ctx);
                   context.go('/storefront');
                 },
-                child: const Text('Continue Shopping', style: TextStyle(color: AVRColors.forestGreen)),
+                child: const Text('Continue Shopping',
+                    style: TextStyle(color: AVRColors.forestGreen)),
               ),
             ],
           ),
@@ -135,7 +148,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Order failed: $e'), backgroundColor: AVRColors.error),
+          SnackBar(
+              content: Text('Order failed: $e'),
+              backgroundColor: AVRColors.error),
         );
       }
     } finally {
@@ -150,7 +165,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     return Scaffold(
       backgroundColor: AVRColors.backgroundLight,
       appBar: AppBar(
-        title: const Text('Checkout & Delivery', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        title: const Text('Checkout & Delivery',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
         backgroundColor: Colors.white,
         foregroundColor: AVRColors.textPrimary,
         elevation: 0,
@@ -172,16 +188,21 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     decoration: BoxDecoration(
                       color: AVRColors.forestGreenSurface,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AVRColors.sage.withValues(alpha: 0.5)),
+                      border: Border.all(
+                          color: AVRColors.sage.withValues(alpha: 0.5)),
                     ),
                     child: const Row(
                       children: [
-                        Icon(Icons.verified_user_outlined, color: AVRColors.forestGreen, size: 22),
+                        Icon(Icons.verified_user_outlined,
+                            color: AVRColors.forestGreen, size: 22),
                         SizedBox(width: 10),
                         Expanded(
                           child: Text(
                             'Botanical Transport Guarantee: Seedlings packed in ventilated, root-safe biodegradable wraps.',
-                            style: TextStyle(fontSize: 12, color: AVRColors.forestGreenDark, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: AVRColors.forestGreenDark,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
                       ],
@@ -197,7 +218,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: Colors.grey.shade200),
                       boxShadow: [
-                        BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 8),
+                        BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.03),
+                            blurRadius: 8),
                       ],
                     ),
                     child: Column(
@@ -208,34 +231,45 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             labelText: 'Street Address / Village / Farm',
                             prefixIcon: Icon(Icons.home_outlined),
                           ),
-                          validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                          validator: (val) =>
+                              val == null || val.isEmpty ? 'Required' : null,
                         ),
                         const SizedBox(height: 12),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                controller: _cityController,
-                                decoration: const InputDecoration(labelText: 'City / Taluka'),
-                                validator: (val) => val == null || val.isEmpty ? 'Required' : null,
-                              ),
-                            ),
+                        LayoutBuilder(builder: (context, constraints) {
+                          final cityField = TextFormField(
+                            controller: _cityController,
+                            decoration: const InputDecoration(
+                                labelText: 'City / Taluka'),
+                            validator: (val) =>
+                                val == null || val.isEmpty ? 'Required' : null,
+                          );
+                          final pincodeField = TextFormField(
+                            controller: _pincodeController,
+                            keyboardType: TextInputType.number,
+                            decoration:
+                                const InputDecoration(labelText: 'Pincode'),
+                            validator: (val) =>
+                                val == null || val.isEmpty ? 'Required' : null,
+                          );
+                          if (constraints.maxWidth < 360) {
+                            return Column(children: [
+                              cityField,
+                              const SizedBox(height: 12),
+                              pincodeField
+                            ]);
+                          }
+                          return Row(children: [
+                            Expanded(child: cityField),
                             const SizedBox(width: 12),
-                            Expanded(
-                              child: TextFormField(
-                                controller: _pincodeController,
-                                keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(labelText: 'Pincode'),
-                                validator: (val) => val == null || val.isEmpty ? 'Required' : null,
-                              ),
-                            ),
-                          ],
-                        ),
+                            Expanded(child: pincodeField)
+                          ]);
+                        }),
                         const SizedBox(height: 12),
                         TextFormField(
                           controller: _stateController,
                           decoration: const InputDecoration(labelText: 'State'),
-                          validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                          validator: (val) =>
+                              val == null || val.isEmpty ? 'Required' : null,
                         ),
                       ],
                     ),
@@ -251,39 +285,59 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: Colors.grey.shade200),
                       boxShadow: [
-                        BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 8),
+                        BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.03),
+                            blurRadius: 8),
                       ],
                     ),
                     child: Column(
                       children: [
                         RadioListTile<String>(
-                          title: const Text('UPI (GPay / PhonePe / Paytm / BHIM)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                          subtitle: const Text('Instant confirmation & digital invoice', style: TextStyle(fontSize: 12)),
-                          secondary: const Icon(Icons.qr_code_2, color: AVRColors.forestGreen),
+                          title: const Text(
+                              'UPI (GPay / PhonePe / Paytm / BHIM)',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 14)),
+                          subtitle: const Text(
+                              'Instant confirmation & digital invoice',
+                              style: TextStyle(fontSize: 12)),
+                          secondary: const Icon(Icons.qr_code_2,
+                              color: AVRColors.forestGreen),
                           activeColor: AVRColors.forestGreen,
                           value: 'upi',
                           groupValue: _selectedPaymentMethod,
-                          onChanged: (val) => setState(() => _selectedPaymentMethod = val!),
+                          onChanged: (val) =>
+                              setState(() => _selectedPaymentMethod = val!),
                         ),
                         const Divider(height: 1),
                         RadioListTile<String>(
-                          title: const Text('Credit / Debit Card', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                          subtitle: const Text('Visa, MasterCard, RuPay', style: TextStyle(fontSize: 12)),
-                          secondary: const Icon(Icons.credit_card, color: AVRColors.terracotta),
+                          title: const Text('Credit / Debit Card',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 14)),
+                          subtitle: const Text('Visa, MasterCard, RuPay',
+                              style: TextStyle(fontSize: 12)),
+                          secondary: const Icon(Icons.credit_card,
+                              color: AVRColors.terracotta),
                           activeColor: AVRColors.forestGreen,
                           value: 'card',
                           groupValue: _selectedPaymentMethod,
-                          onChanged: (val) => setState(() => _selectedPaymentMethod = val!),
+                          onChanged: (val) =>
+                              setState(() => _selectedPaymentMethod = val!),
                         ),
                         const Divider(height: 1),
                         RadioListTile<String>(
-                          title: const Text('Cash on Delivery (COD)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                          subtitle: const Text('Pay when plants arrive at your farm or home', style: TextStyle(fontSize: 12)),
-                          secondary: const Icon(Icons.local_shipping_outlined, color: AVRColors.warning),
+                          title: const Text('Cash on Delivery (COD)',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 14)),
+                          subtitle: const Text(
+                              'Pay when plants arrive at your farm or home',
+                              style: TextStyle(fontSize: 12)),
+                          secondary: const Icon(Icons.local_shipping_outlined,
+                              color: AVRColors.warning),
                           activeColor: AVRColors.forestGreen,
                           value: 'cash',
                           groupValue: _selectedPaymentMethod,
-                          onChanged: (val) => setState(() => _selectedPaymentMethod = val!),
+                          onChanged: (val) =>
+                              setState(() => _selectedPaymentMethod = val!),
                         ),
                       ],
                     ),
@@ -300,7 +354,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: Colors.grey.shade200),
                       boxShadow: [
-                        BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 8),
+                        BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.03),
+                            blurRadius: 8),
                       ],
                     ),
                     child: Column(
@@ -310,7 +366,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             padding: const EdgeInsets.symmetric(vertical: 4),
                             child: Row(
                               children: [
-                                Text('${item.quantity}x', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AVRColors.forestGreen)),
+                                Text('${item.quantity}x',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13,
+                                        color: AVRColors.forestGreen)),
                                 const SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
@@ -320,7 +380,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                     style: const TextStyle(fontSize: 13),
                                   ),
                                 ),
-                                Text('₹${item.totalPrice.toStringAsFixed(0)}', style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+                                Text('₹${item.totalPrice.toStringAsFixed(0)}',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 13)),
                               ],
                             ),
                           ),
@@ -329,10 +392,15 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text('Total Amount to Pay:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                            const Text('Total Amount to Pay:',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15)),
                             Text(
                               '₹${cart.grandTotal.toStringAsFixed(2)}',
-                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AVRColors.forestGreen),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  color: AVRColors.forestGreen),
                             ),
                           ],
                         ),
@@ -350,16 +418,24 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         backgroundColor: AVRColors.forestGreen,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14)),
                         elevation: 0,
                       ),
                       onPressed: _isProcessing ? null : _handlePlaceOrder,
                       icon: _isProcessing
-                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                  color: Colors.white, strokeWidth: 2))
                           : const Icon(Icons.check_circle_outline),
                       label: Text(
-                        _isProcessing ? 'Confirming Order...' : 'Confirm Order & Pay',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        _isProcessing
+                            ? 'Confirming Order...'
+                            : 'Confirm Order & Pay',
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -378,7 +454,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       padding: const EdgeInsets.only(bottom: 8, left: 4),
       child: Text(
         title,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: AVRColors.forestGreenDark),
+        style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+            color: AVRColors.forestGreenDark),
       ),
     );
   }

@@ -30,6 +30,7 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
   @override
   Widget build(BuildContext context) {
     final products = ref.watch(filteredCatalogProvider);
+    final catalogState = ref.watch(catalogListProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
     final selectedCrop = ref.watch(selectedCropProvider);
     final cropOptions = ref.watch(categoryCropsProvider);
@@ -41,12 +42,16 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
         title: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.storefront_rounded, color: AVRColors.forestGreen, size: 20),
+            Icon(Icons.storefront_rounded,
+                color: AVRColors.forestGreen, size: 20),
             SizedBox(width: 8),
             Flexible(
               child: Text(
                 'Farmer Marketplace',
-                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16.5, color: AVRColors.forestGreenDark),
+                style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 16.5,
+                    color: AVRColors.forestGreenDark),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -61,7 +66,8 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
               alignment: Alignment.center,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.shopping_bag_outlined, color: AVRColors.forestGreenDark, size: 24),
+                  icon: const Icon(Icons.shopping_bag_outlined,
+                      color: AVRColors.forestGreenDark, size: 24),
                   onPressed: () => context.push('/cart'),
                 ),
                 if (cart.totalItemCount > 0)
@@ -74,11 +80,15 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
                         color: AVRColors.terracotta,
                         shape: BoxShape.circle,
                       ),
-                      constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
+                      constraints:
+                          const BoxConstraints(minWidth: 16, minHeight: 16),
                       child: Text(
                         '${cart.totalItemCount}',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -95,12 +105,15 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
             padding: const EdgeInsets.fromLTRB(12, 4, 12, 8),
             child: TextField(
               controller: _searchCtrl,
-              onChanged: (val) => ref.read(searchQueryProvider.notifier).state = val,
+              onChanged: (val) =>
+                  ref.read(searchQueryProvider.notifier).state = val,
               style: const TextStyle(fontSize: 13),
               decoration: InputDecoration(
                 hintText: 'Search variety (e.g. Abhinav, Balram, Indra)...',
-                hintStyle: TextStyle(color: Colors.grey.shade500, fontSize: 12.5),
-                prefixIcon: const Icon(Icons.search_rounded, color: AVRColors.forestGreen, size: 19),
+                hintStyle:
+                    TextStyle(color: Colors.grey.shade500, fontSize: 12.5),
+                prefixIcon: const Icon(Icons.search_rounded,
+                    color: AVRColors.forestGreen, size: 19),
                 suffixIcon: _searchCtrl.text.isNotEmpty
                     ? IconButton(
                         icon: const Icon(Icons.clear, size: 16),
@@ -112,8 +125,11 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
                     : null,
                 filled: true,
                 fillColor: const Color(0xFFF1F5F2),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none),
               ),
             ),
           ),
@@ -143,11 +159,16 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
                     fontSize: 11,
                   ),
                   visualDensity: VisualDensity.compact,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                  side: BorderSide(color: isSelected ? AVRColors.forestGreen : Colors.transparent),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                  side: BorderSide(
+                      color: isSelected
+                          ? AVRColors.forestGreen
+                          : Colors.transparent),
                   onSelected: (_) {
                     ref.read(selectedCategoryProvider.notifier).state = cat.id;
-                    ref.read(selectedCropProvider.notifier).state = 'all'; // reset crop when category changes
+                    ref.read(selectedCropProvider.notifier).state =
+                        'all'; // reset crop when category changes
                   },
                 );
               },
@@ -166,25 +187,32 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
                 separatorBuilder: (_, __) => const SizedBox(width: 5),
                 itemBuilder: (context, index) {
                   final item = cropOptions[index];
-                  final isSelected = selectedCrop.toLowerCase() == item['crop']!.toLowerCase();
+                  final isSelected =
+                      selectedCrop.toLowerCase() == item['crop']!.toLowerCase();
                   return ChoiceChip(
-                    avatar: Text(item['emoji']!, style: const TextStyle(fontSize: 10)),
+                    avatar: Text(item['emoji']!,
+                        style: const TextStyle(fontSize: 10)),
                     label: Text(item['label']!),
                     selected: isSelected,
                     selectedColor: AVRColors.forestGreenDark,
                     backgroundColor: Colors.white,
                     labelStyle: TextStyle(
                       color: isSelected ? Colors.white : Colors.grey.shade800,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                      fontWeight:
+                          isSelected ? FontWeight.bold : FontWeight.normal,
                       fontSize: 10.5,
                     ),
                     visualDensity: VisualDensity.compact,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
                     side: BorderSide(
-                      color: isSelected ? AVRColors.forestGreenDark : Colors.grey.shade300,
+                      color: isSelected
+                          ? AVRColors.forestGreenDark
+                          : Colors.grey.shade300,
                     ),
                     onSelected: (_) {
-                      ref.read(selectedCropProvider.notifier).state = item['crop']!;
+                      ref.read(selectedCropProvider.notifier).state =
+                          item['crop']!;
                     },
                   );
                 },
@@ -200,15 +228,23 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
                 Expanded(
                   child: Text(
                     '${products.length} Varieties Available',
-                    style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold, color: Colors.grey.shade800),
+                    style: TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey.shade800),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 const SizedBox(width: 8),
                 Flexible(
                   child: Text(
-                    selectedCrop != 'all' ? 'Filtering: $selectedCrop' : 'All Regional Varieties',
-                    style: const TextStyle(fontSize: 10.5, color: AVRColors.forestGreen, fontWeight: FontWeight.w700),
+                    selectedCrop != 'all'
+                        ? 'Filtering: $selectedCrop'
+                        : 'All Regional Varieties',
+                    style: const TextStyle(
+                        fontSize: 10.5,
+                        color: AVRColors.forestGreen,
+                        fontWeight: FontWeight.w700),
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.end,
                   ),
@@ -219,67 +255,102 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
 
           // ── 5. Compact 2-Column Responsive Marketplace Grid ───────────────
           Expanded(
-            child: products.isEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.search_off_rounded, size: 48, color: Colors.grey.shade400),
-                        const SizedBox(height: 8),
-                        Text(
-                          'No varieties found matching your criteria',
-                          style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+            child: catalogState.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : catalogState.hasError
+                    ? Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(24),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.cloud_off_outlined, size: 40),
+                              const SizedBox(height: 8),
+                              const Text(
+                                  'Marketplace is unavailable. Check your connection and try again.',
+                                  textAlign: TextAlign.center),
+                              TextButton(
+                                  onPressed: () =>
+                                      ref.invalidate(catalogListProvider),
+                                  child: const Text('Retry')),
+                            ],
+                          ),
                         ),
-                        const SizedBox(height: 6),
-                        TextButton(
-                          onPressed: () {
-                            ref.read(selectedCategoryProvider.notifier).state = 'all';
-                            ref.read(selectedCropProvider.notifier).state = 'all';
-                            _searchCtrl.clear();
-                            ref.read(searchQueryProvider.notifier).state = '';
-                          },
-                          child: const Text('Reset All Filters', style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                      ],
-                    ),
-                  )
-                : LayoutBuilder(
-                    builder: (context, constraints) {
-                      final width = constraints.maxWidth;
-                      final int crossAxisCount;
-                      final double childAspectRatio;
+                      )
+                    : products.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.search_off_rounded,
+                                    size: 48, color: Colors.grey.shade400),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'No varieties found matching your criteria',
+                                  style: TextStyle(
+                                      color: Colors.grey.shade600,
+                                      fontSize: 13),
+                                ),
+                                const SizedBox(height: 6),
+                                TextButton(
+                                  onPressed: () {
+                                    ref
+                                        .read(selectedCategoryProvider.notifier)
+                                        .state = 'all';
+                                    ref
+                                        .read(selectedCropProvider.notifier)
+                                        .state = 'all';
+                                    _searchCtrl.clear();
+                                    ref
+                                        .read(searchQueryProvider.notifier)
+                                        .state = '';
+                                  },
+                                  child: const Text('Reset All Filters',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              ],
+                            ),
+                          )
+                        : LayoutBuilder(
+                            builder: (context, constraints) {
+                              final width = constraints.maxWidth;
+                              final int crossAxisCount;
+                              final double childAspectRatio;
 
-                      if (width >= 1200) {
-                        crossAxisCount = 5;
-                        childAspectRatio = 0.74;
-                      } else if (width >= 900) {
-                        crossAxisCount = 4;
-                        childAspectRatio = 0.73;
-                      } else if (width >= 600) {
-                        crossAxisCount = 3;
-                        childAspectRatio = 0.71;
-                      } else {
-                        crossAxisCount = 2;
-                        childAspectRatio = 0.67;
-                      }
+                              if (width >= 1200) {
+                                crossAxisCount = 5;
+                                childAspectRatio = 0.74;
+                              } else if (width >= 900) {
+                                crossAxisCount = 4;
+                                childAspectRatio = 0.73;
+                              } else if (width >= 600) {
+                                crossAxisCount = 3;
+                                childAspectRatio = 0.71;
+                              } else {
+                                crossAxisCount = 2;
+                                childAspectRatio = 0.67;
+                              }
 
-                      return GridView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.fromLTRB(12, 6, 12, 80),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: crossAxisCount,
-                          childAspectRatio: childAspectRatio,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                        ),
-                        itemCount: products.length,
-                        itemBuilder: (context, index) {
-                          final product = products[index];
-                          return CompactProductCard(product: product);
-                        },
-                      );
-                    },
-                  ),
+                              return GridView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                padding:
+                                    const EdgeInsets.fromLTRB(12, 6, 12, 80),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: crossAxisCount,
+                                  childAspectRatio: childAspectRatio,
+                                  crossAxisSpacing: 12,
+                                  mainAxisSpacing: 12,
+                                ),
+                                itemCount: products.length,
+                                itemBuilder: (context, index) {
+                                  final product = products[index];
+                                  return CompactProductCard(product: product);
+                                },
+                              );
+                            },
+                          ),
           ),
         ],
       ),

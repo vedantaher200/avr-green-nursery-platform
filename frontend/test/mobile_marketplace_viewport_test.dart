@@ -5,12 +5,43 @@ import 'package:avrgreen/features/catalog/presentation/screens/catalog_screen.da
 import 'package:avrgreen/features/catalog/presentation/screens/product_detail_screen.dart';
 import 'package:avrgreen/features/catalog/presentation/widgets/compact_product_card.dart';
 import 'package:avrgreen/features/catalog/data/models/product_model.dart';
+import 'package:avrgreen/features/catalog/data/providers/catalog_provider.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  const catalogTestProduct = Product(
+    id: '88888888-8888-8888-8888-888888888801',
+    sku: 'TOM-ABH-104',
+    commonName: 'Hybrid Tomato',
+    scientificName: 'Solanum lycopersicum F1',
+    crop: 'Tomato',
+    variety: 'Abhinav F1 Hybrid Tomato',
+    sellingUnit: 'tray',
+    traySize: 104,
+    trayCapacity: 104,
+    price: 260,
+    plantPrice: 2.5,
+    trayPrice: 260,
+    bulkPrice: 2.1,
+    categoryId: 'vegetables',
+    categoryName: 'Vegetable Plants',
+    nurseryName: 'Chandwad Agro Nursery Hub',
+    nurseryRating: 4.8,
+    productRating: 4.9,
+    reviewCount: 164,
+    readyStock: 850,
+    availableStock: 850,
+    care: CareInstructions(
+      sunlight: 'Full Sun',
+      watering: 'Moderate',
+      fertilizer: 'NPK',
+      temperature: '18-32°C',
+    ),
+  );
 
   group('Amazon-Style Compact Marketplace Mobile Viewport Verification', () {
-    testWidgets('Validates CompactProductCard displays required fields without overflow on mobile width',
+    testWidgets(
+        'Validates CompactProductCard displays required fields without overflow on mobile width',
         (tester) async {
       // Set typical Android / iPhone mobile screen dimensions (390 x 844)
       tester.view.physicalSize = const Size(390, 844);
@@ -48,7 +79,11 @@ void main() {
       );
 
       await tester.pumpWidget(
-        const ProviderScope(
+        ProviderScope(
+          overrides: [
+            catalogListProvider
+                .overrideWith((ref) async => [catalogTestProduct])
+          ],
           child: MaterialApp(
             home: Scaffold(
               body: SizedBox(
@@ -74,14 +109,19 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('Validates CatalogScreen renders 2-column grid and categories on mobile viewport',
+    testWidgets(
+        'Validates CatalogScreen renders 2-column grid and categories on mobile viewport',
         (tester) async {
       tester.view.physicalSize = const Size(390, 844);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
 
       await tester.pumpWidget(
-        const ProviderScope(
+        ProviderScope(
+          overrides: [
+            catalogListProvider
+                .overrideWith((ref) async => [catalogTestProduct])
+          ],
           child: MaterialApp(
             home: CatalogScreen(),
           ),
@@ -104,16 +144,22 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('Validates ProductDetailScreen renders pricing tiers and field agronomy on mobile viewport',
+    testWidgets(
+        'Validates ProductDetailScreen renders pricing tiers and field agronomy on mobile viewport',
         (tester) async {
       tester.view.physicalSize = const Size(390, 844);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
 
       await tester.pumpWidget(
-        const ProviderScope(
+        ProviderScope(
+          overrides: [
+            catalogListProvider
+                .overrideWith((ref) async => [catalogTestProduct])
+          ],
           child: MaterialApp(
-            home: ProductDetailScreen(productId: '88888888-8888-8888-8888-888888888801'),
+            home: ProductDetailScreen(
+                productId: '88888888-8888-8888-8888-888888888801'),
           ),
         ),
       );
