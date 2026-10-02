@@ -76,4 +76,50 @@ router.patch('/notifications/:id/read', validate({ params: uuidParam }), asyncHa
 router.get('/admin/tenants', requireRoles('super_admin'), asyncHandler(async (_req,res)=>{const r=await pool.query(`SELECT t.*,sp.name AS plan_name,COUNT(u.id) AS user_count FROM tenants t LEFT JOIN subscription_plans sp ON sp.id=t.subscription_plan_id LEFT JOIN users u ON u.tenant_id=t.id GROUP BY t.id,sp.name ORDER BY t.created_at DESC`);res.json(successResponse(r.rows));}));
 router.patch('/admin/tenants/:id/status', requireRoles('super_admin'), validate({ params: uuidParam, body: z.object({ status:z.enum(['active','suspended','trial']) }) }), asyncHandler(async(req,res)=>{const r=await pool.query('UPDATE tenants SET status=$1,updated_at=NOW() WHERE id=$2 RETURNING *',[req.body.status,req.params.id]);if(!r.rows[0])throw new NotFoundError('Tenant');res.json(successResponse(r.rows[0]));}));
 router.get('/admin/audit-logs', requireRoles('super_admin'), asyncHandler(async(_req,res)=>{const r=await pool.query('SELECT a.*,u.email,t.name AS tenant_name FROM audit_logs a LEFT JOIN users u ON u.id=a.user_id LEFT JOIN tenants t ON t.id=a.tenant_id ORDER BY a.created_at DESC LIMIT 200');res.json(successResponse(r.rows));}));
+
+const locationDto = z.object({
+  name: z.string().min(2),
+  address_line: z.string().optional(),
+  area: z.string().optional(),
+  taluka: z.string().optional(),
+  city: z.string().optional(),
+  district: z.string().optional(),
+  state: z.string().optional(),
+  pincode: z.string().optional(),
+  geo_lat: z.number().optional().nullable(),
+  geo_lng: z.number().optional().nullable(),
+  contact_phone: z.string().optional(),
+  is_published: z.boolean().default(false)
+});
+
+router.get('/locations', requireRoles('owner', 'manager'), asyncHandler(async (req, res) => {
+  const result = await pool.query('SELECT * FROM locations WHERE tenant_id = $1 ORDER BY created_at ASC', [tenant(req.tenantId)]);
+  res.json(successResponse(result.rows));
+}));
+
+router.put('/locations/:id', requireRoles('owner', 'manager'), validate({ params: uuidParam, body: locationDto }), asyncHandler(async (req, res) => {
+  const b = req.body;
+  const result = await pool.query(`
+    UPDATE locations SET
+      name = COALESCE($1, name),
+      address_line = $2,
+      area = $3,
+      taluka = $4,
+      city = $5,
+      district = $6,
+      state = $7,
+      pincode = $8,
+      geo_lat = $9,
+      geo_lng = $10,
+      contact_phone = COALESCE($11, contact_phone),
+      is_published = $12,
+      updated_at = NOW()
+    WHERE id = $13 AND tenant_id = $14
+    RETURNING *
+  `, [b.name, b.address_line, b.area, b.taluka, b.city, b.district, b.state, b.pincode, b.geo_lat, b.geo_lng, b.contact_phone, b.is_published, req.params.id, tenant(req.tenantId)]);
+  
+  if (!result.rows[0]) throw new NotFoundError('Location not found or unauthorized');
+  res.json(successResponse(result.rows[0], 'Location updated successfully'));
+}));
+
 export default router;

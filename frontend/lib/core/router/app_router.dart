@@ -22,6 +22,7 @@ import '../../features/report/presentation/screens/reports_screen.dart';
 import '../../features/superadmin/presentation/screens/superadmin_screen.dart';
 import '../../features/customer/presentation/screens/farmer_offers_screen.dart';
 import '../../features/dashboard/presentation/screens/owner_offers_screen.dart';
+import '../../features/dashboard/presentation/screens/manage_location_screen.dart';
 import '../../features/auth/data/providers/auth_provider.dart';
 import '../shell/main_shell.dart';
 
@@ -130,6 +131,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: '/cart', builder: (_, __) => const CartScreen()),
           GoRoute(path: '/offers', builder: (_, __) => const FarmerOffersScreen()),
           GoRoute(path: '/owner/offers', builder: (_, __) => const OwnerOffersScreen()),
+          GoRoute(path: '/owner/location', builder: (_, __) => const ManageLocationScreen()),
           GoRoute(
             path: '/calendar',
             builder: (context, _) {

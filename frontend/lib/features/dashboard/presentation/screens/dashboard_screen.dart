@@ -125,6 +125,13 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                             ),
                             const SizedBox(width: 8),
                             _buildQuickActionChip(
+                              icon: Icons.location_on,
+                              label: 'Manage Location',
+                              color: AVRColors.forestGreen,
+                              onTap: () => context.push('/owner/location'),
+                            ),
+                            const SizedBox(width: 8),
+                            _buildQuickActionChip(
                               icon: Icons.inventory_2_outlined,
                               label: 'Stock Adjust',
                               color: AVRColors.terracotta,
