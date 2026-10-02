@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../data/providers/catalog_provider.dart';
 import '../widgets/compact_product_card.dart';
+import '../widgets/category_card.dart';
 import '../../../customer/data/providers/cart_provider.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -136,9 +137,9 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
 
           // ── 2. Primary Category Horizontal Rail ────────────────────────────
           Container(
-            height: 42,
+            height: 80,
             color: Colors.white,
-            padding: const EdgeInsets.only(bottom: 6),
+            padding: const EdgeInsets.only(bottom: 8),
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -147,30 +148,7 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
               itemBuilder: (context, index) {
                 final cat = marketplaceCategories[index];
                 final isSelected = selectedCategory == cat.id;
-                return ChoiceChip(
-                  avatar: Text(cat.emoji, style: const TextStyle(fontSize: 11)),
-                  label: Text(cat.label),
-                  selected: isSelected,
-                  selectedColor: AVRColors.forestGreen,
-                  backgroundColor: const Color(0xFFF1F5F2),
-                  labelStyle: TextStyle(
-                    color: isSelected ? Colors.white : AVRColors.textPrimary,
-                    fontWeight: isSelected ? FontWeight.w800 : FontWeight.w500,
-                    fontSize: 11,
-                  ),
-                  visualDensity: VisualDensity.compact,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16)),
-                  side: BorderSide(
-                      color: isSelected
-                          ? AVRColors.forestGreen
-                          : Colors.transparent),
-                  onSelected: (_) {
-                    ref.read(selectedCategoryProvider.notifier).state = cat.id;
-                    ref.read(selectedCropProvider.notifier).state =
-                        'all'; // reset crop when category changes
-                  },
-                );
+                return CategoryCard(category: cat, isSelected: isSelected);
               },
             ),
           ),
