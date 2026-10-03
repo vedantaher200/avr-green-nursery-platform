@@ -102,7 +102,7 @@ export function createApp(): Application {
   app.use(`${apiBase}/invoices`,  invoiceRoutes);
   app.use(`${apiBase}/marketplace`, marketplaceRoutes);
   app.use(`${apiBase}`, offersRoutes);
-  app.use(`${apiBase}`, managementRoutes);
+  app.use(`${apiBase}/management`, managementRoutes);
 
   // ── 404 catch-all ──────────────────────────────────────────────────────────
   app.use((req: Request, res: Response) => {

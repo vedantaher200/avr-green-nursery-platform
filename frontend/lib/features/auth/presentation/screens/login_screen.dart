@@ -57,9 +57,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     } catch (error) {
       if (mounted) {
+        String msg = 'Unable to sign in right now. Please try again.';
+        final errStr = error.toString();
+        if (errStr.contains('connection error') || errStr.contains('XMLHttpRequest')) {
+          msg = 'Server is currently unavailable. Please try again.';
+        } else if (errStr.contains('401') || errStr.contains('404') || errStr.contains('Invalid')) {
+          msg = 'Invalid mobile number or PIN.';
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Farmer sign in failed: $error'),
+            content: Text(msg),
             backgroundColor: AVRColors.error,
           ),
         );
@@ -89,9 +96,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     } catch (error) {
       if (mounted) {
+        String msg = 'Unable to sign in right now. Please try again.';
+        final errStr = error.toString();
+        if (errStr.contains('connection error') || errStr.contains('XMLHttpRequest')) {
+          msg = 'Server is currently unavailable. Please try again.';
+        } else if (errStr.contains('401') || errStr.contains('404') || errStr.contains('Invalid')) {
+          msg = 'Invalid email or password.';
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Nursery sign in failed: $error'),
+            content: Text(msg),
             backgroundColor: AVRColors.error,
           ),
         );

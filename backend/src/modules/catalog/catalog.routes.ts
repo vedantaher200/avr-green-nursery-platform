@@ -44,8 +44,16 @@ router.get(
       : ((queryTenantId as string) || (req.headers['x-tenant-id'] as string) || req.tenantId || '33333333-3333-3333-3333-333333333333');
     const offset = (page - 1) * limit;
 
-    const params: unknown[] = [tenantId];
     let extraFilters = '';
+    const params: unknown[] = [];
+
+    // If owner/staff, force their tenant. If customer, use provided tenant or allow all (multi-nursery marketplace).
+    let targetTenantId = isOwnerOrStaff ? req.user?.tenantId : (queryTenantId as string);
+
+    if (targetTenantId) {
+      params.push(targetTenantId);
+      extraFilters += ` AND p.tenant_id = $${params.length}`;
+    }
 
     if (search) {
       params.push(`%${search}%`);
@@ -83,7 +91,7 @@ router.get(
     const countQuery = `
       SELECT COUNT(DISTINCT p.id) FROM products p
       LEFT JOIN categories c ON c.id = p.category_id
-      WHERE p.tenant_id = $1 AND p.deleted_at IS NULL
+      WHERE p.deleted_at IS NULL AND p.status = 'active'
       ${extraFilters}
     `;
 
@@ -97,13 +105,13 @@ router.get(
              n.name AS nursery_name,
              COALESCE(n.rating, 4.8) AS nursery_rating,
              COALESCE(n.review_count, 128) AS review_count,
-             COALESCE(SUM(i.quantity_available), 0) AS total_stock
+             COALESCE(SUM(i.quantity_available), 0)::INT AS total_stock
       FROM products p
       LEFT JOIN categories c ON c.id = p.category_id
       LEFT JOIN suppliers s ON s.id = p.supplier_id
       LEFT JOIN nurseries n ON n.tenant_id = p.tenant_id
       LEFT JOIN inventory i ON i.product_id = p.id
-      WHERE p.tenant_id = $1 AND p.deleted_at IS NULL
+      WHERE p.deleted_at IS NULL AND p.status = 'active'
       ${extraFilters}
       GROUP BY p.id, c.name, s.name, n.name, n.rating, n.review_count
       ORDER BY ${orderCol} ${orderDir}

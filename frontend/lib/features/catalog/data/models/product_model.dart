@@ -204,8 +204,14 @@ class Product {
     final parsedPlantPrice = double.tryParse(json['plant_price']?.toString() ?? '') ?? rawPrice;
     final parsedTrayPrice = double.tryParse(json['tray_price']?.toString() ?? '');
     final parsedBulkPrice = double.tryParse(json['bulk_price']?.toString() ?? '');
-    final parsedAvail = json['quantity_available'] as int? ?? json['total_stock'] as int? ?? 50;
-    final parsedReady = json['ready_stock'] as int? ?? parsedAvail;
+    int? parseInt(dynamic val) {
+      if (val == null) return null;
+      if (val is int) return val;
+      return int.tryParse(val.toString());
+    }
+
+    final parsedAvail = parseInt(json['quantity_available']) ?? parseInt(json['total_stock']) ?? 50;
+    final parsedReady = parseInt(json['ready_stock']) ?? parsedAvail;
 
     return Product(
       id: json['id'] as String,
