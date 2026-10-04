@@ -264,8 +264,8 @@ router.get(
               p.price, p.plant_price, p.tray_price, p.bulk_price, p.tray_capacity,
               p.future_stock, p.expected_ready_date, p.min_order_qty, p.is_prebookable,
               p.stock_state, p.images,
-              COALESCE(SUM(i.quantity_available), 0) AS ready_stock,
-              COALESCE(SUM(i.quantity_reserved), 0) AS reserved_stock
+              COALESCE(SUM(i.quantity_available), 0)::int AS ready_stock,
+              COALESCE(SUM(i.quantity_reserved), 0)::int AS reserved_stock
        FROM products p
        LEFT JOIN inventory i ON i.product_id = p.id
        WHERE p.tenant_id = $1 AND p.deleted_at IS NULL
@@ -301,8 +301,8 @@ router.get(
          p.crop,
          p.variety,
          COUNT(DISTINCT pnr.id) AS interested_farmers_count,
-         COALESCE(SUM(pnr.desired_quantity), 0) AS notify_desired_quantity,
-         COALESCE(SUM(pb.total_plants), 0) AS prebooked_plants_count,
+         COALESCE(SUM(pnr.desired_quantity), 0)::int AS notify_desired_quantity,
+         COALESCE(SUM(pb.total_plants), 0)::int AS prebooked_plants_count,
          COUNT(DISTINCT pb.id) AS prebook_orders_count
        FROM products p
        LEFT JOIN product_notify_requests pnr ON pnr.product_id = p.id AND pnr.status = 'active'
@@ -380,8 +380,8 @@ router.get(
            p.variety,
            p.stock_state,
            COUNT(DISTINCT pnr.id) AS interested_farmers_count,
-           COALESCE(SUM(pnr.desired_quantity), 0) AS notify_desired_quantity,
-           COALESCE(SUM(pb.total_plants), 0) AS prebooked_plants_count,
+           COALESCE(SUM(pnr.desired_quantity), 0)::int AS notify_desired_quantity,
+           COALESCE(SUM(pb.total_plants), 0)::int AS prebooked_plants_count,
            COUNT(DISTINCT pb.id) AS prebook_orders_count
          FROM products p
          LEFT JOIN product_notify_requests pnr ON pnr.product_id = p.id AND pnr.status = 'active'

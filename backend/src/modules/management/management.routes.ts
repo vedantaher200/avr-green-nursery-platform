@@ -102,21 +102,22 @@ router.put('/locations/:id', requireRoles('owner', 'manager'), validate({ params
   const result = await pool.query(`
     UPDATE locations SET
       name = COALESCE($1, name),
-      address_line = $2,
-      area = $3,
-      taluka = $4,
-      city = $5,
-      district = $6,
-      state = $7,
-      pincode = $8,
+      address = jsonb_build_object(
+        'street', $2::text,
+        'area', $3::text,
+        'taluka', $4::text,
+        'city', $5::text,
+        'district', $6::text,
+        'state', $7::text,
+        'pincode', $8::text
+      ),
       geo_lat = $9,
       geo_lng = $10,
       contact_phone = COALESCE($11, contact_phone),
-      is_published = $12,
       updated_at = NOW()
-    WHERE id = $13 AND tenant_id = $14
+    WHERE id = $12 AND tenant_id = $13
     RETURNING *
-  `, [b.name, b.address_line, b.area, b.taluka, b.city, b.district, b.state, b.pincode, b.geo_lat, b.geo_lng, b.contact_phone, b.is_published, req.params.id, tenant(req.tenantId)]);
+  `, [b.name, b.address_line, b.area, b.taluka, b.city, b.district, b.state, b.pincode, b.geo_lat, b.geo_lng, b.contact_phone, req.params.id, tenant(req.tenantId)]);
   
   if (!result.rows[0]) throw new NotFoundError('Location not found or unauthorized');
   res.json(successResponse(result.rows[0], 'Location updated successfully'));

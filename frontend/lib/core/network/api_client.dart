@@ -6,10 +6,7 @@ class ApiClient {
   ApiClient(this._storage)
       : dio = Dio(BaseOptions(
           baseUrl: const String.fromEnvironment('API_URL',
-              // `localhost` works for Flutter web and Windows, which are the
-              // supported local-development targets. Android emulators should
-              // supply `--dart-define=API_URL=http://10.0.2.2:5000/api/v1`.
-              defaultValue: 'http://localhost:5000/api/v1'),
+              defaultValue: 'http://localhost:5000/api/v1/'),
           connectTimeout: const Duration(seconds: 12),
           receiveTimeout: const Duration(seconds: 20),
           headers: const {'Content-Type': 'application/json'},
@@ -21,6 +18,9 @@ class ApiClient {
   void configure() {
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (options, handler) async {
+      if (options.path.startsWith('/')) {
+        options.path = options.path.substring(1);
+      }
       final token = await _storage.read(key: 'access_token');
       if (token != null) options.headers['Authorization'] = 'Bearer $token';
       handler.next(options);

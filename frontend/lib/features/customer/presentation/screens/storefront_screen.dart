@@ -1670,11 +1670,29 @@ class StorefrontScreen extends ConsumerWidget {
         return;
       }
 
-      // Read real GPS position
-      final position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-        timeLimit: const Duration(seconds: 8),
-      );
+      Position position;
+      try {
+        position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+          timeLimit: const Duration(seconds: 8),
+        );
+      } catch (e) {
+        // Fallback to default location
+        ref.read(selectedLocationProvider.notifier).state = supportedLocations.first;
+        if (dialogContext.mounted) {
+          Navigator.pop(dialogContext);
+        }
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('GPS unavailable. Falling back to default region.'),
+              backgroundColor: AVRColors.warning,
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
+        return;
+      }
 
       String cityName = 'Current GPS Location';
       String districtName = 'Nashik Region';
