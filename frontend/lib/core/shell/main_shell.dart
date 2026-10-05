@@ -348,6 +348,11 @@ List<_NavItem> _getNavItemsForRole(String role, AppLanguage lang) {
             icon: Icons.bar_chart_outlined,
             activeIcon: Icons.bar_chart_rounded,
             route: '/reports'),
+        const _NavItem(
+            label: 'Profile',
+            icon: Icons.business_outlined,
+            activeIcon: Icons.business_rounded,
+            route: '/owner/profile'),
       ];
     case 'staff':
       return [

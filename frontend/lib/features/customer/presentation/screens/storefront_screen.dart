@@ -852,7 +852,7 @@ class StorefrontScreen extends ConsumerWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(14),
           onTap: () {
-            ref.read(selectedNurseryProvider.notifier).state = n;
+            context.push('/nursery/${n.id}');
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,0 +1,1 @@
+import 'package:dio/dio.dart'; void main() async { var dio = Dio(BaseOptions(baseUrl: 'http://localhost:5000/api/v1')); try { await dio.get('/management/locations'); } on DioException catch (e) { print('URL CALLED: ' + e.requestOptions.uri.toString()); } }  

@@ -21,8 +21,10 @@ import '../../features/customer/presentation/screens/profile_screen.dart';
 import '../../features/report/presentation/screens/reports_screen.dart';
 import '../../features/superadmin/presentation/screens/superadmin_screen.dart';
 import '../../features/customer/presentation/screens/farmer_offers_screen.dart';
+import '../../features/customer/presentation/screens/public_nursery_storefront_screen.dart';
 import '../../features/dashboard/presentation/screens/owner_offers_screen.dart';
 import '../../features/dashboard/presentation/screens/manage_location_screen.dart';
+import '../../features/dashboard/presentation/screens/owner_business_profile_screen.dart';
 import '../../features/auth/data/providers/auth_provider.dart';
 import '../shell/main_shell.dart';
 
@@ -68,6 +70,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           !(path.startsWith('/storefront') ||
               path.startsWith('/catalog') ||
               path.startsWith('/offers') ||
+              path.startsWith('/nursery') ||
               path.startsWith('/calendar') ||
               path.startsWith('/cart') ||
               path.startsWith('/checkout') ||
@@ -130,8 +133,10 @@ final routerProvider = Provider<GoRouter>((ref) {
               builder: (_, __) => const StorefrontScreen()),
           GoRoute(path: '/cart', builder: (_, __) => const CartScreen()),
           GoRoute(path: '/offers', builder: (_, __) => const FarmerOffersScreen()),
+          GoRoute(path: '/nursery/:id', builder: (_, state) => PublicNurseryStorefrontScreen(nurseryId: state.pathParameters['id']!)),
           GoRoute(path: '/owner/offers', builder: (_, __) => const OwnerOffersScreen()),
           GoRoute(path: '/owner/location', builder: (_, __) => const ManageLocationScreen()),
+          GoRoute(path: '/owner/profile', builder: (_, __) => const OwnerBusinessProfileScreen()),
           GoRoute(
             path: '/calendar',
             builder: (context, _) {
