@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/localization/app_strings.dart';
+import '../../../../core/widgets/language_selector_dialog.dart';
 import '../../data/providers/auth_provider.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -57,12 +59,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     } catch (error) {
       if (mounted) {
-        String msg = 'Unable to sign in right now. Please try again.';
+        final lang = ref.read(appLanguageProvider);
+        String msg = AppStrings.get('network_issue_msg', lang);
         final errStr = error.toString();
-        if (errStr.contains('connection error') || errStr.contains('XMLHttpRequest')) {
-          msg = 'Server is currently unavailable. Please try again.';
-        } else if (errStr.contains('401') || errStr.contains('404') || errStr.contains('Invalid')) {
-          msg = 'Invalid mobile number or PIN.';
+        if (errStr.contains('401') || errStr.contains('404') || errStr.contains('Invalid')) {
+          msg = AppStrings.get('val_phone_required', lang);
         }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -96,12 +97,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     } catch (error) {
       if (mounted) {
-        String msg = 'Unable to sign in right now. Please try again.';
+        final lang = ref.read(appLanguageProvider);
+        String msg = AppStrings.get('network_issue_msg', lang);
         final errStr = error.toString();
-        if (errStr.contains('connection error') || errStr.contains('XMLHttpRequest')) {
-          msg = 'Server is currently unavailable. Please try again.';
-        } else if (errStr.contains('401') || errStr.contains('404') || errStr.contains('Invalid')) {
-          msg = 'Invalid email or password.';
+        if (errStr.contains('401') || errStr.contains('404') || errStr.contains('Invalid')) {
+          msg = AppStrings.get('val_password_required', lang);
         }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -136,6 +136,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final language = ref.watch(appLanguageProvider);
+
     return Scaffold(
       backgroundColor: AVRColors.backgroundLight,
       body: SafeArea(
@@ -147,6 +149,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  // Top Row with Language Switcher
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      const LanguageSelectorButton(),
+                    ],
+                  ),
                   const SizedBox(height: 8),
 
                   // ── Branding Header ─────────────────────────────────────────
@@ -172,9 +181,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         ).animate().scale(duration: 350.ms, curve: Curves.easeOutBack),
                         const SizedBox(height: 12),
-                        const Text(
-                          'AVR GREEN NURSERY',
-                          style: TextStyle(
+                        Text(
+                          AppStrings.get('app_name', language).toUpperCase(),
+                          style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w900,
                             color: AVRColors.forestGreenDark,
@@ -183,7 +192,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          'Commercial Plant & Nursery Platform',
+                          AppStrings.get('platform_subtitle', language),
                           style: TextStyle(fontSize: 13, color: Colors.grey.shade600, fontWeight: FontWeight.w500),
                         ),
                       ],
@@ -193,9 +202,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   const SizedBox(height: 20),
 
                   // ── Role Entry Selection Header ─────────────────────────────
-                  const Text(
-                    'Who are you logging in as?',
-                    style: TextStyle(
+                  Text(
+                    AppStrings.get('role_who_logging', language),
+                    style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w800,
                       color: AVRColors.textPrimary,
@@ -203,7 +212,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'Select your account type to open your specialized workspace',
+                    AppStrings.get('role_select_account_desc', language),
                     style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                   ),
                   const SizedBox(height: 12),
@@ -216,9 +225,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         child: _buildRoleSelectionCard(
                           index: 0,
                           icon: Icons.agriculture_rounded,
-                          title: 'Farmer / Customer',
-                          subtitle: 'Shop plants & seedlings',
-                          badge: 'Mobile + PIN',
+                          title: AppStrings.get('role_farmer_title', language),
+                          subtitle: AppStrings.get('role_farmer_sub', language),
+                          badge: AppStrings.get('role_badge_pin', language),
                           activeColor: AVRColors.forestGreen,
                         ),
                       ),
@@ -228,9 +237,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         child: _buildRoleSelectionCard(
                           index: 1,
                           icon: Icons.storefront_rounded,
-                          title: 'Nursery / Staff',
-                          subtitle: 'Manage your nursery',
-                          badge: 'Email + Password',
+                          title: AppStrings.get('role_owner_title', language),
+                          subtitle: AppStrings.get('role_owner_sub', language),
+                          badge: AppStrings.get('role_badge_pwd', language),
                           activeColor: AVRColors.terracotta,
                         ),
                       ),
@@ -450,6 +459,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   // ── Farmer Form (Mobile Number + 6-digit PIN, Zero OTP) ───────────────────────
   Widget _buildFarmerForm() {
+    final language = ref.watch(appLanguageProvider);
+
     return Form(
       key: _formKeyFarmer,
       child: Column(
@@ -459,9 +470,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             children: [
               const Icon(Icons.eco_rounded, size: 18, color: AVRColors.forestGreen),
               const SizedBox(width: 6),
-              const Text(
-                'Farmer & Customer Sign In',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AVRColors.textPrimary),
+              Text(
+                AppStrings.get('farmer_sign_in_title', language),
+                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AVRColors.textPrimary),
               ),
               const Spacer(),
               Container(
@@ -479,7 +490,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ),
           const SizedBox(height: 2),
           Text(
-            'Sign in using your mobile number and secret 6-digit PIN.',
+            AppStrings.get('farmer_sign_in_sub', language),
             style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
           ),
           const SizedBox(height: 14),
@@ -489,7 +500,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             controller: _farmerPhoneCtrl,
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
-              labelText: 'Mobile Number',
+              labelText: AppStrings.get('mobile_number', language),
               hintText: '9900000005',
               prefixIcon: const Icon(Icons.phone_android_rounded, size: 20, color: AVRColors.forestGreen),
               prefixText: '+91 ',
@@ -498,7 +509,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade300)),
               enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade200)),
             ),
-            validator: (v) => (v == null || v.trim().length < 10) ? 'Enter valid 10-digit number' : null,
+            validator: (v) => (v == null || v.trim().length < 10) ? AppStrings.get('val_phone_required', language) : null,
           ),
           const SizedBox(height: 12),
 
@@ -509,7 +520,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             maxLength: 6,
             obscureText: _obscurePin,
             decoration: InputDecoration(
-              labelText: '6-digit Security PIN',
+              labelText: AppStrings.get('security_pin', language),
               hintText: '123456',
               counterText: '',
               prefixIcon: const Icon(Icons.pin_rounded, size: 20, color: AVRColors.forestGreen),
@@ -522,7 +533,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade300)),
               enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade200)),
             ),
-            validator: (v) => (v == null || v.trim().length < 4) ? 'Enter your 6-digit PIN' : null,
+            validator: (v) => (v == null || v.trim().length < 4) ? AppStrings.get('val_pin_exact_6', language) : null,
           ),
 
           Row(
@@ -531,7 +542,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               TextButton(
                 onPressed: () => context.go('/register'),
                 style: TextButton.styleFrom(padding: EdgeInsets.zero, visualDensity: VisualDensity.compact),
-                child: const Text('New Farmer? Register', style: TextStyle(color: AVRColors.forestGreen, fontWeight: FontWeight.bold, fontSize: 12)),
+                child: Text(AppStrings.get('create_farmer_account', language), style: const TextStyle(color: AVRColors.forestGreen, fontWeight: FontWeight.bold, fontSize: 12)),
               ),
               TextButton(
                 onPressed: () {
@@ -543,7 +554,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   );
                 },
                 style: TextButton.styleFrom(padding: EdgeInsets.zero, visualDensity: VisualDensity.compact),
-                child: Text('Forgot PIN?', style: TextStyle(color: Colors.grey.shade600, fontSize: 12)),
+                child: Text(AppStrings.get('forgot_pin', language), style: TextStyle(color: Colors.grey.shade600, fontSize: 12)),
               ),
             ],
           ),
@@ -563,7 +574,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               onPressed: _isLoading ? null : _loginFarmer,
               child: _isLoading
                   ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                  : const Text('Shop Plants & Seedlings 🌱', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                  : Text('${AppStrings.get('sign_in_button', language)} 🌱', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
             ),
           ),
         ],
@@ -573,6 +584,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   // ── Nursery/Staff Form (Email + Password) ───────────────────────────────────
   Widget _buildOwnerForm() {
+    final language = ref.watch(appLanguageProvider);
+
     return Form(
       key: _formKeyOwner,
       child: Column(
@@ -582,9 +595,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             children: [
               const Icon(Icons.storefront_rounded, size: 18, color: AVRColors.terracotta),
               const SizedBox(width: 6),
-              const Text(
-                'Nursery Workspace Sign In',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AVRColors.textPrimary),
+              Text(
+                AppStrings.get('nursery_sign_in_title', language),
+                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AVRColors.textPrimary),
               ),
               const Spacer(),
               Container(
@@ -602,7 +615,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ),
           const SizedBox(height: 2),
           Text(
-            'For Nursery Owners, Managers, Floor Staff & Drivers.',
+            AppStrings.get('nursery_sign_in_sub', language),
             style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
           ),
           const SizedBox(height: 14),
@@ -612,7 +625,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             controller: _ownerEmailCtrl,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-              labelText: 'Email or Mobile Number',
+              labelText: AppStrings.get('email_address', language),
               hintText: 'owner@avrnursery.com',
               prefixIcon: const Icon(Icons.alternate_email_rounded, size: 20, color: AVRColors.terracotta),
               filled: true,
@@ -620,7 +633,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade300)),
               enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade200)),
             ),
-            validator: (v) => (v == null || v.trim().isEmpty) ? 'Required' : null,
+            validator: (v) => (v == null || v.trim().isEmpty) ? AppStrings.get('val_email_required', language) : null,
           ),
           const SizedBox(height: 12),
 
@@ -629,7 +642,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             controller: _ownerPasswordCtrl,
             obscureText: _obscurePassword,
             decoration: InputDecoration(
-              labelText: 'Password or PIN',
+              labelText: AppStrings.get('password', language),
               hintText: 'Admin@123456',
               prefixIcon: const Icon(Icons.lock_outline_rounded, size: 20, color: AVRColors.terracotta),
               suffixIcon: IconButton(
@@ -641,7 +654,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade300)),
               enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade200)),
             ),
-            validator: (v) => (v == null || v.trim().isEmpty) ? 'Required' : null,
+            validator: (v) => (v == null || v.trim().isEmpty) ? AppStrings.get('val_password_required', language) : null,
           ),
 
           Align(
@@ -656,7 +669,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 );
               },
               style: TextButton.styleFrom(padding: EdgeInsets.zero, visualDensity: VisualDensity.compact),
-              child: Text('Forgot Password?', style: TextStyle(color: Colors.grey.shade600, fontSize: 12)),
+              child: Text(AppStrings.get('forgot_password', language), style: TextStyle(color: Colors.grey.shade600, fontSize: 12)),
             ),
           ),
           const SizedBox(height: 12),
@@ -675,7 +688,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               onPressed: _isLoading ? null : _loginOwner,
               child: _isLoading
                   ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                  : const Text('Manage Nursery Workspace 🏢', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                  : Text('${AppStrings.get('sign_in_button', language)} 🏢', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
             ),
           ),
         ],

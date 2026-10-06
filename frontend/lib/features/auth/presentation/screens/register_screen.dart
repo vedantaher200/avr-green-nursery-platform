@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/localization/app_strings.dart';
+import '../../../../core/widgets/language_selector_dialog.dart';
 import '../../data/providers/auth_provider.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -31,12 +33,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   Future<void> _handleRegister() async {
+    final language = ref.read(appLanguageProvider);
     if (!_formKey.currentState!.validate()) return;
 
     if (_pinController.text.trim() != _confirmPinController.text.trim()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('PINs do not match! Please check.'),
+        SnackBar(
+          content: Text(AppStrings.get('val_pins_mismatch', language)),
           backgroundColor: AVRColors.error,
         ),
       );
@@ -46,7 +49,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     setState(() => _isLoading = true);
 
     try {
-      // Direct registration without OTP, followed by immediate session setup
       await ref.read(authStateProvider.notifier).registerFarmer(
             phone: _phoneController.text.trim(),
             pin: _pinController.text.trim(),
@@ -55,8 +57,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Welcome to AVR Green Nursery! 🌱 Account created.'),
+          SnackBar(
+            content: Text('${AppStrings.get('app_name', language)} 🌱 ${AppStrings.get('saved_successfully', language)}'),
             backgroundColor: AVRColors.forestGreen,
           ),
         );
@@ -66,7 +68,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Registration failed: $e'),
+            content: Text(AppStrings.get('network_issue_msg', language)),
             backgroundColor: AVRColors.error,
           ),
         );
@@ -78,10 +80,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final language = ref.watch(appLanguageProvider);
+
     return Scaffold(
       backgroundColor: AVRColors.backgroundLight,
       appBar: AppBar(
-        title: const Text('Farmer Account Creation', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+        title: Text(AppStrings.get('farmer_signup_title', language), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
         backgroundColor: Colors.white,
         foregroundColor: AVRColors.textPrimary,
         elevation: 0,
@@ -89,6 +93,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/login'),
         ),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 8),
+            child: LanguageSelectorButton(),
+          ),
+        ],
       ),
       body: SafeArea(
         child: Center(
@@ -108,7 +118,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: AVRColors.sage.withValues(alpha: 0.5)),
                       ),
-                      child: const Row(
+                      child: Row(
                         children: [
                           Icon(Icons.eco_rounded, color: AVRColors.forestGreen, size: 28),
                           SizedBox(width: 12),
@@ -117,13 +127,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Fast & Simple Farmer Signup',
-                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AVRColors.forestGreenDark),
+                                  AppStrings.get('fast_signup_banner', language),
+                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AVRColors.forestGreenDark),
                                 ),
-                                SizedBox(height: 2),
+                                const SizedBox(height: 2),
                                 Text(
-                                  'Set your 6-digit PIN once. No waiting for SMS OTP every time!',
-                                  style: TextStyle(fontSize: 12, color: AVRColors.forestGreenDark),
+                                  AppStrings.get('fast_signup_banner_sub', language),
+                                  style: const TextStyle(fontSize: 12, color: AVRColors.forestGreenDark),
                                 ),
                               ],
                             ),
@@ -137,8 +147,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     TextFormField(
                       controller: _nameController,
                       decoration: InputDecoration(
-                        labelText: 'Your Full Name / Farm Name',
-                        hintText: 'e.g. Ramesh Patil / Patil Agro',
+                        labelText: AppStrings.get('full_name_label', language),
+                        hintText: AppStrings.get('full_name_hint', language),
                         prefixIcon: const Icon(Icons.person_outline, color: AVRColors.forestGreen),
                         filled: true,
                         fillColor: Colors.white,
@@ -153,7 +163,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       controller: _phoneController,
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
-                        labelText: 'Mobile Number *',
+                        labelText: '${AppStrings.get('mobile_number', language)} *',
                         hintText: '9876543210',
                         prefixText: '+91 ',
                         prefixIcon: const Icon(Icons.phone_android, color: AVRColors.forestGreen),
@@ -162,7 +172,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade300)),
                         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade200)),
                       ),
-                      validator: (value) => (value?.trim().length ?? 0) < 10 ? 'Enter a valid 10-digit mobile number' : null,
+                      validator: (value) => (value?.trim().length ?? 0) < 10 ? AppStrings.get('val_phone_required', language) : null,
                     ),
                     const SizedBox(height: 14),
 
@@ -173,7 +183,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       maxLength: 6,
                       obscureText: _obscurePin,
                       decoration: InputDecoration(
-                        labelText: 'Create 6-digit Security PIN *',
+                        labelText: AppStrings.get('create_pin_label', language),
                         hintText: 'e.g. 556677',
                         counterText: '',
                         prefixIcon: const Icon(Icons.pin_rounded, color: AVRColors.forestGreen),
@@ -186,7 +196,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade300)),
                         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade200)),
                       ),
-                      validator: (value) => (value?.trim().length ?? 0) != 6 ? 'PIN must be exactly 6 digits' : null,
+                      validator: (value) => (value?.trim().length ?? 0) != 6 ? AppStrings.get('val_pin_exact_6', language) : null,
                     ),
                     const SizedBox(height: 14),
 
@@ -197,8 +207,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       maxLength: 6,
                       obscureText: _obscurePin,
                       decoration: InputDecoration(
-                        labelText: 'Confirm 6-digit Security PIN *',
-                        hintText: 'Re-enter your 6-digit PIN',
+                        labelText: AppStrings.get('confirm_pin_label', language),
+                        hintText: AppStrings.get('confirm_pin_hint', language),
                         counterText: '',
                         prefixIcon: const Icon(Icons.lock_clock_outlined, color: AVRColors.forestGreen),
                         filled: true,
@@ -206,7 +216,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade300)),
                         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade200)),
                       ),
-                      validator: (value) => (value?.trim().length ?? 0) != 6 ? 'PIN must be exactly 6 digits' : null,
+                      validator: (value) => (value?.trim().length ?? 0) != 6 ? AppStrings.get('val_pin_exact_6', language) : null,
                     ),
                     const SizedBox(height: 24),
 
@@ -223,14 +233,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         onPressed: _isLoading ? null : _handleRegister,
                         child: _isLoading
                             ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                            : const Text('Create Farmer Account 🌱', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                            : Text(AppStrings.get('btn_create_account', language), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                       ),
                     ),
                     const SizedBox(height: 14),
 
                     TextButton(
                       onPressed: () => context.go('/login'),
-                      child: const Text('Already have an account? Sign in with Mobile & PIN', style: TextStyle(color: AVRColors.forestGreen, fontWeight: FontWeight.bold)),
+                      child: Text(AppStrings.get('already_have_account_btn', language), style: const TextStyle(color: AVRColors.forestGreen, fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),

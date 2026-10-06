@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/providers/catalog_provider.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/localization/app_strings.dart';
 
 class CategoryCard extends ConsumerWidget {
   final MarketplaceCategory category;
@@ -19,6 +20,18 @@ class CategoryCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final lang = ref.watch(appLanguageProvider);
+    final localizedLabel = switch (category.id) {
+      'all' => AppStrings.get('cat_all', lang),
+      'vegetables' => AppStrings.get('cat_vegetables', lang),
+      'flowers' => AppStrings.get('cat_flowers', lang),
+      'fruits' => AppStrings.get('cat_fruits', lang),
+      'medicinal' => AppStrings.get('cat_medicinal', lang),
+      'indoor' => AppStrings.get('cat_indoor', lang),
+      'other' => AppStrings.get('cat_other', lang),
+      _ => category.label,
+    };
+
     // Image asset path – expect assets/category_images/<id>.png
     final imagePath = 'assets/category_images/${category.id}.png';
     // Try loading image asset; if fails, fallback to emoji text.
@@ -64,7 +77,7 @@ class CategoryCard extends ConsumerWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            category.label,
+            localizedLabel,
             style: TextStyle(
               fontSize: 11,
               fontWeight: isSelected ? FontWeight.w800 : FontWeight.w500,

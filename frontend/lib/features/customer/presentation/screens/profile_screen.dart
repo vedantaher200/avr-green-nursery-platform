@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/localization/app_strings.dart';
+import '../../../../core/widgets/language_selector_dialog.dart';
 import '../../../auth/data/providers/auth_provider.dart';
 import '../../../inventory/data/providers/owner_inventory_provider.dart';
 import '../../data/providers/marketplace_provider.dart';
@@ -200,39 +201,35 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 children: [
                   ListTile(
                     leading: const Icon(Icons.receipt_long_rounded, color: AVRColors.forestGreen),
-                    title: const Text('My Plant Orders', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                    subtitle: const Text('View invoices, order status & seedling tracking', style: TextStyle(fontSize: 11.5)),
+                    title: Text(AppStrings.get('my_plant_orders', language), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                    subtitle: Text(AppStrings.get('orders_list_sub', language), style: const TextStyle(fontSize: 11.5)),
                     trailing: const Icon(Icons.chevron_right, size: 20),
                     onTap: () => context.push('/orders'),
                   ),
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.event_note_rounded, color: Color(0xFFE65100)),
-                    title: const Text('My Advance Pre-Bookings', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                    subtitle: const Text('Track reserved polyhouse batches & dispatch dates', style: TextStyle(fontSize: 11.5)),
+                    title: Text(AppStrings.get('my_advance_prebookings', language), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                    subtitle: Text(AppStrings.get('prebookings_sub', language), style: const TextStyle(fontSize: 11.5)),
                     trailing: const Icon(Icons.chevron_right, size: 20),
                     onTap: () => _showMyPreBookingsModal(context, _phoneController.text),
                   ),
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.translate_rounded, color: AVRColors.forestGreen),
-                    title: const Text('Language / भाषा / भाषा निवडा', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                    title: Text(AppStrings.get('language_menu_title', language), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
                     subtitle: Text(
-                      language == AppLanguage.mr
-                          ? 'मराठी (Marathi)'
-                          : language == AppLanguage.hi
-                              ? 'हिन्दी (Hindi)'
-                              : 'English',
+                      language.label,
                       style: const TextStyle(fontSize: 11.5),
                     ),
                     trailing: const Icon(Icons.chevron_right, size: 20),
-                    onTap: () => _showLanguageModal(context),
+                    onTap: () => showAppLanguageSelector(context),
                   ),
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.support_agent_rounded, color: AVRColors.forestGreen),
-                    title: const Text('Nursery Technical Support', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                    subtitle: const Text('WhatsApp or call agronomy support: +91 9900000002', style: TextStyle(fontSize: 11.5)),
+                    title: Text(AppStrings.get('nursery_tech_support', language), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                    subtitle: Text(AppStrings.get('nursery_support_sub', language), style: const TextStyle(fontSize: 11.5)),
                     trailing: const Icon(Icons.open_in_new, size: 18),
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -257,7 +254,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
                 icon: const Icon(Icons.logout_rounded, size: 20),
-                label: const Text('Log Out of Account', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                label: Text(AppStrings.get('sign_out', language), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                 onPressed: () async {
                   await ref.read(authStateProvider.notifier).logout();
                   if (context.mounted) {
@@ -279,47 +276,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  void _showLanguageModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      builder: (ctx) => Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Select Preferred Language',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AVRColors.forestGreenDark),
-            ),
-            const SizedBox(height: 12),
-            ListTile(
-              title: const Text('English'),
-              onTap: () {
-                ref.read(appLanguageProvider.notifier).state = AppLanguage.en;
-                Navigator.pop(ctx);
-              },
-            ),
-            ListTile(
-              title: const Text('हिन्दी (Hindi)'),
-              onTap: () {
-                ref.read(appLanguageProvider.notifier).state = AppLanguage.hi;
-                Navigator.pop(ctx);
-              },
-            ),
-            ListTile(
-              title: const Text('मराठी (Marathi)'),
-              onTap: () {
-                ref.read(appLanguageProvider.notifier).state = AppLanguage.mr;
-                Navigator.pop(ctx);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   // ── Farmer Advance Pre-Bookings Tracking Modal ──────────────────────────────
   void _showMyPreBookingsModal(BuildContext context, String phone) {

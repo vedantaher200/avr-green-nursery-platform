@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/invoice_download_helper.dart';
+import '../../../../core/localization/app_strings.dart';
 import '../../data/providers/order_provider.dart';
 import '../../../auth/data/providers/auth_provider.dart';
 
@@ -20,7 +21,7 @@ class OrdersScreen extends ConsumerWidget {
       backgroundColor: AVRColors.backgroundLight,
       appBar: AppBar(
         title: Text(
-          isOwnerOrStaff ? 'Nursery Commercial Orders' : 'My Plant Orders',
+          isOwnerOrStaff ? ref.tr('nursery_commercial_orders') : ref.tr('my_plant_orders'),
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AVRColors.textPrimary),
         ),
         backgroundColor: Colors.white,
@@ -29,7 +30,7 @@ class OrdersScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.refresh, color: AVRColors.forestGreen),
             onPressed: () => ref.refresh(ordersListProvider),
-            tooltip: 'Refresh Orders',
+            tooltip: ref.tr('refresh'),
           ),
         ],
       ),
@@ -51,7 +52,7 @@ class OrdersScreen extends ConsumerWidget {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(backgroundColor: AVRColors.forestGreen),
                       onPressed: () => ref.refresh(ordersListProvider),
-                      child: const Text('Retry', style: TextStyle(color: Colors.white)),
+                      child: Text(ref.tr('retry'), style: const TextStyle(color: Colors.white)),
                     ),
                   ],
                 ),
@@ -75,7 +76,7 @@ class OrdersScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          isOwnerOrStaff ? 'No Nursery Orders Received Yet' : 'No Orders Placed Yet',
+                          isOwnerOrStaff ? ref.tr('nursery_commercial_orders') : ref.tr('no_orders_yet'),
                           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 8),
@@ -97,7 +98,7 @@ class OrdersScreen extends ConsumerWidget {
                             ),
                             onPressed: () => ref.refresh(ordersListProvider),
                             icon: const Icon(Icons.refresh),
-                            label: const Text('Refresh Orders', style: TextStyle(fontWeight: FontWeight.bold)),
+                            label: Text(ref.tr('refresh'), style: const TextStyle(fontWeight: FontWeight.bold)),
                           )
                         else
                           ElevatedButton.icon(
@@ -109,7 +110,7 @@ class OrdersScreen extends ConsumerWidget {
                             ),
                             onPressed: () => context.go('/storefront'),
                             icon: const Icon(Icons.spa_outlined),
-                            label: const Text('Start Shopping', style: TextStyle(fontWeight: FontWeight.bold)),
+                            label: Text(ref.tr('browse_storefront_btn'), style: const TextStyle(fontWeight: FontWeight.bold)),
                           ),
                       ],
                     ),
@@ -241,7 +242,7 @@ class OrdersScreen extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Total Paid (Incl. GST):', style: TextStyle(color: Colors.grey.shade700, fontSize: 13)),
+                    Text('${ref.tr('total')}:', style: TextStyle(color: Colors.grey.shade700, fontSize: 13)),
                     Text(
                       '₹${order.totalAmount.toStringAsFixed(2)}',
                       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AVRColors.forestGreen),
@@ -262,7 +263,7 @@ class OrdersScreen extends ConsumerWidget {
                 TextButton.icon(
                   onPressed: () => context.push('/orders/${order.id}'),
                   icon: const Icon(Icons.local_shipping_outlined, size: 16, color: AVRColors.forestGreen),
-                  label: const Text('Track Order', style: TextStyle(color: AVRColors.forestGreen, fontWeight: FontWeight.bold, fontSize: 13)),
+                  label: Text(ref.tr('track_order'), style: const TextStyle(color: AVRColors.forestGreen, fontWeight: FontWeight.bold, fontSize: 13)),
                 ),
                 TextButton.icon(
                   onPressed: () {
@@ -274,7 +275,7 @@ class OrdersScreen extends ConsumerWidget {
                     );
                   },
                   icon: const Icon(Icons.download_outlined, size: 16, color: AVRColors.terracotta),
-                  label: const Text('Invoice PDF', style: TextStyle(color: AVRColors.terracotta, fontWeight: FontWeight.bold, fontSize: 13)),
+                  label: Text(ref.tr('invoice_pdf'), style: const TextStyle(color: AVRColors.terracotta, fontWeight: FontWeight.bold, fontSize: 13)),
                 ),
               ],
             ),

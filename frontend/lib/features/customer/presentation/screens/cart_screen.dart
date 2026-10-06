@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/app_product_image.dart';
+import '../../../../core/localization/app_strings.dart';
 import '../../data/providers/cart_provider.dart';
 
 class CartScreen extends ConsumerWidget {
@@ -17,9 +18,9 @@ class CartScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Row(
           children: [
-            const Text(
-              'My Garden Cart',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AVRColors.textPrimary),
+            Text(
+              ref.tr('my_garden_cart'),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AVRColors.textPrimary),
             ),
             if (!cart.isEmpty) ...[
               const SizedBox(width: 8),
@@ -43,22 +44,22 @@ class CartScreen extends ConsumerWidget {
           if (!cart.isEmpty)
             IconButton(
               icon: const Icon(Icons.delete_sweep_outlined, color: Colors.redAccent),
-              tooltip: 'Clear Cart',
+              tooltip: ref.tr('clear_cart_tooltip'),
               onPressed: () {
                 showDialog(
                   context: context,
                   builder: (ctx) => AlertDialog(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    title: const Text('Clear Cart?'),
-                    content: const Text('Are you sure you want to remove all seedlings and plants from your cart?'),
+                    title: Text(ref.tr('clear_cart_dialog_title')),
+                    content: Text(ref.tr('clear_cart_dialog_msg')),
                     actions: [
-                      TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+                      TextButton(onPressed: () => Navigator.pop(ctx), child: Text(ref.tr('cancel'))),
                       TextButton(
                         onPressed: () {
                           ref.read(cartProvider.notifier).clearCart();
                           Navigator.pop(ctx);
                         },
-                        child: const Text('Clear All', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+                        child: Text(ref.tr('clear_all'), style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
                       ),
                     ],
                   ),
@@ -83,13 +84,13 @@ class CartScreen extends ConsumerWidget {
                       child: const Icon(Icons.shopping_basket_outlined, size: 72, color: AVRColors.forestGreen),
                     ),
                     const SizedBox(height: 24),
-                    const Text(
-                      'Your Garden Cart is Empty',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AVRColors.textPrimary),
+                    Text(
+                      ref.tr('cart_empty_title'),
+                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AVRColors.textPrimary),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Explore our healthy nursery-grown seedlings, fruit saplings, and organic fertilizers ready for planting!',
+                      ref.tr('cart_empty_sub'),
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 14, color: Colors.grey.shade600, height: 1.4),
                     ),
@@ -104,7 +105,7 @@ class CartScreen extends ConsumerWidget {
                       ),
                       onPressed: () => context.go('/storefront'),
                       icon: const Icon(Icons.spa_outlined),
-                      label: const Text('Explore Plant Nursery', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                      label: Text(ref.tr('browse_storefront_btn'), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),
@@ -301,12 +302,12 @@ class CartScreen extends ConsumerWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        _buildSummaryRow('Subtotal', '₹${cart.subtotal.toStringAsFixed(2)}'),
+                        _buildSummaryRow(ref.tr('subtotal'), '₹${cart.subtotal.toStringAsFixed(2)}'),
                         const SizedBox(height: 6),
-                        _buildSummaryRow('GST (18% Included)', '₹${cart.gst.toStringAsFixed(2)}'),
+                        _buildSummaryRow(ref.tr('gst'), '₹${cart.gst.toStringAsFixed(2)}'),
                         const SizedBox(height: 6),
                         _buildSummaryRow(
-                          'Delivery Fee',
+                          ref.tr('delivery_fee'),
                           cart.deliveryFee == 0 ? 'FREE' : '₹${cart.deliveryFee.toStringAsFixed(2)}',
                           highlight: cart.deliveryFee == 0,
                         ),
@@ -317,7 +318,7 @@ class CartScreen extends ConsumerWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text('Total Payable', style: TextStyle(fontSize: 13, color: Colors.grey)),
+                                Text(ref.tr('total'), style: const TextStyle(fontSize: 13, color: Colors.grey)),
                                 Text(
                                   '₹${cart.grandTotal.toStringAsFixed(2)}',
                                   style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: AVRColors.forestGreen),
@@ -334,9 +335,9 @@ class CartScreen extends ConsumerWidget {
                               ),
                               onPressed: () => context.push('/checkout'),
                               icon: const Icon(Icons.arrow_forward, size: 18),
-                              label: const Text(
-                                'Checkout',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              label: Text(
+                                ref.tr('checkout'),
+                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],

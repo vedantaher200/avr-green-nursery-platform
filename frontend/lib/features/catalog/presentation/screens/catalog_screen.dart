@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/localization/app_strings.dart';
+import '../../../../core/widgets/language_selector_dialog.dart';
 import '../../data/providers/catalog_provider.dart';
 import '../widgets/compact_product_card.dart';
 import '../widgets/category_card.dart';
@@ -30,6 +32,7 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final language = ref.watch(appLanguageProvider);
     final products = ref.watch(filteredCatalogProvider);
     final catalogState = ref.watch(catalogListProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
@@ -40,16 +43,16 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF6F8F5),
       appBar: AppBar(
-        title: const Row(
+        title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.storefront_rounded,
+            const Icon(Icons.storefront_rounded,
                 color: AVRColors.forestGreen, size: 20),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Flexible(
               child: Text(
-                'Farmer Marketplace',
-                style: TextStyle(
+                AppStrings.get('farmer_marketplace', language),
+                style: const TextStyle(
                     fontWeight: FontWeight.w900,
                     fontSize: 16.5,
                     color: AVRColors.forestGreenDark),
@@ -61,6 +64,7 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
+          const LanguageSelectorButton(),
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: Stack(
@@ -205,7 +209,7 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
               children: [
                 Expanded(
                   child: Text(
-                    '${products.length} Varieties Available',
+                    '${products.length} ${ref.tr('varieties_available')}',
                     style: TextStyle(
                         fontSize: 11.5,
                         fontWeight: FontWeight.bold,
@@ -217,8 +221,8 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
                 Flexible(
                   child: Text(
                     selectedCrop != 'all'
-                        ? 'Filtering: $selectedCrop'
-                        : 'All Regional Varieties',
+                        ? '${ref.tr('filtering_crop')}: $selectedCrop'
+                        : ref.tr('all_regional_varieties'),
                     style: const TextStyle(
                         fontSize: 10.5,
                         color: AVRColors.forestGreen,
@@ -244,13 +248,15 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
                             children: [
                               const Icon(Icons.cloud_off_outlined, size: 40),
                               const SizedBox(height: 8),
-                              const Text(
-                                  'Marketplace is unavailable. Check your connection and try again.',
-                                  textAlign: TextAlign.center),
+                              Text(
+                                ref.tr('marketplace_unavailable'),
+                                textAlign: TextAlign.center,
+                              ),
                               TextButton(
-                                  onPressed: () =>
-                                      ref.invalidate(catalogListProvider),
-                                  child: const Text('Retry')),
+                                onPressed: () =>
+                                    ref.invalidate(catalogListProvider),
+                                child: Text(ref.tr('retry')),
+                              ),
                             ],
                           ),
                         ),
@@ -264,7 +270,7 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
                                     size: 48, color: Colors.grey.shade400),
                                 const SizedBox(height: 8),
                                 Text(
-                                  'No varieties found matching your criteria',
+                                  ref.tr('no_varieties_criteria'),
                                   style: TextStyle(
                                       color: Colors.grey.shade600,
                                       fontSize: 13),
@@ -283,8 +289,8 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
                                         .read(searchQueryProvider.notifier)
                                         .state = '';
                                   },
-                                  child: const Text('Reset All Filters',
-                                      style: TextStyle(
+                                  child: Text(ref.tr('reset_filters'),
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.bold)),
                                 ),
                               ],

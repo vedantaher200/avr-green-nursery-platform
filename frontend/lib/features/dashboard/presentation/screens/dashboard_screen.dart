@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/avr_widgets.dart';
 import '../../../../core/data/avr_repositories.dart';
+import '../../../../core/localization/app_strings.dart';
 import '../../../auth/data/providers/auth_provider.dart';
 import '../../../order/data/providers/order_provider.dart';
 import '../../../inventory/data/providers/owner_inventory_provider.dart';
@@ -78,7 +79,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                   ).animate().fadeIn(duration: 400.ms),
                                   const SizedBox(height: 2),
                                   Text(
-                                    _getRoleTitle(role),
+                                    _getRoleTitle(role, ref.watch(appLanguageProvider)),
                                     style: AVRTextStyles.bodyMedium.copyWith(color: Colors.white70, fontSize: 13),
                                   ).animate().fadeIn(delay: 150.ms),
                                 ],
@@ -814,17 +815,22 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     );
   }
 
-  String _getRoleTitle(String role) {
-    const titles = {
-      'super_admin': 'Platform Administrator',
-      'owner': 'Nursery Owner Operations',
-      'manager': 'Branch Nursery Manager',
-      'staff': 'Greenhouse Floor Staff',
-      'customer': 'Farmer & Home Grower Account',
-      'delivery_agent': 'Delivery Fleet Agent',
-      'supplier': 'Supplier Portal',
-    };
-    return titles[role] ?? 'AVRGREEN Dashboard';
+  String _getRoleTitle(String role, AppLanguage lang) {
+    switch (role.toLowerCase()) {
+      case 'super_admin':
+        return AppStrings.get('role_super_admin', lang);
+      case 'owner':
+        return AppStrings.get('role_nursery_owner', lang);
+      case 'manager':
+        return AppStrings.get('role_nursery_manager', lang);
+      case 'staff':
+        return AppStrings.get('role_nursery_staff', lang);
+      case 'delivery_agent':
+        return AppStrings.get('role_delivery_partner', lang);
+      case 'customer':
+      default:
+        return AppStrings.get('role_farmer', lang);
+    }
   }
 
   Widget _buildDemandSignalsSection() {

@@ -299,18 +299,18 @@ List<_NavItem> _getNavItemsForRole(String role, AppLanguage lang) {
   switch (role) {
     case 'super_admin':
       return [
-        const _NavItem(
-            label: 'Platform',
+        _NavItem(
+            label: AppStrings.get('nav_platform', lang),
             icon: Icons.dashboard_outlined,
             activeIcon: Icons.dashboard,
             route: '/superadmin'),
-        const _NavItem(
-            label: 'Tenants',
+        _NavItem(
+            label: AppStrings.get('nav_tenants', lang),
             icon: Icons.business_outlined,
             activeIcon: Icons.business,
             route: '/superadmin'),
-        const _NavItem(
-            label: 'Reports',
+        _NavItem(
+            label: AppStrings.get('nav_reports', lang),
             icon: Icons.bar_chart_outlined,
             activeIcon: Icons.bar_chart,
             route: '/reports'),
@@ -318,69 +318,69 @@ List<_NavItem> _getNavItemsForRole(String role, AppLanguage lang) {
     case 'owner':
     case 'manager':
       return [
-        const _NavItem(
-            label: 'Home',
+        _NavItem(
+            label: AppStrings.get('nav_home', lang),
             icon: Icons.dashboard_outlined,
             activeIcon: Icons.dashboard_rounded,
             route: '/dashboard'),
-        const _NavItem(
-            label: 'Catalog',
+        _NavItem(
+            label: AppStrings.get('nav_catalog', lang),
             icon: Icons.eco_outlined,
             activeIcon: Icons.eco_rounded,
             route: '/catalog'),
-        const _NavItem(
-            label: 'Offers',
+        _NavItem(
+            label: AppStrings.get('nav_offers', lang),
             icon: Icons.campaign_outlined,
             activeIcon: Icons.campaign_rounded,
             route: '/owner/offers'),
-        const _NavItem(
-            label: 'Stock',
+        _NavItem(
+            label: AppStrings.get('nav_stock', lang),
             icon: Icons.inventory_2_outlined,
             activeIcon: Icons.inventory_2_rounded,
             route: '/inventory'),
-        const _NavItem(
-            label: 'Orders',
+        _NavItem(
+            label: AppStrings.get('nav_orders', lang),
             icon: Icons.receipt_long_outlined,
             activeIcon: Icons.receipt_long_rounded,
             route: '/orders'),
-        const _NavItem(
-            label: 'Reports',
+        _NavItem(
+            label: AppStrings.get('nav_reports', lang),
             icon: Icons.bar_chart_outlined,
             activeIcon: Icons.bar_chart_rounded,
             route: '/reports'),
-        const _NavItem(
-            label: 'Profile',
+        _NavItem(
+            label: AppStrings.get('nav_profile', lang),
             icon: Icons.business_outlined,
             activeIcon: Icons.business_rounded,
             route: '/owner/profile'),
       ];
     case 'staff':
       return [
-        const _NavItem(
-            label: 'Dashboard',
+        _NavItem(
+            label: AppStrings.get('nav_dashboard', lang),
             icon: Icons.dashboard_outlined,
             activeIcon: Icons.dashboard_rounded,
             route: '/dashboard'),
-        const _NavItem(
-            label: 'Inventory',
+        _NavItem(
+            label: AppStrings.get('nav_stock', lang),
             icon: Icons.inventory_2_outlined,
             activeIcon: Icons.inventory_2_rounded,
             route: '/inventory'),
-        const _NavItem(
-            label: 'Orders',
+        _NavItem(
+            label: AppStrings.get('nav_orders', lang),
             icon: Icons.receipt_long_outlined,
             activeIcon: Icons.receipt_long_rounded,
             route: '/orders'),
       ];
     case 'delivery_agent':
       return [
-        const _NavItem(
-            label: 'Deliveries',
+        _NavItem(
+            label: AppStrings.get('nav_deliveries', lang),
             icon: Icons.local_shipping_outlined,
             activeIcon: Icons.local_shipping_rounded,
             route: '/deliveries'),
-        const _NavItem(
-            label: 'History',
+        _NavItem(
+            label: AppStrings.get('nav_history', lang),
             icon: Icons.history_outlined,
             activeIcon: Icons.history_rounded,
             route: '/orders'),

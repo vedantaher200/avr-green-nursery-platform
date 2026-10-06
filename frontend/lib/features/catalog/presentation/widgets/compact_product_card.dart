@@ -360,17 +360,15 @@ class CompactProductCard extends ConsumerWidget {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text('Different Nursery', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+          title: Text(ref.tr('different_nursery'), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
           content: Text(
-            'Your cart contains items from "${cart.currentNurseryName}". '
-            'Each order is fulfilled directly by a single regional nursery.\n\n'
-            'Clear cart and start an order from "${product.nurseryName}"?',
+            '${ref.tr('different_nursery_msg')}\n(${product.nurseryName})',
             style: const TextStyle(fontSize: 13),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx),
-              child: const Text('Keep Current Cart'),
+              child: Text(ref.tr('keep_current_cart')),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: AVRColors.forestGreen),
@@ -379,11 +377,11 @@ class CompactProductCard extends ConsumerWidget {
                 ref.read(cartProvider.notifier).clearAndAdd(product);
                 AppFeedback.showCartSuccess(
                   context,
-                  message: 'Switched to ${product.nurseryName} and added ${product.variety}',
+                  message: '${product.nurseryName} - ${product.variety}',
                   onGoToCart: () => context.push('/cart'),
                 );
               },
-              child: const Text('Clear & Switch', style: TextStyle(color: Colors.white)),
+              child: Text(ref.tr('clear_and_switch'), style: const TextStyle(color: Colors.white)),
             ),
           ],
         ),

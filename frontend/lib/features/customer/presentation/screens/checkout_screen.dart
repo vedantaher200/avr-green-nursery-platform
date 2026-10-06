@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/network_retry_dialog.dart';
+import '../../../../core/localization/app_strings.dart';
 import '../../data/providers/cart_provider.dart';
 import '../../../order/data/providers/order_provider.dart';
 
@@ -83,8 +84,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     size: 64, color: AVRColors.success),
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Order Placed! 🌿',
+              Text(ref.tr('order_confirmed'),
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -129,7 +129,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     Navigator.pop(ctx);
                     context.go('/orders');
                   },
-                  child: const Text('View Order & Invoice',
+                  child: Text(ref.tr('view_details'),
                       style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ),
@@ -138,7 +138,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   Navigator.pop(ctx);
                   context.go('/storefront');
                 },
-                child: const Text('Continue Shopping',
+                child: Text(ref.tr('browse_storefront_btn'),
                     style: TextStyle(color: AVRColors.forestGreen)),
               ),
             ],
@@ -165,7 +165,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     return Scaffold(
       backgroundColor: AVRColors.backgroundLight,
       appBar: AppBar(
-        title: const Text('Checkout & Delivery',
+        title: Text(ref.tr('checkout'),
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
         backgroundColor: Colors.white,
         foregroundColor: AVRColors.textPrimary,
@@ -210,7 +210,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   ),
 
                   // Delivery Address Section
-                  _buildSectionHeader('1. Delivery Address 📍'),
+                  _buildSectionHeader('1. ${ref.tr('shipping_address')} 📍'),
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -227,29 +227,28 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       children: [
                         TextFormField(
                           controller: _streetController,
-                          decoration: const InputDecoration(
-                            labelText: 'Street Address / Village / Farm',
-                            prefixIcon: Icon(Icons.home_outlined),
+                          decoration: InputDecoration(
+                            labelText: ref.tr('street_address'),
+                            prefixIcon: const Icon(Icons.home_outlined),
                           ),
                           validator: (val) =>
-                              val == null || val.isEmpty ? 'Required' : null,
+                              val == null || val.isEmpty ? ref.tr('field_required') : null,
                         ),
                         const SizedBox(height: 12),
                         LayoutBuilder(builder: (context, constraints) {
                           final cityField = TextFormField(
                             controller: _cityController,
-                            decoration: const InputDecoration(
-                                labelText: 'City / Taluka'),
+                            decoration: InputDecoration(labelText: ref.tr('city_taluka')),
                             validator: (val) =>
-                                val == null || val.isEmpty ? 'Required' : null,
+                                val == null || val.isEmpty ? ref.tr('field_required') : null,
                           );
                           final pincodeField = TextFormField(
                             controller: _pincodeController,
                             keyboardType: TextInputType.number,
                             decoration:
-                                const InputDecoration(labelText: 'Pincode'),
+                                InputDecoration(labelText: ref.tr('pincode')),
                             validator: (val) =>
-                                val == null || val.isEmpty ? 'Required' : null,
+                                val == null || val.isEmpty ? ref.tr('field_required') : null,
                           );
                           if (constraints.maxWidth < 360) {
                             return Column(children: [
@@ -267,9 +266,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         const SizedBox(height: 12),
                         TextFormField(
                           controller: _stateController,
-                          decoration: const InputDecoration(labelText: 'State'),
+                          decoration: InputDecoration(labelText: ref.tr('state')),
                           validator: (val) =>
-                              val == null || val.isEmpty ? 'Required' : null,
+                              val == null || val.isEmpty ? ref.tr('field_required') : null,
                         ),
                       ],
                     ),
@@ -278,7 +277,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   const SizedBox(height: 20),
 
                   // Payment Method Section
-                  _buildSectionHeader('2. Payment Method 💳'),
+                  _buildSectionHeader('2. ${ref.tr('payment_method')} 💳'),
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -346,7 +345,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   const SizedBox(height: 20),
 
                   // Order Summary Section
-                  _buildSectionHeader('3. Order Items & Total 📋'),
+                  _buildSectionHeader('3. ${ref.tr('order_summary')} 📋'),
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -392,7 +391,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text('Total Amount to Pay:',
+                            Text('${ref.tr('total')}:',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 15)),
                             Text(
@@ -432,8 +431,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           : const Icon(Icons.check_circle_outline),
                       label: Text(
                         _isProcessing
-                            ? 'Confirming Order...'
-                            : 'Confirm Order & Pay',
+                            ? ref.tr('confirming_order')
+                            : ref.tr('confirm_order_and_pay'),
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),

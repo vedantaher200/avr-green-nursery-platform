@@ -39,14 +39,14 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     }
     if (catalogState.hasError) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Product')),
+        appBar: AppBar(title: Text(AppStrings.get('nav_catalog', language))),
         body: Center(
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            const Text(
-                'Product details are unavailable. Check your connection and try again.'),
+            Text(AppStrings.get('marketplace_unavailable', language)),
+            const SizedBox(height: 8),
             TextButton(
                 onPressed: () => ref.invalidate(catalogListProvider),
-                child: const Text('Retry')),
+                child: Text(AppStrings.get('retry', language))),
           ]),
         ),
       );
@@ -56,8 +56,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         catalog.where((item) => item.id == widget.productId);
     if (matchingProducts.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Product')),
-        body: const Center(child: Text('This product is no longer available.')),
+        appBar: AppBar(title: Text(AppStrings.get('nav_catalog', language))),
+        body: Center(child: Text(AppStrings.get('no_products_found', language))),
       );
     }
     final product = matchingProducts.first;
@@ -443,28 +443,28 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       Row(
                         children: [
                           _buildPriceCard(
-                            title: 'Per Plant',
+                            title: AppStrings.get('per_plant', language),
                             price: product.perPlantPriceText,
-                            subtitle: 'Min 10 plants',
+                            subtitle: AppStrings.get('min_10_plants', language),
                             unitKey: 'plant',
                           ),
                           const SizedBox(width: 8),
                           _buildPriceCard(
-                            title: 'Pro-Tray',
+                            title: AppStrings.get('pro_tray', language),
                             price: product.effectiveTrayPrice != null
                                 ? '₹${product.effectiveTrayPrice!.toStringAsFixed(0)}'
                                 : 'N/A',
-                            subtitle: '${product.trayCapacity} plants/tray',
+                            subtitle: '${product.trayCapacity} ${AppStrings.get('plants_per_tray', language)}',
                             unitKey: 'tray',
                             isPopular: true,
                           ),
                           const SizedBox(width: 8),
                           _buildPriceCard(
-                            title: 'Bulk Quantity',
+                            title: AppStrings.get('bulk_qty', language),
                             price: product.effectiveBulkPrice != null
                                 ? '₹${product.effectiveBulkPrice!.toStringAsFixed(2)}/plant'
                                 : 'N/A',
-                            subtitle: '1,000+ seedlings',
+                            subtitle: AppStrings.get('bulk_seedlings_sub', language),
                             unitKey: 'bulk',
                           ),
                         ],
@@ -523,10 +523,10 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                           size: 16,
                                           color: AVRColors.forestGreen),
                                       const SizedBox(width: 6),
-                                      const Flexible(
+                                      Flexible(
                                         child: Text(
-                                          'Stock & Dispatch Schedule',
-                                          style: TextStyle(
+                                          AppStrings.get('stock_dispatch_sched', language),
+                                          style: const TextStyle(
                                               fontWeight: FontWeight.w800,
                                               fontSize: 13),
                                           overflow: TextOverflow.ellipsis,
@@ -589,7 +589,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                                 size: 13,
                                                 color: AVRColors.forestGreen),
                                             const SizedBox(width: 4),
-                                            Text('Ready Stock',
+                                            Text(AppStrings.get('ready_now', language),
                                                 style: TextStyle(
                                                     fontSize: 10.5,
                                                     color: Colors.grey.shade600,
@@ -629,7 +629,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                                 size: 13,
                                                 color: Color(0xFFE65100)),
                                             const SizedBox(width: 4),
-                                            Text('Next Batch',
+                                            Text(AppStrings.get('next_batch', language),
                                                 style: TextStyle(
                                                     fontSize: 10.5,
                                                     color:
@@ -667,7 +667,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                   const SizedBox(width: 6),
                                   Expanded(
                                     child: Text(
-                                      'Expected Dispatch: ${product.readyDate.isNotEmpty ? product.readyDate : "In 10 days"}',
+                                      '${AppStrings.get('expected_dispatch', language)}: ${product.readyDate.isNotEmpty ? product.readyDate : "In 10 days"}',
                                       style: const TextStyle(
                                           fontSize: 11.5,
                                           color: AVRColors.forestGreenDark,
@@ -688,7 +688,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                     ),
                                     onPressed: () => FarmerPreBookingModal.show(
                                         context, product),
-                                    child: const Text('PRE-BOOK NOW',
+                                    child: Text(AppStrings.get('prebook_now', language),
                                         style: TextStyle(
                                             fontSize: 10,
                                             fontWeight: FontWeight.w900)),
@@ -712,7 +712,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Order Quantity & Units',
+                            Text(AppStrings.get('order_qty_units', language),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800, fontSize: 13)),
                             const SizedBox(height: 8),
@@ -856,7 +856,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       const SizedBox(height: 14),
 
                       // About this Variety
-                      const Text('About This Variety',
+                      Text(AppStrings.get('about_this_variety', language),
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w800,
@@ -1069,11 +1069,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         builder: (ctx) => AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: const Row(
+          title: Row(
             children: [
-              Icon(Icons.warning_amber_rounded, color: AVRColors.warning),
-              SizedBox(width: 8),
-              Text('Switch Nursery Cart?',
+              const Icon(Icons.warning_amber_rounded, color: AVRColors.warning),
+              const SizedBox(width: 8),
+              Text(ref.tr('different_nursery'),
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
             ],
           ),
@@ -1084,7 +1084,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx),
-              child: const Text('Keep Current Cart'),
+              child: Text(ref.tr('keep_current_cart')),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -1103,7 +1103,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   );
                 }
               },
-              child: const Text('Clear & Switch',
+              child: Text(ref.tr('clear_and_switch'),
                   style: TextStyle(color: Colors.white)),
             ),
           ],
@@ -1310,7 +1310,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                 borderRadius: BorderRadius.circular(6)),
                           ),
                           onPressed: () => context.push('/catalog/${alt.id}'),
-                          child: const Text('View Offer',
+                          child: Text(AppStrings.get('view_offer', language),
                               style: TextStyle(
                                   fontSize: 10,
                                   color: AVRColors.forestGreen,

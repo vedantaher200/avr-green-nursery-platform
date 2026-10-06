@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/invoice_download_helper.dart';
+import '../../../../core/localization/app_strings.dart';
 import '../../../auth/data/providers/auth_provider.dart';
 import '../../data/providers/order_provider.dart';
 
@@ -41,7 +42,7 @@ class OrderDetailScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.picture_as_pdf, color: AVRColors.terracotta),
-            tooltip: 'Download Invoice',
+            tooltip: ref.tr('download_invoice'),
             onPressed: () {
               if (order != null) {
                 InvoiceDownloadHelper.downloadAndOpenInvoice(
@@ -86,7 +87,7 @@ class OrderDetailScreen extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Status: ${order?.status.toUpperCase()}',
+                              '${ref.tr('status_label')}: ${order?.status.toUpperCase()}',
                               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                             const SizedBox(height: 2),
@@ -159,18 +160,18 @@ class OrderDetailScreen extends ConsumerWidget {
                         ),
                       ),
                       const Divider(height: 24),
-                      _buildFeeRow('Subtotal', '₹${order.subtotal.toStringAsFixed(2)}'),
+                      _buildFeeRow(ref.tr('subtotal'), '₹${order.subtotal.toStringAsFixed(2)}'),
                       const SizedBox(height: 4),
                       _buildFeeRow('CGST (9%)', '₹${(order.taxAmount / 2).toStringAsFixed(2)}'),
                       const SizedBox(height: 4),
                       _buildFeeRow('SGST (9%)', '₹${(order.taxAmount / 2).toStringAsFixed(2)}'),
                       const SizedBox(height: 4),
-                      _buildFeeRow('Delivery', 'FREE', isHighlight: true),
+                      _buildFeeRow(ref.tr('delivery_fee'), 'FREE', isHighlight: true),
                       const Divider(height: 24),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Total Amount:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                          Text('${ref.tr('total')}:', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                           Text(
                             '₹${order.totalAmount.toStringAsFixed(2)}',
                             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AVRColors.forestGreen),
@@ -196,7 +197,7 @@ class OrderDetailScreen extends ConsumerWidget {
                     ),
                     onPressed: () => context.push('/deliveries/${order.id}/track'),
                     icon: const Icon(Icons.map_outlined),
-                    label: const Text('Live Nursery Van Tracking', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                    label: Text(ref.tr('live_tracking_title'), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                   ),
                 ),
                 const SizedBox(height: 32),
