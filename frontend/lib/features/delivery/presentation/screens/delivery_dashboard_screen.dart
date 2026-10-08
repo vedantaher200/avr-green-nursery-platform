@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/localization/app_strings.dart';
+import '../../../../core/widgets/language_selector_dialog.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 
-class DeliveryDashboardScreen extends StatefulWidget {
+class DeliveryDashboardScreen extends ConsumerStatefulWidget {
   const DeliveryDashboardScreen({super.key});
 
   @override
-  State<DeliveryDashboardScreen> createState() => _DeliveryDashboardScreenState();
+  ConsumerState<DeliveryDashboardScreen> createState() => _DeliveryDashboardScreenState();
 }
 
-class _DeliveryDashboardScreenState extends State<DeliveryDashboardScreen> {
+class _DeliveryDashboardScreenState extends ConsumerState<DeliveryDashboardScreen> {
   final List<Map<String, dynamic>> _deliveries = [
     {
       'id': 'del-001',
@@ -37,13 +40,15 @@ class _DeliveryDashboardScreenState extends State<DeliveryDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(appLanguageProvider);
     return Scaffold(
       backgroundColor: AVRColors.backgroundLight,
       appBar: AppBar(
-        title: const Text('Nursery Delivery Fleet 🚚', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AVRColors.textPrimary)),
+        title: Text(ref.tr('nursery_delivery_fleet'), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: AVRColors.textPrimary)),
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
+          const LanguageSelectorButton(),
           IconButton(
             icon: const Icon(Icons.refresh, color: AVRColors.forestGreen),
             onPressed: () {},
@@ -205,7 +210,7 @@ class _DeliveryDashboardScreenState extends State<DeliveryDashboardScreen> {
                   ),
                   onPressed: () => context.push('/deliveries/${del['id']}/track'),
                   icon: const Icon(Icons.navigation_outlined, size: 16, color: AVRColors.forestGreen),
-                  label: const Text('Live Track', style: TextStyle(color: AVRColors.forestGreen, fontSize: 12)),
+                  label: Text(ref.tr('live_track'), style: TextStyle(color: AVRColors.forestGreen, fontSize: 12)),
                 ),
               ),
               const SizedBox(width: 8),
@@ -232,7 +237,7 @@ class _DeliveryDashboardScreenState extends State<DeliveryDashboardScreen> {
                         },
                   icon: const Icon(Icons.check, size: 16, color: Colors.white),
                   label: Text(
-                    isDelivered ? 'Delivered' : 'Complete (POD)',
+                    isDelivered ? ref.tr('status_delivered') : ref.tr('complete_pod'),
                     style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
                   ),
                 ),

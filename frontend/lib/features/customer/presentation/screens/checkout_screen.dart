@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/network_retry_dialog.dart';
 import '../../../../core/localization/app_strings.dart';
+import '../../../../core/widgets/language_selector_dialog.dart';
 import '../../data/providers/cart_provider.dart';
 import '../../../order/data/providers/order_provider.dart';
 
@@ -39,7 +40,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     final cart = ref.read(cartProvider);
     if (cart.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cart is empty!')),
+        SnackBar(content: Text(ref.tr('cart_is_empty'))),
       );
       return;
     }
@@ -111,7 +112,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               ),
               const SizedBox(height: 16),
               Text(
-                'Your tax invoice is automatically generated and ready in Orders.',
+                ref.tr('tax_invoice_ready_msg'),
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
               ),
@@ -160,6 +161,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(appLanguageProvider);
     final cart = ref.watch(cartProvider);
 
     return Scaffold(
@@ -170,6 +172,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         backgroundColor: Colors.white,
         foregroundColor: AVRColors.textPrimary,
         elevation: 0,
+        actions: const [
+          LanguageSelectorButton(),
+        ],
       ),
       body: Center(
         child: ConstrainedBox(
@@ -191,14 +196,14 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       border: Border.all(
                           color: AVRColors.sage.withValues(alpha: 0.5)),
                     ),
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(Icons.verified_user_outlined,
+                        const Icon(Icons.verified_user_outlined,
                             color: AVRColors.forestGreen, size: 22),
                         SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            'Botanical Transport Guarantee: Seedlings packed in ventilated, root-safe biodegradable wraps.',
+                            ref.tr('botanical_transport_guarantee'),
                             style: TextStyle(
                                 fontSize: 12,
                                 color: AVRColors.forestGreenDark,
@@ -296,8 +301,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                               'UPI (GPay / PhonePe / Paytm / BHIM)',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 14)),
-                          subtitle: const Text(
-                              'Instant confirmation & digital invoice',
+                          subtitle: Text(
+                              ref.tr('instant_conf_invoice'),
                               style: TextStyle(fontSize: 12)),
                           secondary: const Icon(Icons.qr_code_2,
                               color: AVRColors.forestGreen),
@@ -309,10 +314,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         ),
                         const Divider(height: 1),
                         RadioListTile<String>(
-                          title: const Text('Credit / Debit Card',
+                          title: Text(ref.tr('credit_debit_card'),
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 14)),
-                          subtitle: const Text('Visa, MasterCard, RuPay',
+                          subtitle: Text(ref.tr('card_networks'),
                               style: TextStyle(fontSize: 12)),
                           secondary: const Icon(Icons.credit_card,
                               color: AVRColors.terracotta),
@@ -324,11 +329,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         ),
                         const Divider(height: 1),
                         RadioListTile<String>(
-                          title: const Text('Cash on Delivery (COD)',
+                          title: Text(ref.tr('cod_label'),
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 14)),
-                          subtitle: const Text(
-                              'Pay when plants arrive at your farm or home',
+                          subtitle: Text(
+                              ref.tr('cod_subtitle'),
                               style: TextStyle(fontSize: 12)),
                           secondary: const Icon(Icons.local_shipping_outlined,
                               color: AVRColors.warning),

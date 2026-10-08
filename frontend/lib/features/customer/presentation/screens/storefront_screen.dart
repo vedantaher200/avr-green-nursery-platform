@@ -1102,7 +1102,7 @@ class StorefrontScreen extends ConsumerWidget {
                     ref.read(searchQueryProvider.notifier).state = '';
                     ref.read(nurserySearchQueryProvider.notifier).state = '';
                   },
-                  child: const Text('Clear', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AVRColors.terracotta)),
+                  child: Text(AppStrings.get('clear_btn', language), style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AVRColors.terracotta)),
                 ),
               ],
             ),
@@ -1973,11 +1973,11 @@ class StorefrontScreen extends ConsumerWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Row(
+        title: Row(
           children: [
-            Icon(Icons.military_tech_rounded, color: AVRColors.forestGreen),
-            SizedBox(width: 8),
-            Text('Nursery Ranking Criteria', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+            const Icon(Icons.military_tech_rounded, color: AVRColors.forestGreen),
+            const SizedBox(width: 8),
+            Text(context.tr('ranking_criteria_title'), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
           ],
         ),
         content: const Column(
@@ -2005,7 +2005,7 @@ class StorefrontScreen extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Got it', style: TextStyle(color: AVRColors.forestGreen, fontWeight: FontWeight.bold)),
+            child: Text(context.tr('got_it'), style: TextStyle(color: AVRColors.forestGreen, fontWeight: FontWeight.bold)),
           ),
         ],
       ),

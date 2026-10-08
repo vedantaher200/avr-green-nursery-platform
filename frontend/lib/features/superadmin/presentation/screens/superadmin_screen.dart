@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/localization/app_strings.dart';
+import '../../../../core/widgets/language_selector_dialog.dart';
 import '../../../../core/theme/app_theme.dart';
 
-class SuperAdminScreen extends StatefulWidget {
+class SuperAdminScreen extends ConsumerStatefulWidget {
   const SuperAdminScreen({super.key});
 
   @override
-  State<SuperAdminScreen> createState() => _SuperAdminScreenState();
+  ConsumerState<SuperAdminScreen> createState() => _SuperAdminScreenState();
 }
 
-class _SuperAdminScreenState extends State<SuperAdminScreen> {
+class _SuperAdminScreenState extends ConsumerState<SuperAdminScreen> {
   final List<Map<String, dynamic>> _tenants = [
     {
       'id': '33333333-3333-3333-3333-333333333333',
@@ -41,10 +44,12 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(appLanguageProvider);
     return Scaffold(
       backgroundColor: AVRColors.backgroundLight,
       appBar: AppBar(
-        title: const Text('AVR Mitra — Super Admin 🛡️', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        title: Text(ref.tr('superadmin_title'), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        actions: const [LanguageSelectorButton(color: Colors.white)],
         backgroundColor: AVRColors.forestGreenDark,
         foregroundColor: Colors.white,
         elevation: 0,
@@ -68,7 +73,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('AVR Mitra SaaS Platform Control', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                  Text(ref.tr('saas_platform_control'), style: TextStyle(color: Colors.white70, fontSize: 12)),
                   const SizedBox(height: 6),
                   const Text(
                     'Multi-Tenant Platform Health: 100% Operational',
@@ -90,7 +95,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
             const SizedBox(height: 24),
 
             // Onboarded Nursery Tenants
-            const Text('Onboarded Nursery Businesses', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            Text(ref.tr('onboarded_nurseries_stat'), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             const SizedBox(height: 12),
 
             ..._tenants.map((t) => _buildTenantCard(t)),
@@ -98,7 +103,7 @@ class _SuperAdminScreenState extends State<SuperAdminScreen> {
             const SizedBox(height: 24),
 
             // Subscription Tiers Configuration
-            const Text('Active SaaS Subscription Plans', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            Text(ref.tr('active_subscriptions_stat'), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             const SizedBox(height: 12),
             _buildPlanCard('Starter Nursery', '₹1,499 / mo', '1 Branch • Up to 3 Staff Members • Basic Inventory'),
             const SizedBox(height: 10),

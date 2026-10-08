@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/localization/app_strings.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../auth/data/providers/auth_provider.dart';
 import '../../../catalog/data/models/product_model.dart';
@@ -18,11 +19,9 @@ class NotifyMeModal extends ConsumerStatefulWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (ctx) => ProviderScope(
-        child: NotifyMeModal(
-          product: product,
-          onSuccess: onSuccess,
-        ),
+      builder: (ctx) => NotifyMeModal(
+        product: product,
+        onSuccess: onSuccess,
       ),
     );
   }
@@ -85,7 +84,7 @@ class _NotifyMeModalState extends ConsumerState<NotifyMeModal> {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Notification set! We will alert you when ${widget.product.commonName} is ready.',
+                  ref.tr('notification_set_success'),
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
               ),
@@ -110,6 +109,7 @@ class _NotifyMeModalState extends ConsumerState<NotifyMeModal> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(appLanguageProvider);
     final theme = Theme.of(context);
     final p = widget.product;
 
@@ -163,7 +163,7 @@ class _NotifyMeModalState extends ConsumerState<NotifyMeModal> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Notify When Available',
+                          ref.tr('notify_when_available'),
                           style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFF1B4332),
@@ -194,8 +194,8 @@ class _NotifyMeModalState extends ConsumerState<NotifyMeModal> {
                 controller: _phoneController,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
-                  labelText: 'Farmer Mobile Number *',
-                  hintText: 'Enter 10-digit number for SMS / WhatsApp alert',
+                  labelText: ref.tr('farmer_mobile_number'),
+                  hintText: ref.tr('phone_alert_hint'),
                   prefixIcon: const Icon(Icons.phone_outlined, size: 20),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -212,7 +212,7 @@ class _NotifyMeModalState extends ConsumerState<NotifyMeModal> {
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: 'Farmer Name',
+                  labelText: ref.tr('farmer_name'),
                   prefixIcon: const Icon(Icons.person_outline, size: 20),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -229,7 +229,7 @@ class _NotifyMeModalState extends ConsumerState<NotifyMeModal> {
                       controller: _qtyController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        labelText: 'Estimated Quantity',
+                        labelText: ref.tr('estimated_quantity'),
                         prefixIcon: const Icon(Icons.pin_outlined, size: 20),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                         contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -248,7 +248,7 @@ class _NotifyMeModalState extends ConsumerState<NotifyMeModal> {
                     child: DropdownButtonFormField<String>(
                       value: _selectedUnit,
                       decoration: InputDecoration(
-                        labelText: 'Unit',
+                        labelText: ref.tr('unit_label'),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                       ),
@@ -270,7 +270,7 @@ class _NotifyMeModalState extends ConsumerState<NotifyMeModal> {
               TextFormField(
                 controller: _locationController,
                 decoration: InputDecoration(
-                  labelText: 'Delivery Village / Taluka',
+                  labelText: ref.tr('delivery_location_hint'),
                   hintText: 'e.g. Chandwad, Nashik',
                   prefixIcon: const Icon(Icons.location_city_outlined, size: 20),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
@@ -295,7 +295,7 @@ class _NotifyMeModalState extends ConsumerState<NotifyMeModal> {
                       ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
                       : const Icon(Icons.notifications_active, size: 20),
                   label: Text(
-                    _isSubmitting ? 'Registering...' : 'Alert Me When Ready',
+                    _isSubmitting ? ref.tr('registering') : ref.tr('alert_me_when_ready'),
                     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                   ),
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/localization/app_strings.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../catalog/data/models/product_model.dart';
@@ -48,6 +49,7 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(appLanguageProvider);
     final p = widget.product;
     final trayCap = p.trayCapacity > 0 ? p.trayCapacity : 104;
 
@@ -126,8 +128,7 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
                               borderRadius: BorderRadius.circular(6),
                               border: Border.all(color: Colors.orange.shade300),
                             ),
-                            child: const Text(
-                              '⏳ ADVANCE PRE-BOOKING',
+                            child: Text('⏳ ${ref.tr('advance_prebooking')}',
                               style: TextStyle(
                                 fontSize: 9.5,
                                 fontWeight: FontWeight.w900,
@@ -192,18 +193,17 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Expected Batch Readiness Date',
+                        Text(ref.tr('expected_batch_readiness'),
                           style: TextStyle(fontSize: 10.5, color: Colors.grey, fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(height: 1),
                         Text(
-                          p.readyDate.isNotEmpty ? p.readyDate : '10-15 Days (Fresh Polyhouse Lot)',
+                          p.readyDate.isNotEmpty ? p.readyDate : ref.tr('fresh_polyhouse_lot_desc'),
                           style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800, color: AVRColors.forestGreenDark),
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          'Next batch capacity: ${p.futureStock} plants scheduled',
+                          '${ref.tr('next_batch_capacity')}: ${p.futureStock} ${ref.tr('plants_scheduled')}',
                           style: TextStyle(fontSize: 10, color: Colors.grey.shade700),
                         ),
                       ],
@@ -215,8 +215,7 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
             const SizedBox(height: 14),
 
             // Step 1: Unit Selector
-            const Text(
-              '1. Select Pre-Booking Unit',
+            Text(ref.tr('select_prebooking_unit'),
               style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800, color: AVRColors.textPrimary),
             ),
             const SizedBox(height: 8),
@@ -224,21 +223,21 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
               children: [
                 _buildUnitChoice(
                   id: 'tray',
-                  title: 'Pro-Tray',
+                  title: ref.tr('pro_tray'),
                   subtitle: '$trayCap plants / tray\n₹${trayRate.toStringAsFixed(0)}',
                   selected: _selectedUnit == 'tray',
                 ),
                 const SizedBox(width: 8),
                 _buildUnitChoice(
                   id: 'bulk',
-                  title: 'Bulk Lot',
+                  title: ref.tr('bulk_lot'),
                   subtitle: '1,000 plants lot\n₹${bulkRate.toStringAsFixed(2)}/plant',
                   selected: _selectedUnit == 'bulk',
                 ),
                 const SizedBox(width: 8),
                 _buildUnitChoice(
                   id: 'plant',
-                  title: 'Per Plant',
+                  title: ref.tr('per_plant'),
                   subtitle: '50 plants pack\n₹${plantRate.toStringAsFixed(2)}/plant',
                   selected: _selectedUnit == 'plant',
                 ),
@@ -253,8 +252,7 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      '2. Choose Quantity',
+                    Text(ref.tr('choose_quantity'),
                       style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800, color: AVRColors.textPrimary),
                     ),
                     Text(
@@ -301,8 +299,7 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
             const SizedBox(height: 14),
 
             // Step 3: Farmer Information
-            const Text(
-              '3. Farmer Contact & Delivery Details',
+            Text(ref.tr('farmer_contact_delivery_details'),
               style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800, color: AVRColors.textPrimary),
             ),
             const SizedBox(height: 8),
@@ -312,7 +309,7 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
                   child: TextField(
                     controller: _nameController,
                     decoration: InputDecoration(
-                      labelText: 'Farmer Name',
+                      labelText: ref.tr('farmer_name'),
                       labelStyle: const TextStyle(fontSize: 11),
                       prefixIcon: const Icon(Icons.person_outline, size: 16),
                       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -327,7 +324,7 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
-                      labelText: 'Phone Number',
+                      labelText: ref.tr('phone_number'),
                       labelStyle: const TextStyle(fontSize: 11),
                       prefixIcon: const Icon(Icons.phone_outlined, size: 16),
                       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -342,7 +339,7 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
             TextField(
               controller: _locationController,
               decoration: InputDecoration(
-                labelText: 'Village / Taluka / Delivery Location',
+                labelText: ref.tr('delivery_location_hint'),
                 labelStyle: const TextStyle(fontSize: 11),
                 prefixIcon: const Icon(Icons.location_on_outlined, size: 16),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -365,7 +362,7 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Total Plants Reserved:', style: TextStyle(fontSize: 11.5, color: Colors.grey.shade700)),
+                      Text(ref.tr('total_plants_reserved'), style: TextStyle(fontSize: 11.5, color: Colors.grey.shade700)),
                       Text('$totalPlants Plants', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                     ],
                   ),
@@ -373,7 +370,7 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Estimated Total Amount:', style: TextStyle(fontSize: 11.5, color: Colors.grey.shade700)),
+                      Text(ref.tr('estimated_total_amount'), style: TextStyle(fontSize: 11.5, color: Colors.grey.shade700)),
                       Text('₹${totalCost.toStringAsFixed(2)}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                     ],
                   ),
@@ -381,8 +378,7 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Advance Payable (20%):',
+                      Text(ref.tr('advance_payable'),
                         style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800, color: AVRColors.forestGreenDark),
                       ),
                       Text(
@@ -395,7 +391,7 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Balance Due at Pickup/Delivery (80%):', style: TextStyle(fontSize: 10, color: Colors.grey.shade600)),
+                      Text(ref.tr('balance_due_delivery'), style: TextStyle(fontSize: 10, color: Colors.grey.shade600)),
                       Text('₹${balanceOnDelivery.toStringAsFixed(2)}', style: TextStyle(fontSize: 10.5, color: Colors.grey.shade700)),
                     ],
                   ),
@@ -420,7 +416,7 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
                     ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
                     : const Icon(Icons.flash_on_rounded, size: 20),
                 label: Text(
-                  _isSubmitting ? 'Reserving Polyhouse Batch...' : 'Confirm Pre-Booking (Pay ₹${advanceDeposit.toStringAsFixed(0)} Advance)',
+                  _isSubmitting ? ref.tr('reserving_batch') : '${ref.tr('confirm_prebooking')} (Pay ₹${advanceDeposit.toStringAsFixed(0)})',
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                 ),
               ),
@@ -428,7 +424,7 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
             const SizedBox(height: 8),
             Center(
               child: Text(
-                '🛡️ Verified Nursery Reservation • Zero ready inventory deducted',
+                '🛡️ ${ref.tr('verified_reservation_note')}',
                 style: TextStyle(fontSize: 9.5, color: Colors.grey.shade600),
               ),
             ),
@@ -491,7 +487,7 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
 
     if (name.isEmpty || phone.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your name and phone number')),
+        SnackBar(content: Text(ref.tr('field_required'))),
       );
       return;
     }
@@ -519,11 +515,9 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
       barrierDismissible: false,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Row(
-          children: [
-            Icon(Icons.check_circle_rounded, color: AVRColors.success, size: 28),
+        title: Row(children: [const Icon(Icons.check_circle_rounded, color: AVRColors.success, size: 28),
             SizedBox(width: 8),
-            Text('Pre-Booking Confirmed!', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Text(ref.tr('order_confirmed'), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           ],
         ),
         content: Column(
@@ -580,7 +574,7 @@ class _FarmerPreBookingModalState extends ConsumerState<FarmerPreBookingModal> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ),
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Back to Store', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            child: Text(ref.tr('back_to_catalog'), style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
           ),
         ],
       ),

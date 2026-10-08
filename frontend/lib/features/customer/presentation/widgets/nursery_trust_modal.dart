@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/localization/app_strings.dart';
 import '../../data/models/nursery_model.dart';
 
-class NurseryTrustModal extends StatelessWidget {
+class NurseryTrustModal extends ConsumerWidget {
   final NurseryModel nursery;
   final VoidCallback? onBrowseCatalog;
 
@@ -24,7 +26,8 @@ class NurseryTrustModal extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(appLanguageProvider);
     final theme = Theme.of(context);
     final b = nursery.ratingBreakdown;
     final f = nursery.rankingFactors;
@@ -95,13 +98,13 @@ class NurseryTrustModal extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: const Color(0xFF2D6A4F).withValues(alpha: 0.3)),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.verified, size: 14, color: Color(0xFF2D6A4F)),
+                        const Icon(Icons.verified, size: 14, color: Color(0xFF2D6A4F)),
                         SizedBox(width: 4),
                         Text(
-                          'Verified',
+                          ref.tr('verified'),
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -157,7 +160,7 @@ class NurseryTrustModal extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        '${nursery.reviewCount} verified farmer reviews',
+                        '${nursery.reviewCount} ${ref.tr('verified_farmer_reviews')}',
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
@@ -178,7 +181,7 @@ class NurseryTrustModal extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          '${nursery.successfulOrdersCount}+ Orders',
+                          '${nursery.successfulOrdersCount}+ ${ref.tr('orders')}',
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -213,18 +216,18 @@ class NurseryTrustModal extends StatelessWidget {
 
             // Rating Breakdown Section (5 supported dimensions)
             Text(
-              'Rating Breakdown',
+              ref.tr('rating_breakdown'),
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: const Color(0xFF1B4332),
               ),
             ),
             const SizedBox(height: 12),
-            _buildMetricBar('Plant Quality', b.plantQuality, 5.0, Icons.eco),
-            _buildMetricBar('Delivery', b.delivery, 5.0, Icons.local_shipping),
-            _buildMetricBar('Service', b.service, 5.0, Icons.support_agent),
-            _buildMetricBar('Packaging', b.packaging, 5.0, Icons.inventory_2),
-            _buildMetricBar('Value for Money', b.value, 5.0, Icons.price_check),
+            _buildMetricBar(ref.tr('plant_quality'), b.plantQuality, 5.0, Icons.eco),
+            _buildMetricBar(ref.tr('delivery'), b.delivery, 5.0, Icons.local_shipping),
+            _buildMetricBar(ref.tr('service'), b.service, 5.0, Icons.support_agent),
+            _buildMetricBar(ref.tr('packaging'), b.packaging, 5.0, Icons.inventory_2),
+            _buildMetricBar(ref.tr('value_for_money'), b.value, 5.0, Icons.price_check),
 
             const SizedBox(height: 20),
 
@@ -244,7 +247,7 @@ class NurseryTrustModal extends StatelessWidget {
                       const Icon(Icons.insights, size: 16, color: Color(0xFF2D6A4F)),
                       const SizedBox(width: 6),
                       Text(
-                        'Marketplace Ranking: ${nursery.rankingScore}/100',
+                        '${ref.tr('marketplace_ranking')}: ${nursery.rankingScore}/100',
                         style: const TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
@@ -308,8 +311,8 @@ class NurseryTrustModal extends StatelessWidget {
                   elevation: 0,
                 ),
                 icon: const Icon(Icons.storefront, size: 18),
-                label: const Text(
-                  'Browse Nursery Products',
+                label: Text(
+                  ref.tr('browse_nursery_products'),
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                 ),
               ),

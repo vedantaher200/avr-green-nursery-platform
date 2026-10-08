@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../../core/localization/app_strings.dart';
+import '../../../../core/widgets/language_selector_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
@@ -18,28 +20,30 @@ class _FarmerOffersScreenState extends ConsumerState<FarmerOffersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(appLanguageProvider);
     final offersAsync = ref.watch(marketplaceOffersProvider);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF6F8F5),
       appBar: AppBar(
-        title: const Row(
+        title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.local_offer_rounded, color: AVRColors.forestGreen, size: 20),
             SizedBox(width: 8),
             Text(
-              'Farmer Offers & Campaigns',
-              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16.5, color: AVRColors.forestGreenDark),
+              ref.tr('farmer_offers_title'),
+              style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16.5, color: AVRColors.forestGreenDark),
             ),
           ],
         ),
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
+          const LanguageSelectorButton(),
           IconButton(
             icon: const Icon(Icons.refresh_rounded, color: AVRColors.forestGreen),
-            tooltip: 'Refresh Offers',
+            tooltip: ref.tr('refresh_offers'),
             onPressed: () => ref.invalidate(marketplaceOffersProvider),
           ),
         ],
@@ -54,11 +58,11 @@ class _FarmerOffersScreenState extends ConsumerState<FarmerOffersScreen> {
             children: [
               const Icon(Icons.error_outline, size: 40, color: AVRColors.error),
               const SizedBox(height: 8),
-              Text('Unable to load offers: $err'),
+              Text('${ref.tr('unable_to_load_offers')}: $err'),
               const SizedBox(height: 8),
               ElevatedButton(
                 onPressed: () => ref.invalidate(marketplaceOffersProvider),
-                child: const Text('Retry'),
+                child: Text(ref.tr('retry')),
               ),
             ],
           ),
@@ -104,8 +108,8 @@ class _FarmerOffersScreenState extends ConsumerState<FarmerOffersScreen> {
                                 color: const Color(0xFFD98E27),
                                 borderRadius: BorderRadius.circular(6),
                               ),
-                              child: const Text(
-                                'OFFICIAL NURSERY CAMPAIGNS',
+                              child: Text(
+                                ref.tr('official_nursery_campaigns'),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 9.5,
@@ -115,8 +119,8 @@ class _FarmerOffersScreenState extends ConsumerState<FarmerOffersScreen> {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            const Text(
-                              'Verified Plantation Discounts',
+                            Text(
+                              ref.tr('verified_plantation_discounts'),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -124,8 +128,8 @@ class _FarmerOffersScreenState extends ConsumerState<FarmerOffersScreen> {
                               ),
                             ),
                             const SizedBox(height: 4),
-                            const Text(
-                              'Save on bulk seedling trays and advance crop bookings directly from verified regional nurseries.',
+                            Text(
+                              ref.tr('farmer_campaign_subtitle'),
                               style: TextStyle(color: Colors.white70, fontSize: 11.5, height: 1.25),
                             ),
                           ],
@@ -194,7 +198,7 @@ class _FarmerOffersScreenState extends ConsumerState<FarmerOffersScreen> {
                         Icon(Icons.local_offer_outlined, size: 48, color: Colors.grey.shade400),
                         const SizedBox(height: 8),
                         Text(
-                          'No active offers found for $_selectedCropFilter',
+                          '${ref.tr('no_offers_found_for')} $_selectedCropFilter',
                           style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                         ),
                       ],
@@ -268,8 +272,8 @@ class _FarmerOffersScreenState extends ConsumerState<FarmerOffersScreen> {
                           color: AVRColors.terracotta.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(4),
                         ),
-                        child: const Text(
-                          'PRE-BOOK',
+                        child: Text(
+                          ref.tr('pre_book'),
                           style: TextStyle(
                             fontSize: 8.5,
                             fontWeight: FontWeight.bold,
@@ -368,19 +372,19 @@ class _FarmerOffersScreenState extends ConsumerState<FarmerOffersScreen> {
                     if (offer.applicableCrop != null)
                       _buildChip(
                         icon: Icons.eco_outlined,
-                        label: 'Crop: ${offer.applicableCrop}',
+                        label: '${ref.tr('crop_label')}: ${offer.applicableCrop}',
                         color: AVRColors.forestGreen,
                       ),
                     if (offer.minQuantity > 1)
                       _buildChip(
                         icon: Icons.shopping_basket_outlined,
-                        label: 'Min ${offer.minQuantity} Trays',
+                        label: ref.tr('min_trays_label').replaceAll('{count}', '${offer.minQuantity}'),
                         color: Colors.grey.shade700,
                       ),
                     if (offer.minOrderValue > 0)
                       _buildChip(
                         icon: Icons.currency_rupee,
-                        label: 'Min ₹${offer.minOrderValue.toStringAsFixed(0)}',
+                        label: ref.tr('min_order_val_label').replaceAll('{val}', offer.minOrderValue.toStringAsFixed(0)),
                         color: Colors.grey.shade700,
                       ),
                   ],
@@ -429,7 +433,7 @@ class _FarmerOffersScreenState extends ConsumerState<FarmerOffersScreen> {
                         size: 14,
                       ),
                       label: Text(
-                        offer.isPrebookingOffer ? 'Pre-Book Offer' : 'Shop Offer',
+                        offer.isPrebookingOffer ? ref.tr('prebook_offer_btn') : ref.tr('shop_offer_btn'),
                         style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold),
                       ),
                     ),

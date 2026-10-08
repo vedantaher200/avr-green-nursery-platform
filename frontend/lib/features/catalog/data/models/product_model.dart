@@ -1,3 +1,5 @@
+import '../../../../core/localization/app_strings.dart';
+
 class CareInstructions {
   final String sunlight;
   final String watering;
@@ -336,6 +338,26 @@ class Product {
       case 'ready_now':
       default:
         return readyStock > 0 ? 'READY NOW' : (isPrebookable ? 'PRE-BOOK AVAILABLE' : 'SOLD OUT');
+    }
+  }
+
+  String localizedStockBadgeLabel(AppLanguage lang) {
+    switch (stockState) {
+      case 'limited_stock':
+        return AppStrings.get('limited_stock_upper', lang);
+      case 'coming_soon':
+        return AppStrings.get('coming_soon_upper', lang);
+      case 'prebook_available':
+        return AppStrings.get('prebook_avail_upper', lang);
+      case 'sold_out':
+        return AppStrings.get('sold_out_upper', lang);
+      case 'ready_now':
+      default:
+        return readyStock > 0
+            ? AppStrings.get('ready_now_upper', lang)
+            : (isPrebookable
+                ? AppStrings.get('prebook_avail_upper', lang)
+                : AppStrings.get('sold_out_upper', lang));
     }
   }
 

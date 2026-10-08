@@ -308,11 +308,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Row(
+                    Row(
                       children: [
-                        Icon(Icons.event_available_rounded, color: Color(0xFFE65100), size: 20),
-                        SizedBox(width: 8),
-                        Text('My Advance Pre-Bookings', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
+                        const Icon(Icons.event_available_rounded, color: Color(0xFFE65100), size: 20),
+                        const SizedBox(width: 8),
+                        Text(ref.tr('my_advance_prebookings'), style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
                       ],
                     ),
                     IconButton(icon: const Icon(Icons.close), onPressed: () => Navigator.pop(ctx)),

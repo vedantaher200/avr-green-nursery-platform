@@ -35,8 +35,10 @@ extension AppLanguageX on AppLanguage {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class AppLanguageNotifier extends StateNotifier<AppLanguage> {
-  AppLanguageNotifier() : super(AppLanguage.en) {
-    _loadPersistedLanguage();
+  AppLanguageNotifier([AppLanguage initial = AppLanguage.en]) : super(initial) {
+    if (initial == AppLanguage.en) {
+      _loadPersistedLanguage();
+    }
   }
 
   static const String _prefKey = 'selected_app_language';
@@ -1508,6 +1510,971 @@ class AppStrings {
       AppLanguage.hi: 'लाइव IST',
       AppLanguage.mr: 'थेट IST',
     },
+    // ── Missing Role Keys & Aliases ─────────────────────────────────────────
+    'role_super_admin': {
+      AppLanguage.en: 'Commercial Platform Admin',
+      AppLanguage.hi: 'वाणिज्यिक मंच व्यवस्थापक',
+      AppLanguage.mr: 'प्लॅटफॉर्म प्रशासक',
+    },
+    'role_nursery_owner': {
+      AppLanguage.en: 'Nursery Owner / Operator',
+      AppLanguage.hi: 'नर्सरी संचालक / मालक',
+      AppLanguage.mr: 'नर्सरी मालक / व्यवस्थापक',
+    },
+    'role_nursery_manager': {
+      AppLanguage.en: 'Operations Manager',
+      AppLanguage.hi: 'परिचालन प्रबंधक',
+      AppLanguage.mr: 'कामकाज व्यवस्थापक',
+    },
+    'role_nursery_staff': {
+      AppLanguage.en: 'Nursery Field Staff',
+      AppLanguage.hi: 'नर्सरी क्षेत्र कर्मचारी',
+      AppLanguage.mr: 'नर्सरी फील्ड कर्मचारी',
+    },
+    'role_delivery_partner': {
+      AppLanguage.en: 'Delivery Partner',
+      AppLanguage.hi: 'वितरण भागीदार',
+      AppLanguage.mr: 'डिलिव्हरी पार्टनर',
+    },
+    'role_farmer': {
+      AppLanguage.en: 'Farmer / Customer',
+      AppLanguage.hi: 'किसान / ग्राहक',
+      AppLanguage.mr: 'शेतकरी / ग्राहक',
+    },
+    'no_products_found': {
+      AppLanguage.en: 'No products found',
+      AppLanguage.hi: 'कोई उत्पाद नहीं मिला',
+      AppLanguage.mr: 'कोणतीही उत्पादने आढळली नाहीत',
+    },
+
+    // ── Discovery, Sorting & Ranking ─────────────────────────────────────────
+    'sort_rank': {
+      AppLanguage.en: 'Multi-Factor Rank',
+      AppLanguage.hi: 'बहु-कारक रैंक',
+      AppLanguage.mr: 'मल्टी-फॅक्टर रँक',
+    },
+    'sort_distance': {
+      AppLanguage.en: 'Nearest Distance',
+      AppLanguage.hi: 'निकटतम दूरी',
+      AppLanguage.mr: 'जवळचे अंतर',
+    },
+    'sort_rating': {
+      AppLanguage.en: 'Highest Rating',
+      AppLanguage.hi: 'सर्वोच्च रेटिंग',
+      AppLanguage.mr: 'सर्वोच्च रेटिंग',
+    },
+    'sort_varieties': {
+      AppLanguage.en: 'Most Varieties',
+      AppLanguage.hi: 'सर्वाधिक किस्में',
+      AppLanguage.mr: 'सर्वाधिक वाण',
+    },
+    'ranking_info': {
+      AppLanguage.en: 'Ranking Info',
+      AppLanguage.hi: 'रैंकिंग जानकारी',
+      AppLanguage.mr: 'रँकिंग माहिती',
+    },
+    'ranking_dialog_title': {
+      AppLanguage.en: 'How Nurseries are Ranked',
+      AppLanguage.hi: 'नर्सरियों की रैंकिंग कैसे होती है',
+      AppLanguage.mr: 'रोपवाटिकांचे रँकिंग कसे ठरते',
+    },
+    'ranking_dialog_desc': {
+      AppLanguage.en: 'Nurseries are ranked based on proximity to your farm, seedling quality ratings, stock readiness, and order fulfillment speed.',
+      AppLanguage.hi: 'नर्सरियों को आपके खेत से दूरी, पौधों की गुणवत्ता, स्टॉक उपलब्धता और समय पर डिलीवरी के आधार पर रैंक किया जाता है।',
+      AppLanguage.mr: 'तुमच्या शेतापासूनचे अंतर, रोपांचा दर्जा, स्टॉकची उपलब्धता आणि जलद डिलिव्हरीच्या आधारावर रोपवाटिकांचे रँकिंग ठरवले जाते.',
+    },
+    'got_it': {
+      AppLanguage.en: 'Got it',
+      AppLanguage.hi: 'समझ गया',
+      AppLanguage.mr: 'समजले',
+    },
+    'search_hint_general': {
+      AppLanguage.en: 'Search nurseries, crops (Chilli, Tomato), varieties, seedling trays...',
+      AppLanguage.hi: 'नर्सरी, फसलें (मिर्च, टमाटर), किस्में, पौध ट्रे खोजें...',
+      AppLanguage.mr: 'रोपवाटिका, पिके (मिरची, टोमॅटो), वाण, रोपांचे ट्रे शोधा...',
+    },
+    'search_hint_nursery_prefix': {
+      AppLanguage.en: 'Search varieties in',
+      AppLanguage.hi: 'में किस्में खोजें:',
+      AppLanguage.mr: 'मध्ये वाण शोधा:',
+    },
+    'crops_for': {
+      AppLanguage.en: 'Crops for',
+      AppLanguage.hi: 'के लिए फसलें',
+      AppLanguage.mr: 'साठी पिके',
+    },
+    'popular_crops_regional': {
+      AppLanguage.en: 'Popular Agricultural Crops (Regional)',
+      AppLanguage.hi: 'लोकप्रिय कृषि फसलें (क्षेत्रीय)',
+      AppLanguage.mr: 'लोकप्रिय कृषी पिके (प्रादेशिक)',
+    },
+    'farmer_best_sellers': {
+      AppLanguage.en: 'Farmer Best Sellers & High Demand',
+      AppLanguage.hi: 'सर्वाधिक लोकप्रिय एवं मांग वाले पौधे',
+      AppLanguage.mr: 'शेतकऱ्यांची सर्वाधिक पसंती व मागणी',
+    },
+    'view_all_varieties': {
+      AppLanguage.en: 'View All Varieties',
+      AppLanguage.hi: 'सभी किस्में देखें',
+      AppLanguage.mr: 'सर्व वाण पहा',
+    },
+    'no_registered_nurseries_in': {
+      AppLanguage.en: 'No registered nurseries found in',
+      AppLanguage.hi: 'में कोई पंजीकृत नर्सरी नहीं मिली',
+      AppLanguage.mr: 'मध्ये कोणतीही नोंदणीकृत रोपवाटिका आढळली नाही',
+    },
+    'free_delivery_unlocked': {
+      AppLanguage.en: '🎉 You unlocked FREE Farm-Direct Nursery Delivery!',
+      AppLanguage.hi: '🎉 आपको मुफ़्त फार्म-डायरेक्ट डिलीवरी मिली!',
+      AppLanguage.mr: '🎉 तुम्हाला मोफत फार्म-डायरेक्ट डिलिव्हरी मिळाली आहे!',
+    },
+    'add_more_for_free_delivery': {
+      AppLanguage.en: 'more for FREE Nursery Delivery!',
+      AppLanguage.hi: 'और जोड़ें मुफ़्त डिलीवरी के लिए!',
+      AppLanguage.mr: 'आणखी खरेदी करा मोफत डिलिव्हरीसाठी!',
+    },
+    'add_word': {
+      AppLanguage.en: 'Add',
+      AppLanguage.hi: 'जोड़ें',
+      AppLanguage.mr: 'आणखी',
+    },
+    'fulfilling_nursery_prefix': {
+      AppLanguage.en: 'Fulfilling Nursery:',
+      AppLanguage.hi: 'आपूर्तिकर्ता नर्सरी:',
+      AppLanguage.mr: 'पुरवठादार रोपवाटिका:',
+    },
+    'browse_nursery_products': {
+      AppLanguage.en: 'Browse Nursery Products',
+      AppLanguage.hi: 'नर्सरी उत्पाद देखें',
+      AppLanguage.mr: 'रोपवाटिकेची उत्पादने पहा',
+    },
+    'rating_breakdown': {
+      AppLanguage.en: 'Rating Breakdown',
+      AppLanguage.hi: 'रेटिंग विवरण',
+      AppLanguage.mr: 'रेटिंग तपशील',
+    },
+    'verified_badge': {
+      AppLanguage.en: 'Verified',
+      AppLanguage.hi: 'सत्यापित',
+      AppLanguage.mr: 'सत्यापित',
+    },
+    'about_us': {
+      AppLanguage.en: 'About Us',
+      AppLanguage.hi: 'हमारे बारे में',
+      AppLanguage.mr: 'आमच्याबद्दल',
+    },
+    'about_nursery_sub': {
+      AppLanguage.en: 'Providing high quality seedlings to farmers across the region. Approved and verified by AVR Green.',
+      AppLanguage.hi: 'क्षेत्र के किसानों को उच्च गुणवत्ता वाले पौधे प्रदान करना। एवीआर ग्रीन द्वारा प्रमाणित।',
+      AppLanguage.mr: 'परिसरातील शेतकऱ्यांना उच्च दर्जाची रोपे पुरवणे. एव्हीआर ग्रीन द्वारे प्रमाणित.',
+    },
+    'view_available_varieties': {
+      AppLanguage.en: 'View Available Varieties',
+      AppLanguage.hi: 'उपलब्ध किस्में देखें',
+      AppLanguage.mr: 'उपलब्ध वाण पहा',
+    },
+    'expected_batch_date': {
+      AppLanguage.en: 'Expected Batch Readiness Date',
+      AppLanguage.hi: 'बैच तैयार होने की अपेक्षित तिथि',
+      AppLanguage.mr: 'बॅच तयार होण्याची अपेक्षित तारीख',
+    },
+    'prebooking_confirmed_title': {
+      AppLanguage.en: 'Pre-Booking Confirmed!',
+      AppLanguage.hi: 'प्री-बुकिंग की पुष्टि हो गई!',
+      AppLanguage.mr: 'पूर्व-नोंदणी निश्चित झाली!',
+    },
+    'prebooking_confirmed_desc': {
+      AppLanguage.en: 'The nursery manager will contact you once seedlings are ready for dispatch.',
+      AppLanguage.hi: 'पौधे तैयार होने पर नर्सरी प्रबंधक आपसे संपर्क करेंगे।',
+      AppLanguage.mr: 'रोपे तयार झाल्यावर रोपवाटिका व्यवस्थापक तुमच्याशी संपर्क साधतील.',
+    },
+    'back_to_store': {
+      AppLanguage.en: 'Back to Store',
+      AppLanguage.hi: 'स्टोर पर वापस जाएं',
+      AppLanguage.mr: 'स्टोअरवर परत जा',
+    },
+    'notify_when_available': {
+      AppLanguage.en: 'Notify When Available',
+      AppLanguage.hi: 'उपलब्ध होने पर सूचित करें',
+      AppLanguage.mr: 'उपलब्ध झाल्यावर कळवा',
+    },
+    'notify_modal_desc': {
+      AppLanguage.en: 'We will alert you via WhatsApp / SMS as soon as fresh seedling batches are potted.',
+      AppLanguage.hi: 'नई पौध तैयार होते ही हम आपको व्हाट्सएप/एसएमएस से सूचित करेंगे।',
+      AppLanguage.mr: 'नवीन रोपांची बॅच तयार होताच आम्ही तुम्हाला व्हॉट्सॲप/एसएमएस द्वारे कळवू.',
+    },
+    'plants_unit': {
+      AppLanguage.en: 'Plants',
+      AppLanguage.hi: 'पौधे',
+      AppLanguage.mr: 'रोपे',
+    },
+    'save_bulk_discounts': {
+      AppLanguage.en: 'Save on bulk seedling trays and advance crop bookings directly from verified regional nurseries.',
+      AppLanguage.hi: 'प्रमाणित क्षेत्रीय नर्सरियों से थोक ट्रे और अग्रिम बुकिंग पर छूट पाएं।',
+      AppLanguage.mr: 'प्रमाणित प्रादेशिक रोपवाटिकांकडून ठोक ट्रे आणि पूर्व-नोंदणीवर सवलत मिळवा.'
+    },
+    'official_nursery_campaigns': {
+      AppLanguage.en: 'OFFICIAL NURSERY CAMPAIGNS',
+      AppLanguage.hi: 'आधिकारिक नर्सरी अभियान',
+      AppLanguage.mr: 'अधिकृत रोपवाटिका मोहिमा',
+    },
+    'verified_plantation_discounts': {
+      AppLanguage.en: 'Verified Plantation Discounts',
+      AppLanguage.hi: 'सत्यापित रोपण छूट',
+      AppLanguage.mr: 'प्रमाणित लागवड सवलत',
+    },
+    'campaign_active': {
+      AppLanguage.en: 'Campaign Active',
+      AppLanguage.hi: 'सक्रिय अभियान',
+      AppLanguage.mr: 'सक्रिय मोहीम',
+    },
+    'claim_discount_prebook': {
+      AppLanguage.en: 'Claim Discount & Pre-Book',
+      AppLanguage.hi: 'छूट प्राप्त करें एवं प्री-बुक करें',
+      AppLanguage.mr: 'सवलत मिळवा व पूर्व-नोंदणी करा',
+    },
+    'cart_empty_toast': {
+      AppLanguage.en: 'Cart is empty!',
+      AppLanguage.hi: 'कार्ट खाली है!',
+      AppLanguage.mr: 'कार्ट रिकामी आहे!',
+    },
+    'invoice_auto_generated_note': {
+      AppLanguage.en: 'Your tax invoice is automatically generated and ready in Orders.',
+      AppLanguage.hi: 'आपका कर चालान स्वचालित रूप से जनरेट होकर ऑर्डर्स में उपलब्ध है।',
+      AppLanguage.mr: 'तुमचे कर बीजक आपोआप तयार होऊन ऑर्डर्स विभागात उपलब्ध आहे.',
+    },
+    'cards_accepted_label': {
+      AppLanguage.en: 'Visa, MasterCard, RuPay accepted',
+      AppLanguage.hi: 'वीज़ा, मास्टरकार्ड, रुपे स्वीकार्य',
+      AppLanguage.mr: 'व्हिसा, मास्टरकार्ड, रुपे स्वीकारले जातात',
+    },
+    'pay_cod_desc': {
+      AppLanguage.en: 'Pay when plants arrive at your farm or home',
+      AppLanguage.hi: 'पौध आपके खेत या घर पहुंचने पर भुगतान करें',
+      AppLanguage.mr: 'रोपे शेतात किंवा घरी पोहोचल्यावर पैसे द्या',
+    },
+    'profile_updated_success': {
+      AppLanguage.en: 'Profile details updated successfully',
+      AppLanguage.hi: 'प्रोफ़ाइल विवरण सफलतापूर्वक अपडेट किया गया',
+      AppLanguage.mr: 'प्रोफाइल तपशील यशस्वीरित्या अपडेट केले',
+    },
+    'connecting_helpline': {
+      AppLanguage.en: 'Connecting to AVR Green Agronomy Helpline...',
+      AppLanguage.hi: 'एवीआर ग्रीन कृषि हेल्पलाइन से संपर्क हो रहा है...',
+      AppLanguage.mr: 'एव्हीआर ग्रीन कृषी हेल्पलाइनशी संपर्क साधत आहे...',
+    },
+    'farming_location_purpose': {
+      AppLanguage.en: 'Used to match nearby certified seedling nurseries in Maharashtra.',
+      AppLanguage.hi: 'महाराष्ट्र में निकटतम प्रमाणित पौधशालाओं से जोड़ने के लिए उपयोग किया जाता है।',
+      AppLanguage.mr: 'महाराष्ट्रातील जवळच्या प्रमाणित रोपवाटिकांशी जोडण्यासाठी वापरले जाते.',
+    },
+    'photo_provenance_title': {
+      AppLanguage.en: 'Agricultural Photo Provenance',
+      AppLanguage.hi: 'कृषि छायाचित्र प्रामाणिकता',
+      AppLanguage.mr: 'कृषी छायाचित्र प्रामाणिकता',
+    },
+    'photo_provenance_desc': {
+      AppLanguage.en: 'This image depicts actual botanical seedling stock grown at participating nurseries under AVR Green standards.',
+      AppLanguage.hi: 'यह चित्र एवीआर ग्रीन मानकों के तहत भाग लेने वाली नर्सरियों में उगाए गए वास्तविक पौधों का है।',
+      AppLanguage.mr: 'हे छायाचित्र एव्हीआर ग्रीन मानकांनुसार सहभागी रोपवाटिकांमध्ये वाढवलेल्या प्रत्यक्ष रोपांचे आहे.',
+    },
+    'close_verification': {
+      AppLanguage.en: 'Close Verification',
+      AppLanguage.hi: 'सत्यापन बंद करें',
+      AppLanguage.mr: 'पडताळणी बंद करा',
+    },
+    'cart_contains_plants_from': {
+      AppLanguage.en: 'Your cart currently contains plants from',
+      AppLanguage.hi: 'आपकी कार्ट में वर्तमान में पौधे हैं:',
+      AppLanguage.mr: 'तुमच्या कार्टमध्ये सध्या रोपे आहेत:',
+    },
+    'single_nursery_rule_msg': {
+      AppLanguage.en: 'To maintain biosecurity and direct delivery, you can only order from one nursery at a time.',
+      AppLanguage.hi: 'सुरक्षा और सीधी डिलीवरी के लिए, आप एक समय में केवल एक नर्सरी से ऑर्डर कर सकते हैं।',
+      AppLanguage.mr: 'सुरक्षितता आणि थेट डिलिव्हरीसाठी, तुम्ही एका वेळी एकाच रोपवाटिकेकडून ऑर्डर करू शकता.',
+    },
+
+    // ── Owner Operations & Management ───────────────────────────────────────
+    'namaste_greeting': {
+      AppLanguage.en: 'Namaste,',
+      AppLanguage.hi: 'नमस्ते,',
+      AppLanguage.mr: 'नमस्ते,',
+    },
+    'grower_name': {
+      AppLanguage.en: 'Grower',
+      AppLanguage.hi: 'कृषक',
+      AppLanguage.mr: 'शेतकरी मित्र',
+    },
+    'quick_action_add_variety': {
+      AppLanguage.en: '+ Add Variety',
+      AppLanguage.hi: '+ नई किस्म जोड़ें',
+      AppLanguage.mr: '+ नवीन वाण जोडा',
+    },
+    'quick_action_create_offer': {
+      AppLanguage.en: '+ Create Offer',
+      AppLanguage.hi: '+ नया ऑफ़र बनाएं',
+      AppLanguage.mr: '+ नवीन ऑफर तयार करा',
+    },
+    'quick_action_manage_location': {
+      AppLanguage.en: 'Manage Location',
+      AppLanguage.hi: 'स्थान प्रबंधन',
+      AppLanguage.mr: 'स्थान व्यवस्थापन',
+    },
+    'quick_action_stock_adjust': {
+      AppLanguage.en: 'Stock Adjust',
+      AppLanguage.hi: 'स्टॉक समायोजन',
+      AppLanguage.mr: 'साठा समायोजन',
+    },
+    'quick_action_all_orders': {
+      AppLanguage.en: 'All Orders',
+      AppLanguage.hi: 'सभी ऑर्डर्स',
+      AppLanguage.mr: 'सर्व ऑर्डर्स',
+    },
+    'quick_action_deliveries': {
+      AppLanguage.en: 'Deliveries',
+      AppLanguage.hi: 'वितरण',
+      AppLanguage.mr: 'डिलिव्हरी',
+    },
+    'no_nursery_orders_yet': {
+      AppLanguage.en: 'No nursery orders received yet',
+      AppLanguage.hi: 'अभी तक कोई ऑर्डर प्राप्त नहीं हुआ',
+      AppLanguage.mr: 'अद्याप कोणतीही ऑर्डर मिळालेली नाही',
+    },
+    'orders_auto_appear': {
+      AppLanguage.en: 'Orders placed by farmers will automatically appear here.',
+      AppLanguage.hi: 'किसानों द्वारा दिए गए ऑर्डर यहां दिखाई देंगे।',
+      AppLanguage.mr: 'शेतकऱ्यांनी दिलेले ऑर्डर्स येथे दिसतील.',
+    },
+    'all_prebookings_processed': {
+      AppLanguage.en: 'All farmer pre-bookings have been processed! No pending approvals.',
+      AppLanguage.hi: 'सभी किसान प्री-बुकिंग स्वीकृत हो चुकी हैं! कोई लंबित नहीं।',
+      AppLanguage.mr: 'सर्व शेतकरी पूर्व-नोंदणी मंजूर झाल्या आहेत! कोणतीही प्रलंबित नाही.',
+    },
+    'publish_announcements_hint': {
+      AppLanguage.en: 'Publish production announcements so farmers can pre-book next batches.',
+      AppLanguage.hi: 'उत्पादन घोषणाएं प्रकाशित करें ताकि किसान अगली पौध की अग्रिम बुकिंग कर सकें।',
+      AppLanguage.mr: 'उत्पादन घोषणा प्रकाशित करा जेणेकरून शेतकरी पुढील रोपांची पूर्व-नोंदणी करू शकतील.',
+    },
+    'location_updated_msg': {
+      AppLanguage.en: 'Location updated successfully',
+      AppLanguage.hi: 'स्थान सफलतापूर्वक अपडेट किया गया',
+      AppLanguage.mr: 'स्थान यशस्वीरित्या अपडेट केले',
+    },
+    'manage_location_title': {
+      AppLanguage.en: 'Manage Location',
+      AppLanguage.hi: 'स्थान प्रबंधन',
+      AppLanguage.mr: 'स्थान व्यवस्थापन',
+    },
+    'no_locations_found': {
+      AppLanguage.en: 'No locations found.',
+      AppLanguage.hi: 'कोई स्थान नहीं मिला।',
+      AppLanguage.mr: 'कोणतेही स्थान आढळले नाही.',
+    },
+    'nursery_branch_details': {
+      AppLanguage.en: 'Nursery Branch Details',
+      AppLanguage.hi: 'नर्सरी शाखा विवरण',
+      AppLanguage.mr: 'रोपवाटिका शाखा तपशील',
+    },
+    'marketplace_visibility': {
+      AppLanguage.en: 'Marketplace Visibility',
+      AppLanguage.hi: 'मार्केटप्लेस दृश्यता',
+      AppLanguage.mr: 'मार्केटप्लेस दृश्यमानता',
+    },
+    'business_profile_title': {
+      AppLanguage.en: 'Business Profile',
+      AppLanguage.hi: 'व्यावसायिक प्रोफ़ाइल',
+      AppLanguage.mr: 'व्यवसाय प्रोफाइल',
+    },
+    'profile_saved_success': {
+      AppLanguage.en: 'Business profile saved successfully!',
+      AppLanguage.hi: 'व्यावसायिक प्रोफ़ाइल सहेजी गई!',
+      AppLanguage.mr: 'व्यवसाय प्रोफाइल सेव्ह केले!',
+    },
+    'business_information': {
+      AppLanguage.en: 'Business Information',
+      AppLanguage.hi: 'व्यावसायिक जानकारी',
+      AppLanguage.mr: 'व्यवसाय माहिती',
+    },
+    'create_offer_title': {
+      AppLanguage.en: 'Create Offer',
+      AppLanguage.hi: 'नया ऑफ़र बनाएं',
+      AppLanguage.mr: 'नवीन ऑफर तयार करा',
+    },
+    'create_first_offer_sub': {
+      AppLanguage.en: 'Create Your First Offer',
+      AppLanguage.hi: 'अपना पहला ऑफ़र बनाएं',
+      AppLanguage.mr: 'तुमची पहिली ऑफर तयार करा',
+    },
+    'pause_btn': {
+      AppLanguage.en: 'Pause',
+      AppLanguage.hi: 'रोकें',
+      AppLanguage.mr: 'थांबवा',
+    },
+    'resume_btn': {
+      AppLanguage.en: 'Resume',
+      AppLanguage.hi: 'सक्रिय करें',
+      AppLanguage.mr: 'सुरू करा',
+    },
+    'delete_btn': {
+      AppLanguage.en: 'Delete',
+      AppLanguage.hi: 'हटाएं',
+      AppLanguage.mr: 'हटवा',
+    },
+    'offer_status_active': {
+      AppLanguage.en: 'Active',
+      AppLanguage.hi: 'सक्रिय',
+      AppLanguage.mr: 'सक्रिय',
+    },
+    'offer_status_paused': {
+      AppLanguage.en: 'Paused',
+      AppLanguage.hi: 'रोका गया',
+      AppLanguage.mr: 'थांबवले',
+    },
+    'edit_offer': {
+      AppLanguage.en: 'Edit Offer',
+      AppLanguage.hi: 'ऑफ़र संपादित करें',
+      AppLanguage.mr: 'ऑफर संपादित करा',
+    },
+    'all_states_tab': {
+      AppLanguage.en: 'All States',
+      AppLanguage.hi: 'सभी स्थितियाँ',
+      AppLanguage.mr: 'सर्व स्थिती',
+    },
+    'ready_now_upper': {
+      AppLanguage.en: 'READY NOW',
+      AppLanguage.hi: 'तत्काल उपलब्ध',
+      AppLanguage.mr: 'सध्या उपलब्ध',
+    },
+    'limited_stock_upper': {
+      AppLanguage.en: 'LIMITED STOCK',
+      AppLanguage.hi: 'सीमित स्टॉक',
+      AppLanguage.mr: 'मर्यादित साठा',
+    },
+    'coming_soon_upper': {
+      AppLanguage.en: 'COMING SOON',
+      AppLanguage.hi: 'शीघ्र आ रहा है',
+      AppLanguage.mr: 'लवकरच येत आहे',
+    },
+    'sold_out_upper': {
+      AppLanguage.en: 'SOLD OUT',
+      AppLanguage.hi: 'स्टॉक समाप्त',
+      AppLanguage.mr: 'साठा संपला',
+    },
+    'prebook_avail_upper': {
+      AppLanguage.en: 'PRE-BOOK AVAILABLE',
+      AppLanguage.hi: 'प्री-बुकिंग उपलब्ध',
+      AppLanguage.mr: 'पूर्व-नोंदणी उपलब्ध',
+    },
+    'adjust_stock': {
+      AppLanguage.en: 'Adjust Stock',
+      AppLanguage.hi: 'स्टॉक समायोजित करें',
+      AppLanguage.mr: 'साठा समायोजित करा',
+    },
+    'update_inventory': {
+      AppLanguage.en: 'Update Inventory',
+      AppLanguage.hi: 'इन्वेंट्री अपडेट करें',
+      AppLanguage.mr: 'साठा अपडेट करा',
+    },
+    'save_changes': {
+      AppLanguage.en: 'Save Changes',
+      AppLanguage.hi: 'परिवर्तन सहेजें',
+      AppLanguage.mr: 'बदल सेव्ह करा',
+    },
+    'today_range': {
+      AppLanguage.en: 'Today',
+      AppLanguage.hi: 'आज',
+      AppLanguage.mr: 'आज',
+    },
+    'this_week_range': {
+      AppLanguage.en: 'This Week',
+      AppLanguage.hi: 'इस सप्ताह',
+      AppLanguage.mr: 'या आठवड्यात',
+    },
+    'this_month_range': {
+      AppLanguage.en: 'This Month',
+      AppLanguage.hi: 'इस महीने',
+      AppLanguage.mr: 'या महिन्यात',
+    },
+    'year_to_date_range': {
+      AppLanguage.en: 'Year to Date',
+      AppLanguage.hi: 'इस वर्ष',
+      AppLanguage.mr: 'या वर्षात',
+    },
+    'export_pdf': {
+      AppLanguage.en: 'Export PDF Report',
+      AppLanguage.hi: 'पीडीएफ रिपोर्ट डाउनलोड करें',
+      AppLanguage.mr: 'पीडीएफ अहवाल डाउनलोड करा',
+    },
+    'fulfillment_timeline': {
+      AppLanguage.en: 'Fulfillment Timeline',
+      AppLanguage.hi: 'आपूर्ति समयरेखा',
+      AppLanguage.mr: 'डिलिव्हरी कालमर्यादा',
+    },
+    'live_track_btn': {
+      AppLanguage.en: 'Live Track',
+      AppLanguage.hi: 'लाइव ट्रैक करें',
+      AppLanguage.mr: 'थेट ट्रॅक करा',
+    },
+    'agent_en_route': {
+      AppLanguage.en: 'Agent En Route',
+      AppLanguage.hi: 'वितरक रास्ते में है',
+      AppLanguage.mr: 'डिलिव्हरी प्रतिनिधी मार्गावर आहे',
+    },
+    'estimated_arrival': {
+      AppLanguage.en: 'Estimated Arrival',
+      AppLanguage.hi: 'अपेक्षित आगमन',
+      AppLanguage.mr: 'अपेक्षित वेळ',
+    },
+    'live_gps_sync': {
+      AppLanguage.en: 'LIVE GPS SYNC',
+      AppLanguage.hi: 'लाइव जीपीएस सिंक',
+      AppLanguage.mr: 'थेट जीपीएस सिंक',
+    },
+    'nursery_branch': {
+      AppLanguage.en: 'Nursery Branch',
+      AppLanguage.hi: 'नर्सरी शाखा',
+      AppLanguage.mr: 'रोपवाटिका शाखा',
+    },
+    'customer_destination': {
+      AppLanguage.en: 'Customer Farm / Delivery Point',
+      AppLanguage.hi: 'ग्राहक खेत / वितरण स्थल',
+      AppLanguage.mr: 'शेतकरी शेत / डिलिव्हरी ठिकाण',
+    },
+    'enter_phone_name_err': {
+      AppLanguage.en: 'Please enter your name and phone number',
+      AppLanguage.hi: 'कृपया अपना नाम और मोबाइल नंबर दर्ज करें',
+      AppLanguage.mr: 'कृपया तुमचे नाव आणि मोबाईल नंबर टाका',
+    },
+    'platform_control_title': {
+      AppLanguage.en: 'AVR Mitra SaaS Platform Control',
+      AppLanguage.hi: 'एवीआर मित्र सास प्लेटफॉर्म नियंत्रण',
+      AppLanguage.mr: 'एव्हीआर मित्र सास प्लॅटफॉर्म नियंत्रण',
+    },
+    'onboarded_nurseries_stat': {
+      AppLanguage.en: 'Onboarded Nursery Businesses',
+      AppLanguage.hi: 'पंजीकृत पौधशालाएं',
+      AppLanguage.mr: 'नोंदणीकृत रोपवाटिका',
+    },
+    'active_subscriptions_stat': {
+      AppLanguage.en: 'Active SaaS Subscription Plans',
+      AppLanguage.hi: 'सक्रिय सास सदस्यता योजनाएं',
+      AppLanguage.mr: 'सक्रिय सास सबस्क्रिप्शन प्लॅन',
+    },
+    'farmer_offers_title': {
+      AppLanguage.en: 'Farmer Offers & Campaigns',
+      AppLanguage.hi: 'किसान ऑफर्स और अभियान',
+      AppLanguage.mr: 'शेतकरी ऑफर्स आणि मोहिमा',
+    },
+    'refresh_offers': {
+      AppLanguage.en: 'Refresh Offers',
+      AppLanguage.hi: 'ऑफर्स रिफ्रेश करें',
+      AppLanguage.mr: 'ऑफर्स रिफ्रेश करा',
+    },
+    'farmer_campaign_subtitle': {
+      AppLanguage.en: 'Save on bulk seedling trays and advance crop bookings directly from verified regional nurseries.',
+      AppLanguage.hi: 'सत्यापित क्षेत्रीय पौधशालाओं से सीधे बल्क पौध ट्रे और अग्रिम फसल बुकिंग पर बचत करें।',
+      AppLanguage.mr: 'सत्यापित प्रादेशिक रोपवाटिकांमधून थेट बियाणे ट्रे आणि आगाऊ पीक बुकिंगवर बचत करा.',
+    },
+    'no_offers_found_for': {
+      AppLanguage.en: 'No active offers found for',
+      AppLanguage.hi: 'इसके लिए कोई सक्रिय ऑफर नहीं मिली:',
+      AppLanguage.mr: 'यासाठी कोणतीही सक्रिय ऑफर सापडली नाही:',
+    },
+    'pre_book': {
+      AppLanguage.en: 'PRE-BOOK',
+      AppLanguage.hi: 'प्री-बुक',
+      AppLanguage.mr: 'प्री-बुक',
+    },
+    'crop_label': {
+      AppLanguage.en: 'Crop',
+      AppLanguage.hi: 'फसल',
+      AppLanguage.mr: 'पीक',
+    },
+    'min_trays_label': {
+      AppLanguage.en: 'Min {count} Trays',
+      AppLanguage.hi: 'न्यूनतम {count} ट्रे',
+      AppLanguage.mr: 'किमान {count} ट्रे',
+    },
+    'min_order_val_label': {
+      AppLanguage.en: 'Min ₹{val}',
+      AppLanguage.hi: 'न्यूनतम ₹{val}',
+      AppLanguage.mr: 'किमान ₹{val}',
+    },
+    'prebook_offer_btn': {
+      AppLanguage.en: 'Pre-Book Offer',
+      AppLanguage.hi: 'प्री-बुक ऑफर',
+      AppLanguage.mr: 'प्री-बुक ऑफर',
+    },
+    'shop_offer_btn': {
+      AppLanguage.en: 'Shop Offer',
+      AppLanguage.hi: 'ऑफर खरीदें',
+      AppLanguage.mr: 'ऑफर खरेदी करा',
+    },
+    'nursery_storefront_desc': {
+      AppLanguage.en: 'Providing high quality seedlings to farmers across the region. Approved and verified by AVR Green.',
+      AppLanguage.hi: 'क्षेत्र के किसानों को उच्च गुणवत्ता वाली पौध उपलब्ध कराना। AVR Green द्वारा स्वीकृत और सत्यापित।',
+      AppLanguage.mr: 'प्रदेशातील शेतकऱ्यांना उच्च दर्जाची रोपे पुरवणे. AVR Green द्वारे मंजूर आणि प्रमाणित.',
+    },
+    'error_loading_storefront': {
+      AppLanguage.en: 'Error loading storefront',
+      AppLanguage.hi: 'स्टोरफ्रंट लोड करने में त्रुटि',
+      AppLanguage.mr: 'स्टोअरफ्रंट लोड करताना त्रुटी आली',
+    },
+    'botanical_transport_guarantee': {
+      AppLanguage.en: 'Botanical Transport Guarantee: Seedlings packed in ventilated, root-safe biodegradable wraps.',
+      AppLanguage.hi: 'वानस्पतिक परिवहन गारंटी: पौध हवादार, जड़-सुरक्षित बायोडिग्रेडेबल आवरण में पैक की जाती है।',
+      AppLanguage.mr: 'वनस्पती वाहतूक हमी: रोपे हवेशीर, मुळांना सुरक्षित ठेवणाऱ्या बायोडीग्रेडेबल रॅप्समध्ये पॅक केली जातात.',
+    },
+    'instant_conf_invoice': {
+      AppLanguage.en: 'Instant confirmation & digital invoice',
+      AppLanguage.hi: 'त्वरित पुष्टि और डिजिटल इनवॉइस',
+      AppLanguage.mr: 'झटपट पुष्टीकरण आणि डिजिटल बीजक',
+    },
+    'credit_debit_card': {
+      AppLanguage.en: 'Credit / Debit Card',
+      AppLanguage.hi: 'क्रेडिट / डेबिट कार्ड',
+      AppLanguage.mr: 'क्रेडिट / डेबिट कार्ड',
+    },
+    'card_networks': {
+      AppLanguage.en: 'Visa, MasterCard, RuPay',
+      AppLanguage.hi: 'Visa, MasterCard, RuPay',
+      AppLanguage.mr: 'Visa, MasterCard, RuPay',
+    },
+    'cod_label': {
+      AppLanguage.en: 'Cash on Delivery (COD)',
+      AppLanguage.hi: 'कैश ऑन डिलीवरी (COD)',
+      AppLanguage.mr: 'कॅश ऑन डिलिव्हरी (COD)',
+    },
+    'cod_subtitle': {
+      AppLanguage.en: 'Pay when plants arrive at your farm or home',
+      AppLanguage.hi: 'पौध आपके खेत या घर पहुंचने पर भुगतान करें',
+      AppLanguage.mr: 'रोपे शेतात किंवा घरी पोहोचल्यावर पैसे द्या',
+    },
+    'tax_invoice_ready_msg': {
+      AppLanguage.en: 'Your tax invoice is automatically generated and ready in Orders.',
+      AppLanguage.hi: 'आपका कर इनवॉइस स्वचालित रूप से जनरेट हो गया है और ऑर्डर्स में उपलब्ध है।',
+      AppLanguage.mr: 'तुमचे कर बीजक स्वयंचलितपणे तयार झाले आहे आणि ऑर्डर विभागात उपलब्ध आहे.',
+    },
+    'cart_is_empty': {
+      AppLanguage.en: 'Cart is empty!',
+      AppLanguage.hi: 'कार्ट खाली है!',
+      AppLanguage.mr: 'कार्ट रिकामी आहे!',
+    },
+    'advance_prebooking': {
+      AppLanguage.en: 'ADVANCE PRE-BOOKING',
+      AppLanguage.hi: 'अग्रिम प्री-बुकिंग',
+      AppLanguage.mr: 'आगाऊ प्री-बुकिंग',
+    },
+    'expected_batch_readiness': {
+      AppLanguage.en: 'Expected Batch Readiness Date',
+      AppLanguage.hi: 'अपेक्षित बैच तैयार होने की तिथि',
+      AppLanguage.mr: 'अपेक्षित बॅच तयार होण्याची तारीख',
+    },
+    'fresh_polyhouse_lot_desc': {
+      AppLanguage.en: '10-15 Days (Fresh Polyhouse Lot)',
+      AppLanguage.hi: '10-15 दिन (नया पॉलीहाउस लॉट)',
+      AppLanguage.mr: '१०-१५ दिवस (नवीन पॉलीहाऊस लॉट)',
+    },
+    'next_batch_capacity': {
+      AppLanguage.en: 'Next batch capacity',
+      AppLanguage.hi: 'अगली बैच क्षमता',
+      AppLanguage.mr: 'पुढील बॅच क्षमता',
+    },
+    'plants_scheduled': {
+      AppLanguage.en: 'plants scheduled',
+      AppLanguage.hi: 'पौधे निर्धारित',
+      AppLanguage.mr: 'रोपे नियोजित',
+    },
+    'select_prebooking_unit': {
+      AppLanguage.en: '1. Select Pre-Booking Unit',
+      AppLanguage.hi: '1. प्री-बुकिंग इकाई चुनें',
+      AppLanguage.mr: '१. प्री-बुकिंग युनिट निवडा',
+    },
+    'bulk_lot': {
+      AppLanguage.en: 'Bulk Lot',
+      AppLanguage.hi: 'थोक लॉट',
+      AppLanguage.mr: 'बल्क लॉट',
+    },
+    'choose_quantity': {
+      AppLanguage.en: '2. Choose Quantity',
+      AppLanguage.hi: '2. मात्रा चुनें',
+      AppLanguage.mr: '२. प्रमाण निवडा',
+    },
+    'farmer_contact_delivery_details': {
+      AppLanguage.en: '3. Farmer Contact & Delivery Details',
+      AppLanguage.hi: '3. किसान संपर्क और डिलीवरी विवरण',
+      AppLanguage.mr: '३. शेतकरी संपर्क आणि वितरण तपशील',
+    },
+    'farmer_name': {
+      AppLanguage.en: 'Farmer Name',
+      AppLanguage.hi: 'किसान का नाम',
+      AppLanguage.mr: 'शेतकऱ्याचे नाव',
+    },
+    'phone_number': {
+      AppLanguage.en: 'Phone Number',
+      AppLanguage.hi: 'फ़ोन नंबर',
+      AppLanguage.mr: 'फोन नंबर',
+    },
+    'delivery_location_hint': {
+      AppLanguage.en: 'Village / Taluka / Delivery Location',
+      AppLanguage.hi: 'गाँव / तालुका / डिलीवरी स्थान',
+      AppLanguage.mr: 'गाव / तालुका / वितरणाचे ठिकाण',
+    },
+    'total_plants_reserved': {
+      AppLanguage.en: 'Total Plants Reserved:',
+      AppLanguage.hi: 'कुल आरक्षित पौधे:',
+      AppLanguage.mr: 'एकूण आरक्षित रोपे:',
+    },
+    'estimated_total_amount': {
+      AppLanguage.en: 'Estimated Total Amount:',
+      AppLanguage.hi: 'अनुमानित कुल राशि:',
+      AppLanguage.mr: 'अंदाजे एकूण रक्कम:',
+    },
+    'advance_payable': {
+      AppLanguage.en: 'Advance Payable (20%):',
+      AppLanguage.hi: 'अग्रिम देय (20%):',
+      AppLanguage.mr: 'आगाऊ देय रक्कम (२०%):',
+    },
+    'balance_due_delivery': {
+      AppLanguage.en: 'Balance Due at Pickup/Delivery (80%):',
+      AppLanguage.hi: 'डिलीवरी के समय शेष राशि (80%):',
+      AppLanguage.mr: 'वितरणाच्या वेळी उर्वरित रक्कम (८०%):',
+    },
+    'confirm_prebooking': {
+      AppLanguage.en: 'Confirm Pre-Booking',
+      AppLanguage.hi: 'प्री-बुकिंग कन्फर्म करें',
+      AppLanguage.mr: 'प्री-बुकिंग निश्चित करा',
+    },
+    'reserving_batch': {
+      AppLanguage.en: 'Reserving Polyhouse Batch...',
+      AppLanguage.hi: 'पॉलीहाउस बैच आरक्षित की जा रही है...',
+      AppLanguage.mr: 'पॉलीहाऊस बॅच आरक्षित करत आहे...',
+    },
+    'verified_reservation_note': {
+      AppLanguage.en: 'Verified Nursery Reservation • Zero ready inventory deducted',
+      AppLanguage.hi: 'सत्यापित पौधशाला आरक्षण • तैयार स्टॉक से कोई कटौती नहीं',
+      AppLanguage.mr: 'प्रमाणित रोपवाटिका आरक्षण • तयार स्टॉकमधून कोणतीही वजावट नाही',
+    },
+    'farmer_mobile_number': {
+      AppLanguage.en: 'Farmer Mobile Number *',
+      AppLanguage.hi: 'किसान का मोबाइल नंबर *',
+      AppLanguage.mr: 'शेतकऱ्याचा मोबाईल नंबर *',
+    },
+    'phone_alert_hint': {
+      AppLanguage.en: 'Enter 10-digit number for SMS / WhatsApp alert',
+      AppLanguage.hi: 'SMS / WhatsApp अलर्ट के लिए 10-अंकीय नंबर दर्ज करें',
+      AppLanguage.mr: 'SMS / WhatsApp सूचनांसाठी १० अंकी नंबर प्रविष्ट करा',
+    },
+    'estimated_quantity': {
+      AppLanguage.en: 'Estimated Quantity',
+      AppLanguage.hi: 'अनुमानित मात्रा',
+      AppLanguage.mr: 'अंदाजे प्रमाण',
+    },
+    'unit_label': {
+      AppLanguage.en: 'Unit',
+      AppLanguage.hi: 'इकाई',
+      AppLanguage.mr: 'युनिट',
+    },
+    'alert_me_when_ready': {
+      AppLanguage.en: 'Alert Me When Ready',
+      AppLanguage.hi: 'तैयार होने पर मुझे बताएं',
+      AppLanguage.mr: 'तयार झाल्यावर मला सूचना द्या',
+    },
+    'registering': {
+      AppLanguage.en: 'Registering...',
+      AppLanguage.hi: 'पंजीकरण हो रहा है...',
+      AppLanguage.mr: 'नोंदणी करत आहे...',
+    },
+    'notification_set_success': {
+      AppLanguage.en: 'Notification set! We will alert you when plants are ready.',
+      AppLanguage.hi: 'अलर्ट सेट हो गया! पौधे तैयार होने पर हम आपको सूचित करेंगे।',
+      AppLanguage.mr: 'सूचना सेट केली! रोपे तयार झाल्यावर आम्ही आपल्याला कळवू.',
+    },
+    'verified_farmer_reviews': {
+      AppLanguage.en: 'verified farmer reviews',
+      AppLanguage.hi: 'सत्यापित किसान समीक्षाएं',
+      AppLanguage.mr: 'सत्यापित शेतकरी पुनरावलोकने',
+    },
+    'plant_quality': {
+      AppLanguage.en: 'Plant Quality',
+      AppLanguage.hi: 'पौधों की गुणवत्ता',
+      AppLanguage.mr: 'रोपांची गुणवत्ता',
+    },
+    'packaging': {
+      AppLanguage.en: 'Packaging',
+      AppLanguage.hi: 'पैकेजिंग',
+      AppLanguage.mr: 'पॅकेजिंग',
+    },
+    'value_for_money': {
+      AppLanguage.en: 'Value for Money',
+      AppLanguage.hi: 'किफायती',
+      AppLanguage.mr: 'किफायतशीर',
+    },
+    'marketplace_ranking': {
+      AppLanguage.en: 'Marketplace Ranking',
+      AppLanguage.hi: 'मार्केटप्लेस रैंकिंग',
+      AppLanguage.mr: 'मार्केटप्लेस रँकिंग',
+    },
+    'nursery_delivery_fleet': {
+      AppLanguage.en: 'Nursery Delivery Fleet 🚚',
+      AppLanguage.hi: 'पौधशाला डिलीवरी बेड़ा 🚚',
+      AppLanguage.mr: 'रोपवाटिका वितरण फ्लीट 🚚',
+    },
+    'superadmin_title': {
+      AppLanguage.en: 'AVR Mitra — Super Admin 🛡️',
+      AppLanguage.hi: 'AVR Mitra — सुपर एडमिन 🛡️',
+      AppLanguage.mr: 'AVR Mitra — सुपर ॲडमिन 🛡️',
+    },
+    'trust_badge': {
+      AppLanguage.en: 'Trust',
+      AppLanguage.hi: 'भरोसा',
+      AppLanguage.mr: 'विश्वास',
+    },
+    'browse_badge': {
+      AppLanguage.en: 'Browse',
+      AppLanguage.hi: 'देखें',
+      AppLanguage.mr: 'ब्राउझ करा',
+    },
+    'clear_btn': {
+      AppLanguage.en: 'Clear',
+      AppLanguage.hi: 'हटाएं',
+      AppLanguage.mr: 'साफ करा',
+    },
+    'live_nursery_production_updates': {
+      AppLanguage.en: 'Live Nursery Production Updates',
+      AppLanguage.hi: 'लाइव पौधशाला उत्पादन अपडेट्स',
+      AppLanguage.mr: 'थेट रोपवाटिका उत्पादन अपडेट्स',
+    },
+    'broadcast_badge': {
+      AppLanguage.en: 'BROADCAST',
+      AppLanguage.hi: 'प्रसारण',
+      AppLanguage.mr: 'प्रसारण',
+    },
+    'ranking_criteria_title': {
+      AppLanguage.en: 'Nursery Ranking Criteria',
+      AppLanguage.hi: 'नर्सरी रैंकिंग मानदंड',
+      AppLanguage.mr: 'रोपवाटिका रँकिंग निकष',
+    },
+    'farmer_special_offers': {
+      AppLanguage.en: 'Farmer Special Offers',
+      AppLanguage.hi: 'विशेष किसान ऑफ़र्स',
+      AppLanguage.mr: 'विशेष शेतकरी ऑफर्स',
+    },
+    'live_track': {
+      AppLanguage.en: 'Live Track',
+      AppLanguage.hi: 'लाइव ट्रैक',
+      AppLanguage.mr: 'थेट ट्रॅक',
+    },
+    'complete_pod': {
+      AppLanguage.en: 'Complete (POD)',
+      AppLanguage.hi: 'वितरण पूर्ण करें (POD)',
+      AppLanguage.mr: 'वितरण पूर्ण (POD)',
+    },
+    'verify_otp': {
+      AppLanguage.en: 'Verify OTP',
+      AppLanguage.hi: 'ओटीपी सत्यापित करें',
+      AppLanguage.mr: 'ओटीपी पडताळा',
+    },
+    'customer_home': {
+      AppLanguage.en: 'Customer Farm / Home',
+      AppLanguage.hi: 'किसान खेत / घर',
+      AppLanguage.mr: 'शेतकरी शेत / घर',
+    },
+    'location_match_desc': {
+      AppLanguage.en: 'Used to match nearby certified seedling nurseries in Maharashtra.',
+      AppLanguage.hi: 'महाराष्ट्र में निकटतम प्रमाणित पौधशालाओं को खोजने के लिए उपयोग किया जाता है।',
+      AppLanguage.mr: 'महाराष्ट्रातील जवळच्या प्रमाणित रोपवाटिका शोधण्यासाठी वापरले जाते.',
+    },
+    'connecting_agronomy_helpline': {
+      AppLanguage.en: 'Connecting to AVR Green Agronomy Helpline...',
+      AppLanguage.hi: 'एवीआर ग्रीन कृषि हेल्पलाइन से जुड़ रहे हैं...',
+      AppLanguage.mr: 'एव्हीआर ग्रीन कृषी हेल्पलाइनशी जोडत आहे...',
+    },
+    'delete_offer_title': {
+      AppLanguage.en: 'Delete Offer Campaign',
+      AppLanguage.hi: 'ऑफर अभियान हटाएं',
+      AppLanguage.mr: 'ऑफर मोहीम हटवा',
+    },
+    'confirm_delete_offer_prefix': {
+      AppLanguage.en: 'Are you sure you want to delete',
+      AppLanguage.hi: 'क्या आप वाकई हटाना चाहते हैं',
+      AppLanguage.mr: 'तुम्हाला नक्की हटवायचे आहे का',
+    },
+    'confirm_delete_offer_suffix': {
+      AppLanguage.en: 'Farmers will no longer see this offer.',
+      AppLanguage.hi: 'किसान अब यह ऑफर नहीं देख पाएंगे।',
+      AppLanguage.mr: 'शेतकऱ्यांना ही ऑफर आता दिसणार नाही.',
+    },
+    'offer_deleted_success': {
+      AppLanguage.en: 'Offer deleted successfully',
+      AppLanguage.hi: 'ऑफर सफलतापूर्वक हटा दी गई',
+      AppLanguage.mr: 'ऑफर यशस्वीरित्या हटवली गेली',
+    },
+    'no_campaigns_found': {
+      AppLanguage.en: 'No campaigns found',
+      AppLanguage.hi: 'कोई अभियान नहीं मिला',
+      AppLanguage.mr: 'कोणतीही मोहीम सापडली नाही',
+    },
+    'create_first_offer': {
+      AppLanguage.en: 'Create Your First Offer',
+      AppLanguage.hi: 'अपना पहला ऑफर बनाएं',
+      AppLanguage.mr: 'तुमची पहिली ऑफर तयार करा',
+    },
+    'create_nursery_offer': {
+      AppLanguage.en: 'Create Nursery Offer',
+      AppLanguage.hi: 'नर्सरी ऑफर बनाएं',
+      AppLanguage.mr: 'रोपवाटिका ऑफर तयार करा',
+    },
+    'live_preview_farmers': {
+      AppLanguage.en: 'LIVE PREVIEW (How Farmers See It)',
+      AppLanguage.hi: 'लाइव पूर्वावलोकन (किसान इसे कैसे देखते हैं)',
+      AppLanguage.mr: 'थेट पूर्वावलोकन (शेतकऱ्यांना कसे दिसेल)',
+    },
+    'manage_stock': {
+      AppLanguage.en: 'Manage Stock',
+      AppLanguage.hi: 'स्टॉक प्रबंधित करें',
+      AppLanguage.mr: 'साठा व्यवस्थापित करा',
+    },
+    'update_batch': {
+      AppLanguage.en: 'Update Batch',
+      AppLanguage.hi: 'बैच अपडेट करें',
+      AppLanguage.mr: 'बॅच अपडेट करा',
+    },
+    'no_prebookings_placed': {
+      AppLanguage.en: 'No advance pre-bookings placed yet.',
+      AppLanguage.hi: 'अभी तक कोई अग्रिम प्री-बुकिंग नहीं हुई है।',
+      AppLanguage.mr: 'अद्याप कोणतीही आगाऊ प्री-बुकिंग केलेली नाही.',
+    },
+    'decline': {
+      AppLanguage.en: 'Decline',
+      AppLanguage.hi: 'अस्वीकार करें',
+      AppLanguage.mr: 'नकारा',
+    },
+    'reserved_stock': {
+      AppLanguage.en: 'Reserved Stock',
+      AppLanguage.hi: 'आरक्षित स्टॉक',
+      AppLanguage.mr: 'आरक्षित साठा',
+    },
+    'prebooked_qty': {
+      AppLanguage.en: 'Pre-booked Qty',
+      AppLanguage.hi: 'प्री-बुक मात्रा',
+      AppLanguage.mr: 'प्री-बुक प्रमाण',
+    },
+    'next_batch_date': {
+      AppLanguage.en: 'Next Batch Date',
+      AppLanguage.hi: 'अगली बैच तिथि',
+      AppLanguage.mr: 'पुढील बॅच तारीख',
+    },
+    'pending_prebooks': {
+      AppLanguage.en: 'Pending Pre-books',
+      AppLanguage.hi: 'लंबित प्री-बुकिंग्स',
+      AppLanguage.mr: 'प्रलंबित प्री-बुकिंग्ज',
+    },
+    'expected_ready_date': {
+      AppLanguage.en: 'Expected Date',
+      AppLanguage.hi: 'अपेक्षित तिथि',
+      AppLanguage.mr: 'अपेक्षित तारीख',
+    },
   };
 
   /// Returns localized string by key and language
@@ -1531,6 +2498,14 @@ class AppStrings {
 extension WidgetRefLocalizationX on WidgetRef {
   String tr(String key) {
     final lang = watch(appLanguageProvider);
+    return AppStrings.get(key, lang);
+  }
+}
+
+
+extension BuildContextLocalizationX on BuildContext {
+  String tr(String key) {
+    final lang = AppLanguageX.fromCode(Localizations.localeOf(this).languageCode);
     return AppStrings.get(key, lang);
   }
 }

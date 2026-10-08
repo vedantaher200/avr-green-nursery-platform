@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/localization/app_strings.dart';
+import '../../../../core/widgets/language_selector_dialog.dart';
 import '../../data/providers/marketplace_provider.dart';
 
 class PublicNurseryStorefrontScreen extends ConsumerWidget {
@@ -10,6 +12,7 @@ class PublicNurseryStorefrontScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(appLanguageProvider);
     final nurseriesAsync = ref.watch(nearbyNurseriesProvider);
     
     return Scaffold(
@@ -22,6 +25,9 @@ class PublicNurseryStorefrontScreen extends ConsumerWidget {
               SliverAppBar(
                 expandedHeight: 250,
                 pinned: true,
+                actions: const [
+                  LanguageSelectorButton(color: Colors.white),
+                ],
                 flexibleSpace: FlexibleSpaceBar(
                   title: Text(nursery.name, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                   background: Stack(
@@ -47,16 +53,16 @@ class PublicNurseryStorefrontScreen extends ConsumerWidget {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      const Text('About Us', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                      Text(ref.tr('about_us'), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                       const SizedBox(height: 8),
-                      const Text('Providing high quality seedlings to farmers across the region. Approved and verified by AVR Green.'),
+                      Text(ref.tr('nursery_storefront_desc')),
                       const SizedBox(height: 24),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          _buildInfoCard(Icons.verified, 'Verified'),
-                          _buildInfoCard(Icons.access_time, 'Open Now'),
-                          _buildInfoCard(Icons.local_shipping, 'Delivery'),
+                          _buildInfoCard(Icons.verified, ref.tr('verified')),
+                          _buildInfoCard(Icons.access_time, ref.tr('open_now')),
+                          _buildInfoCard(Icons.local_shipping, ref.tr('delivery')),
                         ],
                       ),
                     ],
@@ -77,7 +83,7 @@ class PublicNurseryStorefrontScreen extends ConsumerWidget {
                       foregroundColor: Colors.white,
                       minimumSize: const Size(double.infinity, 50),
                     ),
-                    child: const Text('View Available Varieties'),
+                    child: Text(ref.tr('view_available_varieties')),
                   ),
                 ),
               )
@@ -85,7 +91,7 @@ class PublicNurseryStorefrontScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Error loading storefront: $e')),
+        error: (e, _) => Center(child: Text('${ref.tr('error_loading_storefront')}: $e')),
       ),
     );
   }

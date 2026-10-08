@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/localization/app_strings.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 
-class LiveTrackingScreen extends StatelessWidget {
+class LiveTrackingScreen extends ConsumerWidget {
   final String deliveryId;
 
   const LiveTrackingScreen({super.key, required this.deliveryId});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(appLanguageProvider);
     return Scaffold(
       backgroundColor: AVRColors.backgroundLight,
       appBar: AppBar(
@@ -60,7 +63,7 @@ class LiveTrackingScreen extends StatelessWidget {
                         child: const Icon(Icons.storefront, color: Colors.white, size: 20),
                       ),
                       const SizedBox(height: 4),
-                      const Text('Nursery Branch', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                      Text(ref.tr('nursery_branch'), style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
@@ -89,7 +92,7 @@ class LiveTrackingScreen extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4)),
-                        child: const Text('Agent En Route', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                        child: Text(ref.tr('agent_en_route'), style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
                       ),
                     ],
                   ),
@@ -109,7 +112,7 @@ class LiveTrackingScreen extends StatelessWidget {
                         child: const Icon(Icons.home, color: Colors.white, size: 20),
                       ),
                       const SizedBox(height: 4),
-                      const Text('Customer Home', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                      Text(ref.tr('customer_home'), style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
@@ -139,7 +142,7 @@ class LiveTrackingScreen extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text('Estimated Arrival', style: TextStyle(color: Colors.grey, fontSize: 12)),
+                                Text(ref.tr('estimated_arrival'), style: TextStyle(color: Colors.grey, fontSize: 12)),
                                 const SizedBox(height: 2),
                                 const Text(
                                   '18 - 25 Minutes ⏱️',
@@ -153,8 +156,8 @@ class LiveTrackingScreen extends StatelessWidget {
                                 color: AVRColors.forestGreenSurface,
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: const Text(
-                                'LIVE GPS SYNC',
+                              child: Text(
+                                ref.tr('live_gps_sync'),
                                 style: TextStyle(color: AVRColors.forestGreen, fontWeight: FontWeight.bold, fontSize: 11),
                               ),
                             ),

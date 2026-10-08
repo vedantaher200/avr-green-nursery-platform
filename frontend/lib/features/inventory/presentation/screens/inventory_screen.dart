@@ -1,3 +1,5 @@
+import '../../../../core/localization/app_strings.dart';
+import '../../../../core/widgets/language_selector_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_theme.dart';
@@ -35,35 +37,37 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> with SingleTi
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(appLanguageProvider);
     final overviewAsync = ref.watch(ownerInventoryOverviewProvider);
 
     return Scaffold(
       backgroundColor: AVRColors.backgroundLight,
       appBar: AppBar(
-        title: const Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Nursery Supply & Inventory',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: AVRColors.textPrimary),
+              ref.tr('nursery_supply_inventory'),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: AVRColors.textPrimary),
             ),
             Text(
-              'Ready Stock • Future Batches • Pre-Bookings',
-              style: TextStyle(fontSize: 11, color: AVRColors.textSecondary, fontWeight: FontWeight.w500),
+              '${ref.tr('tab_ready_stock')} • ${ref.tr('tab_future_batches')} • ${ref.tr('tab_prebookings')}',
+              style: const TextStyle(fontSize: 11, color: AVRColors.textSecondary, fontWeight: FontWeight.w500),
             ),
           ],
         ),
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
+          const LanguageSelectorButton(),
           IconButton(
             icon: const Icon(Icons.campaign_outlined, color: AVRColors.forestGreen),
-            tooltip: 'Publish Announcement',
+            tooltip: ref.tr('publish_announcement_tooltip'),
             onPressed: () => _showPublishAnnouncementDialog(),
           ),
           IconButton(
             icon: const Icon(Icons.refresh, color: AVRColors.textSecondary),
-            tooltip: 'Refresh Inventory',
+            tooltip: ref.tr('refresh_inventory_tooltip'),
             onPressed: () => ref.invalidate(ownerInventoryOverviewProvider),
           ),
         ],
@@ -74,11 +78,11 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> with SingleTi
           indicatorColor: AVRColors.forestGreen,
           indicatorWeight: 3,
           labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12.5),
-          tabs: const [
-            Tab(text: 'Ready Stock'),
-            Tab(text: 'Future Batches'),
-            Tab(text: 'Pre-Bookings'),
-            Tab(text: 'Broadcasts'),
+          tabs: [
+            Tab(text: ref.tr('tab_ready_stock')),
+            Tab(text: ref.tr('tab_future_batches')),
+            Tab(text: ref.tr('tab_prebookings')),
+            Tab(text: ref.tr('tab_broadcasts')),
           ],
         ),
       ),
@@ -96,7 +100,7 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> with SingleTi
               const SizedBox(height: 12),
               ElevatedButton(
                 onPressed: () => ref.invalidate(ownerInventoryOverviewProvider),
-                child: const Text('Retry'),
+                child: Text(ref.tr('retry')),
               ),
             ],
           ),
@@ -143,17 +147,17 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> with SingleTi
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            _buildRibbonPill('Ready Stock', '${_formatNum(overview.totalReadyStock)} Plants', Icons.eco, AVRColors.forestGreen),
+            _buildRibbonPill(ref.tr('tab_ready_stock'), '${_formatNum(overview.totalReadyStock)} Plants', Icons.eco, AVRColors.forestGreen),
             const SizedBox(width: 8),
-            _buildRibbonPill('Reserved Stock', '${_formatNum(overview.totalReservedStock)} Plants', Icons.lock_outline, AVRColors.terracotta),
+            _buildRibbonPill(ref.tr('reserved_stock'), '${_formatNum(overview.totalReservedStock)} Plants', Icons.lock_outline, AVRColors.terracotta),
             const SizedBox(width: 8),
-            _buildRibbonPill('Pre-booked Qty', '${_formatNum(overview.totalPrebookedQuantity)} Plants', Icons.bookmark_added_outlined, AVRColors.forestGreenDark),
+            _buildRibbonPill(ref.tr('prebooked_qty'), '${_formatNum(overview.totalPrebookedQuantity)} Plants', Icons.bookmark_added_outlined, AVRColors.forestGreenDark),
             const SizedBox(width: 8),
-            _buildRibbonPill('Future Production', '${_formatNum(overview.totalFutureProduction)} Plants', Icons.schedule, Colors.blueGrey),
+            _buildRibbonPill(ref.tr('tab_future_batches'), '${_formatNum(overview.totalFutureProduction)} Plants', Icons.schedule, Colors.blueGrey),
             const SizedBox(width: 8),
-            _buildRibbonPill('Next Batch Date', overview.expectedProductionDate ?? '10 Oct 2026', Icons.event_available, AVRColors.warning),
+            _buildRibbonPill(ref.tr('next_batch_date'), overview.expectedProductionDate ?? '10 Oct 2026', Icons.event_available, AVRColors.warning),
             const SizedBox(width: 8),
-            _buildRibbonPill('Pending Pre-books', '${overview.pendingPrebookingsCount} Requests', Icons.pending_actions, AVRColors.error),
+            _buildRibbonPill(ref.tr('pending_prebooks'), '${overview.pendingPrebookingsCount} Requests', Icons.pending_actions, AVRColors.error),
           ],
         ),
       ),
@@ -211,7 +215,7 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> with SingleTi
                   height: 40,
                   child: TextField(
                     decoration: InputDecoration(
-                      hintText: 'Search variety or crop...',
+                      hintText: ref.tr('search_variety_hint'),
                       hintStyle: const TextStyle(fontSize: 12),
                       prefixIcon: const Icon(Icons.search, size: 18),
                       contentPadding: EdgeInsets.zero,
@@ -237,13 +241,13 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> with SingleTi
                     value: _selectedStateFilter,
                     icon: const Icon(Icons.filter_list, size: 16),
                     style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold, color: AVRColors.textPrimary),
-                    items: const [
-                      DropdownMenuItem(value: 'all', child: Text('All States')),
-                      DropdownMenuItem(value: 'ready_now', child: Text('READY NOW')),
-                      DropdownMenuItem(value: 'limited_stock', child: Text('LIMITED STOCK')),
-                      DropdownMenuItem(value: 'coming_soon', child: Text('COMING SOON')),
-                      DropdownMenuItem(value: 'prebook_available', child: Text('PRE-BOOK AVAILABLE')),
-                      DropdownMenuItem(value: 'sold_out', child: Text('SOLD OUT')),
+                    items: [
+                      DropdownMenuItem(value: 'all', child: Text(ref.tr('all_states_tab'))),
+                      DropdownMenuItem(value: 'ready_now', child: Text(ref.tr('ready_now_upper'))),
+                      DropdownMenuItem(value: 'limited_stock', child: Text(ref.tr('limited_stock_upper'))),
+                      DropdownMenuItem(value: 'coming_soon', child: Text(ref.tr('coming_soon_upper'))),
+                      DropdownMenuItem(value: 'prebook_available', child: Text(ref.tr('prebook_avail_upper'))),
+                      DropdownMenuItem(value: 'sold_out', child: Text(ref.tr('sold_out_upper'))),
                     ],
                     onChanged: (v) => setState(() => _selectedStateFilter = v ?? 'all'),
                   ),
@@ -256,7 +260,7 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> with SingleTi
         // Products List
         Expanded(
           child: filtered.isEmpty
-              ? const Center(child: Text('No varieties found matching filter'))
+              ? Center(child: Text(ref.tr('no_varieties_found')))
               : ListView.separated(
                   padding: const EdgeInsets.fromLTRB(14, 4, 14, 20),
                   itemCount: filtered.length,
@@ -344,9 +348,9 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> with SingleTi
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildStockCounter('Ready Stock', '${_formatNum(p.readyStock)} plants', AVRColors.success),
-              _buildStockCounter('Future Batch', '${_formatNum(p.futureStock)} plants', Colors.blueGrey),
-              _buildStockCounter('Expected Date', p.expectedReadyDate?.split('T')[0] ?? 'In 10 days', AVRColors.warning),
+              _buildStockCounter(ref.tr('tab_ready_stock'), '${_formatNum(p.readyStock)} plants', AVRColors.success),
+              _buildStockCounter(ref.tr('tab_future_batches'), '${_formatNum(p.futureStock)} plants', Colors.blueGrey),
+              _buildStockCounter(ref.tr('expected_ready_date'), p.expectedReadyDate?.split('T')[0] ?? 'In 10 days', AVRColors.warning),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AVRColors.forestGreen,
@@ -356,7 +360,7 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> with SingleTi
                   textStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
                 ),
                 icon: const Icon(Icons.edit, size: 12),
-                label: const Text('Manage Stock'),
+                label: Text(ref.tr('manage_stock')),
                 onPressed: () => _showManageStockDialog(p),
               ),
             ],
@@ -502,7 +506,7 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> with SingleTi
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                       ),
                       onPressed: () => _showManageStockDialog(p),
-                      child: const Text('Update Batch', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold)),
+                      child: Text(ref.tr('update_batch'), style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),
@@ -517,7 +521,7 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> with SingleTi
   // ── Tab 3: Pre-Booking Orders ───────────────────────────────────────────────
   Widget _buildPreBookingsTab(OwnerDashboardOverview overview) {
     if (overview.recentPrebookings.isEmpty) {
-      return const Center(child: Text('No advance pre-bookings placed yet.'));
+      return Center(child: Text(ref.tr('no_prebookings_placed')));
     }
 
     return ListView.separated(
@@ -580,7 +584,7 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> with SingleTi
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
                       onPressed: () => _updateBookingStatus(b.id, 'cancelled'),
-                      child: const Text('Decline', style: TextStyle(fontSize: 11)),
+                      child: Text(ref.tr('decline'), style: const TextStyle(fontSize: 11)),
                     ),
                     const SizedBox(width: 8),
                     ElevatedButton(
@@ -591,7 +595,7 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen> with SingleTi
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
                       onPressed: () => _updateBookingStatus(b.id, 'confirmed'),
-                      child: const Text('Confirm Pre-Booking', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                      child: Text(ref.tr('confirm_prebooking'), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
                     ),
                   ] else if (b.status == 'confirmed') ...[
                     ElevatedButton(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/localization/app_strings.dart';
+import '../../../../core/widgets/language_selector_dialog.dart';
 import '../../../auth/data/providers/auth_provider.dart';
 
 class OwnerBusinessProfileScreen extends ConsumerStatefulWidget {
@@ -48,15 +50,17 @@ class _OwnerBusinessProfileScreenState extends ConsumerState<OwnerBusinessProfil
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(appLanguageProvider);
     final completeness = _calculateCompleteness();
 
     return Scaffold(
       backgroundColor: AVRColors.backgroundLight,
       appBar: AppBar(
-        title: const Text('Business Profile', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        title: Text(ref.tr('business_profile_title'), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
+          const LanguageSelectorButton(),
           IconButton(
             icon: Icon(_isEditing ? Icons.check_circle : Icons.edit),
             color: AVRColors.forestGreen,
@@ -66,7 +70,7 @@ class _OwnerBusinessProfileScreenState extends ConsumerState<OwnerBusinessProfil
               });
               if (!_isEditing) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Profile saved successfully!')),
+                  SnackBar(content: Text(ref.tr('profile_saved_success')), backgroundColor: AVRColors.forestGreen),
                 );
               }
             },
@@ -74,7 +78,7 @@ class _OwnerBusinessProfileScreenState extends ConsumerState<OwnerBusinessProfil
           IconButton(
             icon: const Icon(Icons.visibility),
             color: AVRColors.forestGreen,
-            tooltip: 'Preview Storefront',
+            tooltip: ref.tr('preview_storefront_action'),
             onPressed: () => context.push('/storefront'),
           ),
         ],
@@ -98,7 +102,7 @@ class _OwnerBusinessProfileScreenState extends ConsumerState<OwnerBusinessProfil
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Profile Completeness', style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text(ref.tr('profile_completeness'), style: const TextStyle(fontWeight: FontWeight.bold)),
                       Text('$completeness%', style: const TextStyle(color: AVRColors.forestGreen, fontWeight: FontWeight.bold)),
                     ],
                   ),
@@ -110,7 +114,7 @@ class _OwnerBusinessProfileScreenState extends ConsumerState<OwnerBusinessProfil
                   ),
                   if (completeness < 100) ...[
                     const SizedBox(height: 8),
-                    const Text('Missing fields: Cover Image, Location', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                    Text(ref.tr('farming_location_purpose'), style: const TextStyle(fontSize: 12, color: Colors.grey)),
                   ]
                 ],
               ),
@@ -127,12 +131,12 @@ class _OwnerBusinessProfileScreenState extends ConsumerState<OwnerBusinessProfil
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Business Information', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  Text(ref.tr('business_information'), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                   const SizedBox(height: 16),
-                  _buildTextField('Nursery Name', _nameController),
-                  _buildTextField('Description', _descController, maxLines: 3),
-                  _buildTextField('Contact Number', _contactController),
-                  _buildTextField('Operating Hours', _hoursController),
+                  _buildTextField(ref.tr('nursery_name_label'), _nameController),
+                  _buildTextField(ref.tr('nursery_desc_label'), _descController, maxLines: 3),
+                  _buildTextField(ref.tr('contact_phone_label'), _contactController),
+                  _buildTextField(ref.tr('operating_hours_label'), _hoursController),
                   const SizedBox(height: 16),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
@@ -141,7 +145,7 @@ class _OwnerBusinessProfileScreenState extends ConsumerState<OwnerBusinessProfil
                       minimumSize: const Size(double.infinity, 48),
                     ),
                     icon: const Icon(Icons.location_on),
-                    label: const Text('Manage Location'),
+                    label: Text(ref.tr('manage_location_action')),
                     onPressed: () => context.push('/owner/location'),
                   ),
                 ],

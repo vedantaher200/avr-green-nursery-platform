@@ -69,8 +69,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'Namaste, ${authState.firstName ?? 'Grower'} Ã°Å¸Å’Â±',
+                                  Text('${ref.tr('namaste_greeting')} ${authState.firstName ?? ref.tr('grower_name')} 🌱',
                                     style: AVRTextStyles.headlineSmall.copyWith(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w700,
@@ -113,49 +112,49 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                           children: [
                             _buildQuickActionChip(
                               icon: Icons.add_circle_outline,
-                              label: '+ Add Variety',
+                              label: ref.tr('quick_action_add_variety'),
                               color: AVRColors.forestGreen,
                               onTap: () => context.push('/catalog'),
                             ),
                             const SizedBox(width: 8),
                             _buildQuickActionChip(
                               icon: Icons.campaign_outlined,
-                              label: '+ Create Offer',
+                              label: ref.tr('quick_action_create_offer'),
                               color: AVRColors.warning,
                               onTap: () => context.push('/owner/offers'),
                             ),
                             const SizedBox(width: 8),
                             _buildQuickActionChip(
                               icon: Icons.location_on,
-                              label: 'Manage Location',
+                              label: ref.tr('quick_action_manage_location'),
                               color: AVRColors.forestGreen,
                               onTap: () => context.push('/owner/location'),
                             ),
                             const SizedBox(width: 8),
                             _buildQuickActionChip(
                               icon: Icons.inventory_2_outlined,
-                              label: 'Stock Adjust',
+                              label: ref.tr('quick_action_stock_adjust'),
                               color: AVRColors.terracotta,
                               onTap: () => context.push('/inventory'),
                             ),
                             const SizedBox(width: 8),
                             _buildQuickActionChip(
                               icon: Icons.receipt_long_outlined,
-                              label: 'All Orders',
+                              label: ref.tr('quick_action_all_orders'),
                               color: AVRColors.forestGreenDark,
                               onTap: () => context.push('/orders'),
                             ),
                             const SizedBox(width: 8),
                             _buildQuickActionChip(
                               icon: Icons.local_shipping_outlined,
-                              label: 'Live Deliveries',
+                              label: ref.tr('quick_action_deliveries'),
                               color: AVRColors.forestGreen,
                               onTap: () => context.push('/deliveries'),
                             ),
                             const SizedBox(width: 8),
                             _buildQuickActionChip(
                               icon: Icons.bar_chart_rounded,
-                              label: 'GST Reports',
+                              label: ref.tr('nav_reports'),
                               color: AVRColors.warning,
                               onTap: () => context.push('/reports'),
                             ),
@@ -178,7 +177,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 if (role != 'customer' && role != 'delivery_agent') ...[
                   SliverToBoxAdapter(
                     child: AVRSectionHeader(
-                      title: 'Offers & Campaigns',
+                      title: ref.tr('offers_campaigns_title'),
                       actionLabel: 'Manage All',
                       onActionTap: () => context.push('/owner/offers'),
                     ),
@@ -193,7 +192,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
                   SliverToBoxAdapter(
                     child: AVRSectionHeader(
-                      title: 'Pending Farmer Pre-Bookings',
+                      title: ref.tr('tab_prebookings'),
                       actionLabel: 'Manage All',
                       onActionTap: () => context.push('/inventory'),
                     ),
@@ -207,7 +206,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   const SliverToBoxAdapter(child: SizedBox(height: 14)),
                   SliverToBoxAdapter(
                     child: AVRSectionHeader(
-                      title: 'Live Production Broadcasts',
+                      title: ref.tr('tab_broadcasts'),
                       actionLabel: '+ Broadcast',
                       onActionTap: () => context.push('/inventory'),
                     ),
@@ -247,8 +246,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 10)),
 
-                const SliverToBoxAdapter(
-                  child: AVRSectionHeader(title: 'Recent Nursery Orders', actionLabel: 'View All'),
+                SliverToBoxAdapter(
+                  child: AVRSectionHeader(title: ref.tr('recent_orders'), actionLabel: 'View All'),
                 ),
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -259,8 +258,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
                 // Ã¢â€â‚¬Ã¢â€â‚¬ Top Selling Nursery Seedlings Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
                 const SliverToBoxAdapter(child: SizedBox(height: 16)),
-                const SliverToBoxAdapter(
-                  child: AVRSectionHeader(title: 'Top Commercial Seedlings', actionLabel: 'Catalog'),
+                SliverToBoxAdapter(
+                  child: AVRSectionHeader(title: ref.tr('top_selling_plants'), actionLabel: 'Catalog'),
                 ),
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -517,14 +516,14 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: Colors.grey.shade200),
             ),
-            child: const Center(
+            child: Center(
               child: Column(
                 children: [
-                  Icon(Icons.inbox_outlined, size: 36, color: Colors.grey),
-                  SizedBox(height: 8),
-                  Text('No nursery orders received yet', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                  SizedBox(height: 2),
-                  Text('Orders placed by farmers will automatically appear here.', style: TextStyle(fontSize: 11, color: Colors.grey)),
+                  const Icon(Icons.inbox_outlined, size: 36, color: Colors.grey),
+                  const SizedBox(height: 8),
+                  Text(ref.tr('no_nursery_orders_yet'), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                  const SizedBox(height: 2),
+                  Text(ref.tr('orders_auto_appear'), style: const TextStyle(fontSize: 11, color: Colors.grey)),
                 ],
               ),
             ),

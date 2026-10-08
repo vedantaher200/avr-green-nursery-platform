@@ -553,7 +553,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                     ),
                                   ),
                                   child: Text(
-                                    product.stockBadgeLabel,
+                                    product.localizedStockBadgeLabel(language),
                                     style: TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.w800,
@@ -1078,7 +1078,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             ],
           ),
           content: Text(
-            'Your cart currently contains plants from "${cart.currentNurseryName}".\n\nTo order from "${product.nurseryName}", would you like to clear your current cart and start an order with this nursery?',
+            '${ref.tr('cart_contains_plants_from')} "${cart.currentNurseryName}".\n\n${ref.tr('single_nursery_rule_msg')}',
             style: const TextStyle(fontSize: 12.5),
           ),
           actions: [

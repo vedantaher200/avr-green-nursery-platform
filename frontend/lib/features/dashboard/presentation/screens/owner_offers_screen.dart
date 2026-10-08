@@ -1,3 +1,5 @@
+import '../../../../core/localization/app_strings.dart';
+import '../../../../core/widgets/language_selector_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_theme.dart';
@@ -14,21 +16,35 @@ class OwnerOffersScreen extends ConsumerStatefulWidget {
 class _OwnerOffersScreenState extends ConsumerState<OwnerOffersScreen> {
   final List<String> _tabs = ['all', 'active', 'scheduled', 'draft', 'expired'];
 
+  String _getTabLabel(String tab, AppLanguage lang) {
+    switch (tab) {
+      case 'all': return AppStrings.get('tab_all', lang);
+      case 'active': return AppStrings.get('tab_active', lang);
+      case 'scheduled': return AppStrings.get('tab_scheduled', lang);
+      case 'draft': return AppStrings.get('tab_draft', lang);
+      case 'expired': return AppStrings.get('tab_expired', lang);
+      default: return tab;
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final selectedTab = ref.watch(selectedOwnerOfferTabProvider);
     final offersAsync = ref.watch(ownerOffersProvider);
+    final language = ref.watch(appLanguageProvider);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF6F8F5),
       appBar: AppBar(
-        title: const Text(
-          'Offers & Marketing Campaigns',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: AVRColors.textPrimary),
+        title: Text(
+          ref.tr('offers_campaigns_title'),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: AVRColors.textPrimary),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
+          const LanguageSelectorButton(),
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: ElevatedButton.icon(
@@ -41,7 +57,7 @@ class _OwnerOffersScreenState extends ConsumerState<OwnerOffersScreen> {
               ),
               onPressed: () => _showCreateOfferDialog(context),
               icon: const Icon(Icons.add, size: 16),
-              label: const Text('Create Offer', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+              label: Text(ref.tr('create_offer_btn'), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
             ),
           ),
         ],
@@ -61,7 +77,7 @@ class _OwnerOffersScreenState extends ConsumerState<OwnerOffersScreen> {
                 final tab = _tabs[index];
                 final isSelected = selectedTab == tab;
                 return ChoiceChip(
-                  label: Text(tab[0].toUpperCase() + tab.substring(1)),
+                  label: Text(_getTabLabel(tab, language)),
                   selected: isSelected,
                   selectedColor: AVRColors.forestGreen,
                   backgroundColor: const Color(0xFFF1F5F2),
@@ -105,7 +121,7 @@ class _OwnerOffersScreenState extends ConsumerState<OwnerOffersScreen> {
                           style: ElevatedButton.styleFrom(backgroundColor: AVRColors.forestGreen),
                           onPressed: () => _showCreateOfferDialog(context),
                           icon: const Icon(Icons.add, size: 16),
-                          label: const Text('Create Your First Offer'),
+                          label: Text(ref.tr('create_first_offer')),
                         ),
                       ],
                     ),
@@ -262,19 +278,19 @@ class _OwnerOffersScreenState extends ConsumerState<OwnerOffersScreen> {
                       TextButton.icon(
                         onPressed: () => _updateStatus(o['id'], 'paused'),
                         icon: const Icon(Icons.pause, size: 14, color: AVRColors.warning),
-                        label: const Text('Pause', style: TextStyle(fontSize: 11, color: AVRColors.warning, fontWeight: FontWeight.bold)),
+                        label: Text(ref.tr('pause_btn'), style: const TextStyle(fontSize: 11, color: AVRColors.warning, fontWeight: FontWeight.bold)),
                       )
                     else if (status == 'paused')
                       TextButton.icon(
                         onPressed: () => _updateStatus(o['id'], 'active'),
                         icon: const Icon(Icons.play_arrow, size: 14, color: AVRColors.success),
-                        label: const Text('Resume', style: TextStyle(fontSize: 11, color: AVRColors.success, fontWeight: FontWeight.bold)),
+                        label: Text(ref.tr('resume_btn'), style: const TextStyle(fontSize: 11, color: AVRColors.success, fontWeight: FontWeight.bold)),
                       ),
                     const SizedBox(width: 8),
                     TextButton.icon(
                       onPressed: () => _confirmDelete(o['id'], o['title']),
                       icon: const Icon(Icons.delete_outline, size: 14, color: AVRColors.error),
-                      label: const Text('Delete', style: TextStyle(fontSize: 11, color: AVRColors.error, fontWeight: FontWeight.bold)),
+                      label: Text(ref.tr('delete_btn'), style: const TextStyle(fontSize: 11, color: AVRColors.error, fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),
@@ -325,14 +341,14 @@ class _OwnerOffersScreenState extends ConsumerState<OwnerOffersScreen> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Delete Offer Campaign', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-        content: Text('Are you sure you want to delete "$title"? Farmers will no longer see this offer.', style: const TextStyle(fontSize: 13)),
+        title: Text(ref.tr('delete_offer_title'), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+        content: Text('${ref.tr('confirm_delete_offer_prefix')} "$title"? ${ref.tr('confirm_delete_offer_suffix')}', style: const TextStyle(fontSize: 13)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(ref.tr('cancel'))),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: AVRColors.error),
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Delete', style: TextStyle(color: Colors.white)),
+            child: Text(ref.tr('delete'), style: const TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -346,7 +362,7 @@ class _OwnerOffersScreenState extends ConsumerState<OwnerOffersScreen> {
         ref.invalidate(marketplaceOffersProvider);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Offer deleted successfully'), backgroundColor: AVRColors.forestGreen),
+            SnackBar(content: Text(ref.tr('offer_deleted_success')), backgroundColor: AVRColors.forestGreen),
           );
         }
       } catch (e) {
@@ -431,12 +447,12 @@ class _CreateOfferModalState extends ConsumerState<_CreateOfferModal> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Row(
+                Row(
                   children: [
-                    Icon(Icons.add_circle_outline, color: AVRColors.forestGreen, size: 20),
+                    const Icon(Icons.add_circle_outline, color: AVRColors.forestGreen, size: 20),
                     SizedBox(width: 8),
                     Text(
-                      'Create Nursery Offer',
+                      ref.tr('create_nursery_offer'),
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AVRColors.textPrimary),
                     ),
                   ],
@@ -451,8 +467,8 @@ class _CreateOfferModalState extends ConsumerState<_CreateOfferModal> {
             const SizedBox(height: 12),
 
             // Live Farmer Preview Card
-            const Text(
-              'LIVE PREVIEW (How Farmers See It)',
+            Text(
+              ref.tr('live_preview_farmers'),
               style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: AVRColors.forestGreen, letterSpacing: 0.5),
             ),
             const SizedBox(height: 6),
